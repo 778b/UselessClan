@@ -43,7 +43,7 @@ public class ClanCommands extends Command {
         else if (size == 1) {
             // /Clan help/create/info/mates/join/accept/leave/top
             sender.sendMessage("arg[0] = " + args[0] + " size = " + size);
-            if (args[0] == "help") {
+            if (args[0].equalsIgnoreCase( "help")) {
                 sender.sendMessage("########## CLAN HELP ##########");
                 sender.sendMessage("/Clan help         - to call this menu");
                 sender.sendMessage("/Clan top          - top of all clans");
@@ -53,22 +53,22 @@ public class ClanCommands extends Command {
                 sender.sendMessage("/Clan info         - to info about your clan");
                 sender.sendMessage("/Clan accept %name - to accept %name for join to your clan");
             }
-            else if (args[0] == "top") {
+            else if (args[0].equalsIgnoreCase("top")) {
                 sender.sendMessage("########## CLAN TOP ##########");
             }
-            else if (args[0] == "create") {
+            else if (args[0].equalsIgnoreCase("create")) {
                 sender.sendMessage("You forgot about clan %name, use /Clan create %name, %name = name of your clan");
             }
-            else if (args[0] == "join") {
+            else if (args[0].equalsIgnoreCase("join")) {
                 sender.sendMessage("You forgot about clan %name, use /Clan join %name, %name = name of clan");
             }
-            else if (args[0] == "mates") {
+            else if (args[0].equalsIgnoreCase("mates")) {
                 sender.sendMessage("########## CLANMATES ##########");
             }
-            else if (args[0] == "info") {
+            else if (args[0].equalsIgnoreCase("info")) {
                 sender.sendMessage("########## CLAN INFO ##########");
             }
-            else if (args[0] == "accept") {
+            else if (args[0].equalsIgnoreCase("accept")) {
                 sender.sendMessage("You forgot about player %name, use /Clan accept %name, %name = name of player, which you want to accept");
             }
             else {
@@ -76,13 +76,13 @@ public class ClanCommands extends Command {
             }
         }
         else if (size == 2) {
-            if (args[0] == "create") {
+            if (args[0].equalsIgnoreCase("create")) {
                 sender.sendMessage("For create your own clan you must have more than 10000$");
             }
-            else if (args[0] == "join") {
+            else if (args[0].equalsIgnoreCase("join")) {
                 sender.sendMessage("You send request for join to this clan, wait until leader or officer accept this request");
             }
-            else if (args[0] == "accept") {
+            else if (args[0].equalsIgnoreCase("accept")) {
                 sender.sendMessage("You accept this player to join your clan!");
             }
             else {
