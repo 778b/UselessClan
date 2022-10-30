@@ -1,5 +1,6 @@
 package io.github.lofrol.uselessclan.commands;
 
+import io.github.lofrol.uselessclan.ClanManager;
 import net.kyori.adventure.text.Component;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -17,9 +18,14 @@ import java.util.stream.Stream;
 import static org.bukkit.Bukkit.getServer;
 
 public class ClanCommands extends Command {
-    public static ClanCommands CreateDefaultInts() {
+
+    private ClanManager ManagerPtr;
+    public static ClanCommands CreateDefaultInts(ClanManager manager) {
         ClanCommands tempInst = new ClanCommands("Clan", "Default command for access to the clan system",
                 "Use &5/Clan help&r for learning more", Stream.of("clan", "Clan").collect(Collectors.toList()));
+
+        tempInst.ManagerPtr = manager;
+
         return tempInst;
     }
 
@@ -44,7 +50,7 @@ public class ClanCommands extends Command {
             // /Clan help/create/info/mates/join/accept/leave/top
             sender.sendMessage("arg[0] = " + args[0] + " size = " + size);
             if (args[0].equalsIgnoreCase( "help")) {
-                sender.sendMessage("########## CLAN HELP ##########");
+                sender.sendMessage("######################### CLAN HELP #########################");
                 sender.sendMessage("/Clan help         - to call this menu");
                 sender.sendMessage("/Clan top          - top of all clans");
                 sender.sendMessage("/Clan create %name - to create your own clan with name %name");

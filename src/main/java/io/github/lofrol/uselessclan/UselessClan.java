@@ -15,11 +15,15 @@ public final class UselessClan extends JavaPlugin {
 
     public ClanCommands MainCommand;
 
+    private ClanManager MainManager;
+
     @Override
     public void onEnable() {
         getLogger().log(Level.INFO, "Loaded successfully!");
 
-        MainCommand = ClanCommands.CreateDefaultInts();
+        MainManager = new ClanManager(this);
+
+        MainCommand = ClanCommands.CreateDefaultInts(MainManager);
         MainCommand.registerComamnd();
 
     }
