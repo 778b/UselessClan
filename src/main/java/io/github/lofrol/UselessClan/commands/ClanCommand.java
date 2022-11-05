@@ -1,27 +1,22 @@
-package io.github.lofrol.uselessclan.commands;
+package io.github.lofrol.UselessClan.commands;
 
-import io.github.lofrol.uselessclan.ClanManager;
-import net.kyori.adventure.text.Component;
-import org.bukkit.ChatColor;
+import io.github.lofrol.UselessClan.ClanManager;
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Arrays;
 import java.util.List;
-import java.util.logging.Level;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static org.bukkit.Bukkit.getServer;
 
-public class ClanCommands extends Command {
+public class ClanCommand extends Command {
 
     private ClanManager ManagerPtr;
-    public static ClanCommands CreateDefaultInts(ClanManager manager) {
-        ClanCommands tempInst = new ClanCommands("Clan", "Default command for access to the clan system",
+    public static ClanCommand CreateDefaultInts(ClanManager manager) {
+        ClanCommand tempInst = new ClanCommand("Clan", "Default command for access to the clan system",
                 "Use &5/Clan help&r for learning more", Stream.of("clan", "Clan").collect(Collectors.toList()));
 
         tempInst.ManagerPtr = manager;
@@ -33,7 +28,7 @@ public class ClanCommands extends Command {
         return getServer().getCommandMap().register("[UselessClan]", this);
     }
 
-    protected ClanCommands(@NotNull String name, @NotNull String description, @NotNull String usageMessage, @NotNull List<String> aliases) {
+    protected ClanCommand(@NotNull String name, @NotNull String description, @NotNull String usageMessage, @NotNull List<String> aliases) {
         super(name,description,usageMessage,aliases);
     }
 
@@ -98,9 +93,6 @@ public class ClanCommands extends Command {
         else {
             sender.sendMessage("4Invalid command. Use command /Clan help, for access to clan system");
         }
-        //for (String k : args) {
-        //sender.sendMessage(k + " " + size);
-        //}
         return true;
     }
 }

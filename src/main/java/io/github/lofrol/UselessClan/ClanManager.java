@@ -1,6 +1,6 @@
-package io.github.lofrol.uselessclan;
+package io.github.lofrol.UselessClan;
 
-import io.github.lofrol.uselessclan.ClanObjects.Clan;
+import io.github.lofrol.UselessClan.ClanObjects.Clan;
 
 import java.io.File;
 import java.io.IOException;
@@ -75,6 +75,10 @@ public class ClanManager {
                 }
             }
         }
+    }
+
+    public Map<String, Clan> getServerClans() {
+        return ServerClans;
     }
 
     // Name of clan for best performance in search clan

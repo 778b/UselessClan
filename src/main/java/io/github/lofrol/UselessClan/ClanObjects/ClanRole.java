@@ -1,4 +1,4 @@
-package io.github.lofrol.uselessclan.ClanObjects;
+package io.github.lofrol.UselessClan.ClanObjects;
 
 public enum ClanRole {
     ROOKIE,

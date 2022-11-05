@@ -2,5 +2,6 @@ name: UselessClan
 version: 1.0.1
 main: io.github.lofrol.uselessclan.UselessClan
 api-version: 1.19
+depend: [Vault]
 authors: [ LoFRoL ]
 description: Paper plugin about simple balanced clans 

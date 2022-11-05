@@ -1,7 +1,6 @@
-package io.github.lofrol.uselessclan.ClanObjects;
+package io.github.lofrol.UselessClan.ClanObjects;
 
 import org.bukkit.Location;
-import org.bukkit.entity.Player;
 
 import java.io.File;
 import java.util.List;

@@ -1,19 +1,14 @@
-package io.github.lofrol.uselessclan;
+package io.github.lofrol.UselessClan;
 
-import io.github.lofrol.uselessclan.commands.ClanCommands;
+import io.github.lofrol.UselessClan.commands.ClanCommand;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.jetbrains.annotations.NotNull;
 
-import java.util.List;
-import java.util.Objects;
 import java.util.logging.Level;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 
 public final class UselessClan extends JavaPlugin {
 
-    public ClanCommands MainCommand;
+    public ClanCommand MainCommand;
 
     private ClanManager MainManager;
 
@@ -23,7 +18,7 @@ public final class UselessClan extends JavaPlugin {
 
         MainManager = new ClanManager(this);
 
-        MainCommand = ClanCommands.CreateDefaultInts(MainManager);
+        MainCommand = ClanCommand.CreateDefaultInts(MainManager);
         MainCommand.registerComamnd();
 
     }
