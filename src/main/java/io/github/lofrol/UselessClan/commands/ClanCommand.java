@@ -1,9 +1,12 @@
 package io.github.lofrol.UselessClan.commands;
 
 import io.github.lofrol.UselessClan.ClanManager;
+import io.github.lofrol.UselessClan.ClanObjects.Clan;
+import net.milkbowl.vault.economy.Economy;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.RegisteredServiceProvider;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -56,6 +59,9 @@ public class ClanCommand extends Command {
             }
             else if (args[0].equalsIgnoreCase("top")) {
                 sender.sendMessage("########## CLAN TOP ##########");
+                for (Clan tempClan : ManagerPtr.getServerClans().values()) {
+                    sender.sendMessage(tempClan.getNameClan());
+                }
             }
             else if (args[0].equalsIgnoreCase("create")) {
                 sender.sendMessage("You forgot about clan %name, use /Clan create %name, %name = name of your clan");
@@ -78,6 +84,27 @@ public class ClanCommand extends Command {
         }
         else if (size == 2) {
             if (args[0].equalsIgnoreCase("create")) {
+                boolean success = true;
+                for (char tempChar : args[1].toCharArray()) {
+                    if (!(tempChar == 32 || tempChar == 95 || (tempChar >= 65 && tempChar <= 90) || (tempChar >= 97 && tempChar <= 122))) {
+                        success = false;
+                        break;
+                    }
+                }
+                if (!success) {
+                    sender.sendMessage("Invalid clan name, use [A-Z; a-z; space; _]");
+                }
+                else {
+                    ManagerPtr.getServerClans().put(args[1], new Clan(args[1], (Player)sender));
+                }
+
+                if (getServer().getPluginManager().getPlugin("Vault") == null) {
+                    return false;
+                }
+                RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
+                if (rsp == null) {
+                    return false;
+                }
                 sender.sendMessage("For create your own clan you must have more than 10000$");
             }
             else if (args[0].equalsIgnoreCase("join")) {

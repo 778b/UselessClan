@@ -1,6 +1,7 @@
 package io.github.lofrol.UselessClan.ClanObjects;
 
 import org.bukkit.Location;
+import org.bukkit.entity.Player;
 
 import java.io.File;
 import java.util.List;
@@ -23,6 +24,13 @@ public class Clan {
 
     private Double MoneyClan;
 
+    // Creating by leader
+    public Clan(String ClanName, Player Leader)  {
+        NameClan = ClanName;
+        LeaderName =  Leader.getName();
+        members.add(new ClanMember(ClanRole.LEADER, Leader.getName()));
+        MoneyClan = 0.d;
+    }
 
 
     /*
