@@ -4,6 +4,7 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Clan {
@@ -24,12 +25,20 @@ public class Clan {
 
     private Double MoneyClan;
 
+    public Clan() {
+
+    }
+
     // Creating by leader
-    public Clan(String ClanName, Player Leader)  {
+    public Clan(String ClanName, String Leader)  {
         NameClan = ClanName;
-        LeaderName =  Leader.getName();
-        members.add(new ClanMember(ClanRole.LEADER, Leader.getName()));
+        LeaderName =  Leader;
+        members = new ArrayList<ClanMember>();
+        members.add(new ClanMember(ClanRole.LEADER, Leader));
         MoneyClan = 0.d;
+        DescriptionClan = "Description of your clan";
+        //HomeClan = new Location();
+        SettingsClan = new ClanSettings();
     }
 
 
@@ -53,8 +62,8 @@ public class Clan {
     }
 
     public static Clan DeserializeClan(File ClanFile) {
-        Clan tempClanObj = new Clan();
+        //Clan tempClanObj = new Clan();
 
-        return tempClanObj;
+        return new Clan();
     }
 }

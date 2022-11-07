@@ -39,6 +39,8 @@ public class ClanCommand extends Command {
     public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] args) {
         if (!(sender instanceof Player)) return false;
 
+        Player tempPlayer = ((Player)sender);
+
         int size = args.length;
         if (size == 0) {
             // just only /Clan
@@ -95,7 +97,7 @@ public class ClanCommand extends Command {
                     sender.sendMessage("Invalid clan name, use [A-Z; a-z; space; _]");
                 }
                 else {
-                    ManagerPtr.getServerClans().put(args[1], new Clan(args[1], (Player)sender));
+                    ManagerPtr.getServerClans().put(args[1], new Clan(args[1], tempPlayer.getName()));
                 }
 
                 if (getServer().getPluginManager().getPlugin("Vault") == null) {
