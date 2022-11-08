@@ -4,6 +4,7 @@ import io.github.lofrol.UselessClan.ClanManager;
 import io.github.lofrol.UselessClan.ClanObjects.Clan;
 import io.github.lofrol.UselessClan.UselessClan;
 import net.milkbowl.vault.economy.Economy;
+import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -14,6 +15,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static io.github.lofrol.UselessClan.UselessClan.EconomyPtr;
 import static org.bukkit.Bukkit.getServer;
 
 public class ClanCommand extends Command {
@@ -114,10 +116,13 @@ public class ClanCommand extends Command {
                 }
                 // Creating new clan
                 double moneyToClan = 10000;
-                if (UselessClan.EconomyPtr.getBalance(tempPlayer) < moneyToClan) {
+                if (!UselessClan.EconomyPtr.has(tempPlayer, moneyToClan)) {
                     sender.sendMessage("For create your own clan you must have more than " + moneyToClan + "$");
                     return false;
                 }
+
+                EconomyResponse response = UselessClan.EconomyPtr.bankDeposit(tempPlayer.getName(), -10000.d);
+                sender.sendMessage(response.type.toString());
 
                 ManagerPtr.getServerClans().put(args[1], new Clan(args[1], tempPlayer.getName()));
                 sender.sendMessage("Clan " + args[1] + " was created successfully!");
@@ -129,11 +134,11 @@ public class ClanCommand extends Command {
                 sender.sendMessage("You accept this player to join your clan!");
             }
             else {
-                sender.sendMessage("3Invalid command. Use command /Clan help, for access to clan system");
+                sender.sendMessage("Invalid command. Use command /Clan help, for access to clan system");
             }
         }
         else {
-            sender.sendMessage("4Invalid command. Use command /Clan help, for access to clan system");
+            sender.sendMessage("Invalid command. Use command /Clan help, for access to clan system");
         }
         return true;
     }

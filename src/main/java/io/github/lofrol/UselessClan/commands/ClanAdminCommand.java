@@ -37,7 +37,6 @@ public class ClanAdminCommand extends Command {
     @Override
     public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] args) {
         Player tempPlayer = (Player)(sender);
-
         if (tempPlayer == null) return false;
 
         if (!tempPlayer.hasPermission("UselessClan.Admin")) return false;
