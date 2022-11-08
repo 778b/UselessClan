@@ -2,6 +2,7 @@ package io.github.lofrol.UselessClan.commands;
 
 import io.github.lofrol.UselessClan.ClanManager;
 import io.github.lofrol.UselessClan.ClanObjects.Clan;
+import io.github.lofrol.UselessClan.UselessClan;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -48,9 +49,8 @@ public class ClanCommand extends Command {
         }
         else if (size == 1) {
             // /Clan help/create/info/mates/join/accept/leave/top
-            sender.sendMessage("arg[0] = " + args[0] + " size = " + size);
             if (args[0].equalsIgnoreCase( "help")) {
-                sender.sendMessage("######################### CLAN HELP #########################");
+                sender.sendMessage("##################### CLAN HELP #####################");
                 sender.sendMessage("/Clan help         - to call this menu");
                 sender.sendMessage("/Clan top          - top of all clans");
                 sender.sendMessage("/Clan create %name - to create your own clan with name %name");
@@ -86,6 +86,13 @@ public class ClanCommand extends Command {
         }
         else if (size == 2) {
             if (args[0].equalsIgnoreCase("create")) {
+
+                if (args[1].length() < 4) {
+                    sender.sendMessage("Your name is too short, name must be >4 symbols");
+                    return false;
+                }
+
+                // check for bad symbols
                 boolean success = true;
                 for (char tempChar : args[1].toCharArray()) {
                     if (!(tempChar == 32 || tempChar == 95 || (tempChar >= 65 && tempChar <= 90) || (tempChar >= 97 && tempChar <= 122))) {
@@ -93,21 +100,27 @@ public class ClanCommand extends Command {
                         break;
                     }
                 }
+
                 if (!success) {
                     sender.sendMessage("Invalid clan name, use [A-Z; a-z; space; _]");
+                    return false;
                 }
                 else {
-                    ManagerPtr.getServerClans().put(args[1], new Clan(args[1], tempPlayer.getName()));
+                    // check another clan name collision
+                    if (ManagerPtr.getServerClans().get(args[1]) != null) {
+                        sender.sendMessage("Clan with this name already exist!");
+                        return false;
+                    }
+                }
+                // Creating new clan
+                double moneyToClan = 10000;
+                if (UselessClan.EconomyPtr.getBalance(tempPlayer) < moneyToClan) {
+                    sender.sendMessage("For create your own clan you must have more than " + moneyToClan + "$");
+                    return false;
                 }
 
-                if (getServer().getPluginManager().getPlugin("Vault") == null) {
-                    return false;
-                }
-                RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
-                if (rsp == null) {
-                    return false;
-                }
-                sender.sendMessage("For create your own clan you must have more than 10000$");
+                ManagerPtr.getServerClans().put(args[1], new Clan(args[1], tempPlayer.getName()));
+                sender.sendMessage("Clan " + args[1] + " was created successfully!");
             }
             else if (args[0].equalsIgnoreCase("join")) {
                 sender.sendMessage("You send request for join to this clan, wait until leader or officer accept this request");

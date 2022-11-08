@@ -1,6 +1,6 @@
 name: UselessClan
 version: 1.0.1
-main: io.github.lofrol.uselessclan.UselessClan
+main: io.github.lofrol.UselessClan.UselessClan
 api-version: 1.19
 depend: [Vault]
 authors: [ LoFRoL ]

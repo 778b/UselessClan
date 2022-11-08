@@ -1,15 +1,21 @@
 package io.github.lofrol.UselessClan;
 
 import io.github.lofrol.UselessClan.ClanObjects.Clan;
+import net.milkbowl.vault.economy.Economy;
+import org.bukkit.plugin.RegisteredServiceProvider;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
 import java.util.logging.Level;
 
+import static org.bukkit.Bukkit.getServer;
+
 public class ClanManager {
+
     private static String ClanFolder = "Clans";
     private UselessClan OwnerPlugin;
+
     public ClanManager(UselessClan owner) {
         ServerClans = new HashMap<String, Clan>();
 
