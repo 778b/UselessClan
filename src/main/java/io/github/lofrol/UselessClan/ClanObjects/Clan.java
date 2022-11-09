@@ -24,6 +24,7 @@ public class Clan {
     private ClanSettings SettingsClan;
 
     private Double MoneyClan;
+    private Double MaxPrivateDistance;
 
     public Clan() {
 

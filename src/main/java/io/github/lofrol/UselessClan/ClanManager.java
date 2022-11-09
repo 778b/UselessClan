@@ -1,7 +1,9 @@
 package io.github.lofrol.UselessClan;
 
 import io.github.lofrol.UselessClan.ClanObjects.Clan;
+import io.github.lofrol.UselessClan.ClanObjects.PlayerClan;
 import net.milkbowl.vault.economy.Economy;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredServiceProvider;
 
 import java.io.File;
@@ -16,11 +18,14 @@ public class ClanManager {
     private static String ClanFolder = "Clans";
     private UselessClan OwnerPlugin;
 
+    private Map<Player, PlayerClan> OnlineClanPlayers;
+    private Map<String, Clan> ServerClans;
+
     public ClanManager(UselessClan owner) {
-        ServerClans = new HashMap<String, Clan>();
+        ServerClans = new HashMap<>();
+        OnlineClanPlayers = new HashMap<>();
 
         OwnerPlugin = owner;
-
     }
 
     public void serializeClans() throws IOException {
@@ -88,6 +93,6 @@ public class ClanManager {
     }
 
     // Name of clan for best performance in search clan
-    private Map<String, Clan> ServerClans;
+
 
 }

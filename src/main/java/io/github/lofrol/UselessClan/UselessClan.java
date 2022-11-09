@@ -1,5 +1,6 @@
 package io.github.lofrol.UselessClan;
 
+import io.github.lofrol.UselessClan.Listeners.UselessListeners;
 import io.github.lofrol.UselessClan.commands.ClanCommand;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.plugin.RegisteredServiceProvider;
@@ -18,6 +19,9 @@ public final class UselessClan extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        this.getServer().getPluginManager().registerEvents(new UselessListeners(), this);
+        getLogger().log(Level.INFO, "Events was registered successfully!");
+
         if (getServer().getPluginManager().getPlugin("Vault") == null) {
             getLogger().log(Level.INFO, "Cant find Vault");
             return;

@@ -120,9 +120,7 @@ public class ClanCommand extends Command {
                     sender.sendMessage("For create your own clan you must have more than " + moneyToClan + "$");
                     return false;
                 }
-
-                EconomyResponse response = UselessClan.EconomyPtr.bankDeposit(tempPlayer.getName(), -10000.d);
-                sender.sendMessage(response.type.toString());
+                EconomyResponse response = UselessClan.EconomyPtr.withdrawPlayer(tempPlayer, 10000.d);
 
                 ManagerPtr.getServerClans().put(args[1], new Clan(args[1], tempPlayer.getName()));
                 sender.sendMessage("Clan " + args[1] + " was created successfully!");
