@@ -8,4 +8,8 @@ public class PlayerClan {
     public PlayerClan(@NotNull Clan playerClan) {
         PlayerClan = playerClan;
     }
+
+    public Clan getPlayerClan() {
+        return PlayerClan;
+    }
 }

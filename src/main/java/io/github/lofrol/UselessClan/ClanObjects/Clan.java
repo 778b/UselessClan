@@ -5,7 +5,9 @@ import org.bukkit.entity.Player;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Clan {
     /*
@@ -16,7 +18,9 @@ public class Clan {
     private String NameClan;
     private String DescriptionClan;
 
-    private List<ClanMember> members;
+    private List<ClanMember> Members;
+
+    private Map<Player, ClanMember> OnlineMembers;
 
     private String LeaderName;
     private Location HomeClan;
@@ -34,8 +38,10 @@ public class Clan {
     public Clan(String ClanName, String Leader)  {
         NameClan = ClanName;
         LeaderName =  Leader;
-        members = new ArrayList<ClanMember>();
-        members.add(new ClanMember(ClanRole.LEADER, Leader));
+        Members = new ArrayList<>();
+        OnlineMembers = new HashMap<>();
+        //Join leader to clan by function
+        Members.add(new ClanMember(ClanRole.LEADER, Leader));
         MoneyClan = 0.d;
         DescriptionClan = "Description of your clan";
         //HomeClan = new Location();
@@ -57,6 +63,14 @@ public class Clan {
     public String getLeaderName() {
         return LeaderName;
     }
+
+    public List<ClanMember> getMembers() {
+        return Members;
+    }
+    public Map<Player, ClanMember> getOnlineMembers() {
+        return OnlineMembers;
+    }
+
 
     public void SerializeClan(File Folder) {
 

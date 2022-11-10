@@ -2,6 +2,8 @@ package io.github.lofrol.UselessClan.commands;
 
 import io.github.lofrol.UselessClan.ClanManager;
 import io.github.lofrol.UselessClan.ClanObjects.Clan;
+import io.github.lofrol.UselessClan.ClanObjects.PlayerClan;
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -44,8 +46,29 @@ public class ClanChatCommand extends Command {
         int size = args.length;
         if (size == 0) return false;
 
-        //ManagerPtr.getServerClans().get()) {
-        //}
+        PlayerClan SenderClan = ManagerPtr.getOnlineClanPlayers().get(tempPlayer);
+        if (SenderClan.getPlayerClan().getOnlineMembers().size() < 2) {
+            tempPlayer.sendMessage(ChatColor.GOLD + "0 Players in your clan.");
+            return false;
+        }
+        // Only $maxLength length of message alloyed
+        String MegaString = "";
+        int currentLength = 0;
+        int maxLength = 200;
+        for (String tempString : args) {
+            currentLength += tempString.length();
+            if (currentLength > maxLength) {
+                int rest = currentLength - maxLength;
+                MegaString += " " + tempString.substring(0, rest);
+                break;
+            }
+            MegaString += " " + tempString;
+        }
+        for (Player OutputPlayer: SenderClan.getPlayerClan().getOnlineMembers().keySet()) {
+            OutputPlayer.sendMessage(ChatColor.GOLD + MegaString);
+        }
+
+
 
         return true;
     }

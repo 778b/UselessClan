@@ -19,7 +19,7 @@ public final class UselessClan extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        this.getServer().getPluginManager().registerEvents(new UselessListeners(), this);
+        this.getServer().getPluginManager().registerEvents(new UselessListeners(this), this);
         getLogger().log(Level.INFO, "Events was registered successfully!");
 
         if (getServer().getPluginManager().getPlugin("Vault") == null) {
@@ -48,5 +48,9 @@ public final class UselessClan extends JavaPlugin {
     @Override
     public void onDisable() {
 
+    }
+
+    public ClanManager getMainManager() {
+        return MainManager;
     }
 }

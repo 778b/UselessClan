@@ -1,6 +1,7 @@
 package io.github.lofrol.UselessClan;
 
 import io.github.lofrol.UselessClan.ClanObjects.Clan;
+import io.github.lofrol.UselessClan.ClanObjects.ClanMember;
 import io.github.lofrol.UselessClan.ClanObjects.PlayerClan;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.entity.Player;
@@ -91,8 +92,28 @@ public class ClanManager {
     public Map<String, Clan> getServerClans() {
         return ServerClans;
     }
+    public Map<Player, PlayerClan> getOnlineClanPlayers() {
+        return OnlineClanPlayers;
+    }
 
-    // Name of clan for best performance in search clan
+    public Clan FindClanToPlayer(Player victim) {
+        for (Clan tempClan : ServerClans.values()) {
+            for (ClanMember tempMember : tempClan.getMembers()) {
+                if (tempMember.getPlayerName() == victim.getName()) {
+                    return tempClan;
+                }
+            }
+        }
+        return null;
+    }
 
+    public void OnPlayerJoin(Player player) {
+        PlayerClan tempClanPlayer = new PlayerClan(FindClanToPlayer(player));
+
+        OnlineClanPlayers.put(player, tempClanPlayer);
+    }
+    public void OnPlayerLeave(Player player) {
+        OnlineClanPlayers.remove(player);
+    }
 
 }
