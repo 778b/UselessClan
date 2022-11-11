@@ -21,13 +21,11 @@ public class UselessListeners implements Listener {
 
     @EventHandler
     public void PlayerJoin(PlayerJoinEvent event) {
-        OwnerPlugin.getLogger().log(Level.INFO, event.getPlayer().getName() + " Join to server");
         OwnerPlugin.getMainManager().OnPlayerJoin(event.getPlayer());
     }
 
     @EventHandler
     public void PlayerQuit(PlayerQuitEvent event) {
-        OwnerPlugin.getLogger().log(Level.INFO, event.getPlayer().getName() + " Leaved from server");
         OwnerPlugin.getMainManager().OnPlayerLeave(event.getPlayer());
     }
 

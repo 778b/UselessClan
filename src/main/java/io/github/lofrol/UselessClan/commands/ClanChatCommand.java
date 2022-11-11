@@ -41,8 +41,6 @@ public class ClanChatCommand extends Command {
         Player tempPlayer = (Player) (sender);
         if (tempPlayer == null) return false;
 
-
-
         int size = args.length;
         if (size == 0) return false;
 

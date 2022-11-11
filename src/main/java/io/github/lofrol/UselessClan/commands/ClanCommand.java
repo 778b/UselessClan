@@ -2,6 +2,8 @@ package io.github.lofrol.UselessClan.commands;
 
 import io.github.lofrol.UselessClan.ClanManager;
 import io.github.lofrol.UselessClan.ClanObjects.Clan;
+import io.github.lofrol.UselessClan.ClanObjects.ClanMember;
+import io.github.lofrol.UselessClan.ClanObjects.ClanRole;
 import io.github.lofrol.UselessClan.UselessClan;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
@@ -11,6 +13,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -43,47 +46,133 @@ public class ClanCommand extends Command {
         if (!(sender instanceof Player)) return false;
 
         Player tempPlayer = ((Player)sender);
+        Clan PlayerClan = ManagerPtr.FindClanToPlayer(tempPlayer);
+        ClanRole PlayerRole = PlayerClan.getMemberRole(tempPlayer.getName());
 
         int size = args.length;
         if (size == 0) {
             // just only /Clan
             sender.sendMessage("Use command /Clan help, for access to clan system");
         }
-        else if (size == 1) {
-            // /Clan help/create/info/mates/join/accept/leave/top
-            if (args[0].equalsIgnoreCase( "help")) {
+        // /Clan help/create/info/mates/join/accept/leave/top/kick/promote/demote
+        else if (args[0].equalsIgnoreCase( "help")) {
                 sender.sendMessage("##################### CLAN HELP #####################");
                 sender.sendMessage("/Clan help         - to call this menu");
                 sender.sendMessage("/Clan top          - top of all clans");
                 sender.sendMessage("/Clan create %name - to create your own clan with name %name");
                 sender.sendMessage("/Clan leave        - to leave from your clan");
-                sender.sendMessage("/Clan join %name   - to send request(join) of your join for clan %name");
+                sender.sendMessage("/Clan join %name   - to send request for join the clan %name");
                 sender.sendMessage("/Clan info         - to info about your clan");
                 sender.sendMessage("/Clan accept %name - to accept %name for join to your clan");
+                return true;
             }
-            else if (args[0].equalsIgnoreCase("top")) {
+        else if (size == 1) {
+            if (args[0].equalsIgnoreCase("top")) {
                 sender.sendMessage("########## CLAN TOP ##########");
                 for (Clan tempClan : ManagerPtr.getServerClans().values()) {
                     sender.sendMessage(tempClan.getNameClan());
                 }
+                return true;
             }
             else if (args[0].equalsIgnoreCase("create")) {
+                if (PlayerClan != null) {
+                    sender.sendMessage("You cant create clan while you have been in clan!");
+                    return false;
+                }
                 sender.sendMessage("You forgot about clan %name, use /Clan create %name, %name = name of your clan");
+                return true;
             }
             else if (args[0].equalsIgnoreCase("join")) {
                 sender.sendMessage("You forgot about clan %name, use /Clan join %name, %name = name of clan");
+                return true;
             }
             else if (args[0].equalsIgnoreCase("mates")) {
                 sender.sendMessage("########## CLANMATES ##########");
+                if (PlayerClan != null) {
+                    sender.sendMessage("You havent Clan!");
+                    return false;
+                }
+                /*PlayerClan.getMembers().sort(new Comparator<ClanMember>() {
+                    @Override
+                    public int compare(ClanMember o1, ClanMember o2) {
+                        if (o1.getMemberRole().ordinal() > o2.getMemberRole().ordinal()) {
+
+                        }
+                        return 0;
+                    }
+                }); */
+                for (ClanMember tempMember: PlayerClan.getMembers()) {
+                    sender.sendMessage(tempMember.getMemberRole().toString() + "\t\t" + tempMember.getPlayerName());
+                }
+                return true;
             }
             else if (args[0].equalsIgnoreCase("info")) {
                 sender.sendMessage("########## CLAN INFO ##########");
+                if (PlayerClan != null) {
+                    sender.sendMessage("You havent Clan!");
+                    return false;
+                }
+                return true;
             }
             else if (args[0].equalsIgnoreCase("accept")) {
-                sender.sendMessage("You forgot about player %name, use /Clan accept %name, %name = name of player, which you want to accept");
+                if (PlayerClan == null) {
+                    if (PlayerRole == PlayerClan.getSettingsClan().RoleCanKick) {
+                        sender.sendMessage("You forgot about player %name, use /Clan kick %name, %name = name of player, which you want to kick");
+                    }
+                    else {
+                        sender.sendMessage("You rank is too low to do that!");
+                    }
+                }
+                else {
+                    sender.sendMessage("You havent Clan!");
+                }
+                return true;
+            }
+            else if (args[0].equalsIgnoreCase("kick")) {
+                if (PlayerClan == null) {
+                    if (PlayerRole == PlayerClan.getSettingsClan().RoleCanKick) {
+                        sender.sendMessage("You forgot about player %name, use /Clan kick %name, %name = name of player, which you want to kick");
+                    }
+                    else {
+                        sender.sendMessage("You rank is too low to do that!");
+                    }
+                }
+                else {
+                    sender.sendMessage("You havent Clan!");
+                }
+                return true;
+            }
+            else if (args[0].equalsIgnoreCase("promote")) {
+                if (PlayerClan == null) {
+                    if (PlayerRole == ClanRole.OFFICER || PlayerRole == ClanRole.LEADER) {
+                        sender.sendMessage("You forgot about player %name and %rank, use /Clan promote %name %rank");
+                    }
+                    else {
+                        sender.sendMessage("You rank is too low to do that!");
+                    }
+                }
+                else {
+                    sender.sendMessage("You havent Clan!");
+                }
+                return true;
+            }
+            else if (args[0].equalsIgnoreCase("demote")) {
+                if (PlayerClan == null) {
+                    if (PlayerRole == ClanRole.LEADER) {
+                        sender.sendMessage("You forgot about player %name and %rank, use /Clan promote %name %rank");
+                    }
+                    else {
+                        sender.sendMessage("You rank is too low to do that!");
+                    }
+                }
+                else {
+                    sender.sendMessage("You havent Clan!");
+                }
+                return true;
             }
             else {
-                sender.sendMessage("2Invalid command. Use command /Clan help, for access to clan system");
+                sender.sendMessage("Invalid command. Use command /Clan help, for access to clan system");
+                return false;
             }
         }
         else if (size == 2) {

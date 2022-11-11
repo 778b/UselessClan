@@ -99,7 +99,7 @@ public class ClanManager {
     public Clan FindClanToPlayer(Player victim) {
         for (Clan tempClan : ServerClans.values()) {
             for (ClanMember tempMember : tempClan.getMembers()) {
-                if (tempMember.getPlayerName() == victim.getName()) {
+                if (tempMember.getPlayerName().equals(victim.getName())) {
                     return tempClan;
                 }
             }
@@ -108,12 +108,20 @@ public class ClanManager {
     }
 
     public void OnPlayerJoin(Player player) {
-        PlayerClan tempClanPlayer = new PlayerClan(FindClanToPlayer(player));
-
+        Clan tempClan = FindClanToPlayer(player);
+        if (tempClan == null) {
+            OwnerPlugin.getLogger().log(Level.INFO, player.getName() + " Not available Clan.");
+            return;
+        }
+        PlayerClan tempClanPlayer = new PlayerClan(tempClan);
         OnlineClanPlayers.put(player, tempClanPlayer);
+        OwnerPlugin.getLogger().log(Level.INFO,  "Clan member " + player.getName() + " Join to server, his clan is " + (tempClan.getNameClan()));
     }
+
     public void OnPlayerLeave(Player player) {
+        if (!OnlineClanPlayers.containsKey(player)) return;
         OnlineClanPlayers.remove(player);
+        OwnerPlugin.getLogger().log(Level.INFO, "Clan member " + player.getName() + " leaved from server");
     }
 
 }

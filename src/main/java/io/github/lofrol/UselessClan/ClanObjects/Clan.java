@@ -9,6 +9,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static org.bukkit.Bukkit.getServer;
+
 public class Clan {
     /*
      *  Variables
@@ -19,6 +21,7 @@ public class Clan {
     private String DescriptionClan;
 
     private List<ClanMember> Members;
+    private List<String> Requests;
 
     private Map<Player, ClanMember> OnlineMembers;
 
@@ -38,6 +41,7 @@ public class Clan {
     public Clan(String ClanName, String Leader)  {
         NameClan = ClanName;
         LeaderName =  Leader;
+        Requests = new ArrayList<>();
         Members = new ArrayList<>();
         OnlineMembers = new HashMap<>();
         //Join leader to clan by function
@@ -48,9 +52,73 @@ public class Clan {
         SettingsClan = new ClanSettings();
     }
 
+    public boolean IsClanMember(String PlayerName) {
+        for (ClanMember tempMember : Members) {
+            if (tempMember.getPlayerName().equals(PlayerName)) return true;
+        }
+        return false;
+    }
+
+    public boolean MemberRoleCheck(String PlayerName, ClanRole RoleToCheck) {
+        if (!IsClanMember(PlayerName)) return false;
+
+        for (ClanMember tempMember : Members) {
+            if (tempMember.getPlayerName().equals(PlayerName)) {
+                return tempMember.getMemberRole().equals(RoleToCheck);
+            }
+        }
+
+        return false;
+    }
+
+    public ClanRole getMemberRole(String PlayerName) {
+        if (!IsClanMember(PlayerName)) return ClanRole.NONE;
+
+        for (ClanMember tempMember : Members) {
+            if (tempMember.getPlayerName().equals(PlayerName)) {
+                return tempMember.getMemberRole();
+            }
+        }
+        return ClanRole.NONE;
+    }
+
+    public boolean PlayerJoinToClan(ClanRole Role, String PlayerName) {
+        if (!IsClanMember(PlayerName)) return false;
+
+        ClanMember tempClanMember = new ClanMember(Role, PlayerName);
+        Player tempPlayer = getServer().getPlayer(PlayerName);
+        if (tempPlayer != null) {
+            OnlineMembers.put(tempPlayer, tempClanMember);
+        }
+        Members.add(tempClanMember);
+        return true;
+    }
+    public boolean PlayerLeavedFromClan(String PlayerName) {
+        if (!IsClanMember(PlayerName)) return false;
+
+        Player tempPlayer = getServer().getPlayer(PlayerName);
+        if (tempPlayer != null) {
+            OnlineMembers.remove(tempPlayer);
+        }
+        for (ClanMember tempMember : Members) {
+            if (tempMember.getPlayerName().equals(PlayerName)) {
+                Members.remove(tempMember);
+                return true;
+            }
+        }
+
+        return true;
+    }
+    public boolean PlayerLeavedFromClan(Player player) {
+        OnlineMembers.remove(player);
+        Members.remove(player);
+        return true;
+    }
+
+
 
     /*
-     *  Functions
+     *  Getters Functions
      */
     public String getNameClan() {
         return NameClan;
@@ -64,6 +132,9 @@ public class Clan {
         return LeaderName;
     }
 
+    public ClanSettings getSettingsClan() {
+        return SettingsClan;
+    }
     public List<ClanMember> getMembers() {
         return Members;
     }

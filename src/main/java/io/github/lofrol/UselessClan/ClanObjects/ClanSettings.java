@@ -5,9 +5,11 @@ public class ClanSettings {
         DefaultJoinRole = ClanRole.ROOKIE;
         HomeChangerMinRole = ClanRole.LEADER;
         MinRoleForWithdraw = ClanRole.MEMBER;
+        RoleCanKick = ClanRole.OFFICER;
     }
 
     public ClanRole DefaultJoinRole;
+    public ClanRole RoleCanKick;
 
     public ClanRole HomeChangerMinRole;
 
