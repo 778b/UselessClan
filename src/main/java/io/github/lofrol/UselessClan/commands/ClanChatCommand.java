@@ -21,7 +21,7 @@ public class ClanChatCommand extends Command {
 
     public static ClanChatCommand CreateDefaultInts(ClanManager manager) {
         ClanChatCommand tempInst = new ClanChatCommand("ClanChat", "Default command for clan chat",
-                "Use &5/Clan help&r for learning more", Stream.of("clanchat", "uselessclanchat", "ucc", "UCC").collect(Collectors.toList()));
+                "Use &5/Clan help&r for learning more", Stream.of("ucc").collect(Collectors.toList()));
 
         tempInst.ManagerPtr = manager;
 
