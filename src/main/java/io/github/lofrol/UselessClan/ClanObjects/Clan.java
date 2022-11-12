@@ -192,6 +192,10 @@ public class Clan {
     public String getPrefixClan() { return PrefixClan; }
     public Double getMoneyClan() { return MoneyClan; }
 
+    public int getRequestCount() {
+        return Requests.size();
+    }
+
     /*
      *  Setters FUnctions
      */

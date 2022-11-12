@@ -128,6 +128,7 @@ public class ClanCommand extends Command {
                 sender.sendMessage("# Prefix: " + SenderClan.getPrefixClan());
                 sender.sendMessage("# Count of Members: " + SenderClan.getMembers().size());
                 sender.sendMessage("# Money: " + SenderClan.getMoneyClan());
+                sender.sendMessage("# Your rank: " + SenderRole.toString());
                 return true;
             }
             else if (args[0].equalsIgnoreCase("accept")) {

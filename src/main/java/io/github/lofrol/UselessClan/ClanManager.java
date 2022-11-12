@@ -2,24 +2,21 @@ package io.github.lofrol.UselessClan;
 
 import io.github.lofrol.UselessClan.ClanObjects.Clan;
 import io.github.lofrol.UselessClan.ClanObjects.ClanMember;
-import io.github.lofrol.UselessClan.ClanObjects.PlayerClan;
-import net.milkbowl.vault.economy.Economy;
+import io.github.lofrol.UselessClan.ClanObjects.ClanRole;
+import io.github.lofrol.UselessClan.ClanObjects.OnlinePlayerClan;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.RegisteredServiceProvider;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
 import java.util.logging.Level;
 
-import static org.bukkit.Bukkit.getServer;
-
 public class ClanManager {
 
     private static String ClanFolder = "Clans";
     private UselessClan OwnerPlugin;
 
-    private Map<Player, PlayerClan> OnlineClanPlayers;
+    private Map<Player, OnlinePlayerClan> OnlineClanPlayers;
     private Map<String, Clan> ServerClans;
 
     public ClanManager(UselessClan owner) {
@@ -92,7 +89,7 @@ public class ClanManager {
     public Map<String, Clan> getServerClans() {
         return ServerClans;
     }
-    public Map<Player, PlayerClan> getOnlineClanPlayers() {
+    public Map<Player, OnlinePlayerClan> getOnlineClanPlayers() {
         return OnlineClanPlayers;
     }
 
@@ -115,18 +112,25 @@ public class ClanManager {
     public void OnPlayerJoin(Player player) {
         Clan tempClan = FindClanToPlayer(player.getName());
         if (tempClan == null) {
-            OwnerPlugin.getLogger().log(Level.INFO, player.getName() + " Not available Clan.");
+            OwnerPlugin.getLogger().log(Level.INFO, String.format("%s Not available Clan.", player.getName()));
             return;
         }
-        PlayerClan tempClanPlayer = new PlayerClan(tempClan);
+        ClanRole playerRole = tempClan.getMemberRole(player.getName());
+        OnlinePlayerClan tempClanPlayer = new OnlinePlayerClan(tempClan);
         OnlineClanPlayers.put(player, tempClanPlayer);
-        OwnerPlugin.getLogger().log(Level.INFO,  "Clan member " + player.getName() + " Join to server, his clan is " + (tempClan.getNameClan()));
+
+        if (playerRole == ClanRole.LEADER || playerRole == ClanRole.OFFICER) {
+            player.sendMessage(String.format("Your clan have %d requests for join to Clan", tempClan.getRequestCount()));
+        }
+
+
+        OwnerPlugin.getLogger().log(Level.INFO, String.format(  "Clan member %s Join to server, his clan is %s", player.getName(), tempClan.getNameClan()));
     }
 
     public void OnPlayerLeave(Player player) {
         if (!OnlineClanPlayers.containsKey(player)) return;
         OnlineClanPlayers.remove(player);
-        OwnerPlugin.getLogger().log(Level.INFO, "Clan member " + player.getName() + " leaved from server");
+        OwnerPlugin.getLogger().log(Level.INFO, String.format("Clan member %s leaved from server", player.getName()));
     }
 
 }
