@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
 
 import static org.bukkit.Bukkit.getServer;
 
@@ -47,7 +48,6 @@ public class Clan {
         Requests = new ArrayList<>();
         Members = new ArrayList<>();
         OnlineMembers = new HashMap<>();
-        PlayerJoinToClan(ClanRole.LEADER, CreatorName);
         MoneyClan = 0.d;
         DescriptionClan = "Description of your clan";
         HomeClan = null;
@@ -62,20 +62,10 @@ public class Clan {
 
     public boolean IsClanMember(String PlayerName) {
         for (ClanMember tempMember : Members) {
-            if (tempMember.getPlayerName().equals(PlayerName)) return true;
-        }
-        return false;
-    }
-
-    public boolean MemberRoleCheck(String PlayerName, ClanRole RoleToCheck) {
-        if (!IsClanMember(PlayerName)) return false;
-
-        for (ClanMember tempMember : Members) {
             if (tempMember.getPlayerName().equals(PlayerName)) {
-                return tempMember.getMemberRole().equals(RoleToCheck);
+                return true;
             }
         }
-
         return false;
     }
 
@@ -136,7 +126,9 @@ public class Clan {
     }
 
     public boolean PlayerJoinToClan(ClanRole Role, String PlayerName) {
-        if (!IsClanMember(PlayerName)) return false;
+        if (IsClanMember(PlayerName)) {
+            return false;
+        }
 
         ClanMember tempClanMember = new ClanMember(Role, PlayerName);
         Player tempPlayer = getServer().getPlayer(PlayerName);
@@ -144,6 +136,7 @@ public class Clan {
             OnlineMembers.put(tempPlayer, tempClanMember);
         }
         Members.add(tempClanMember);
+        getServer().getLogger().log(Level.INFO, "Player "+ PlayerName + " is joined to clan "+ this.getNameClan());
         return true;
     }
     public boolean PlayerLeavedFromClan(String PlayerName) {

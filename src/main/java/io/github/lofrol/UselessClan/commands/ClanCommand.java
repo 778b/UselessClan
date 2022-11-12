@@ -50,14 +50,17 @@ public class ClanCommand extends Command {
 
         Player tempPlayer = ((Player)sender);
         Clan SenderClan = ManagerPtr.FindClanToPlayer(tempPlayer.getName());
-        ClanRole SenderRole = SenderClan.getMemberRole(tempPlayer.getName());
+        ClanRole SenderRole = null;
+        if (SenderClan != null) {
+            SenderRole = SenderClan.getMemberRole(tempPlayer.getName());
+        }
 
         int size = args.length;
         if (size == 0) {
             // just only /Clan
             sender.sendMessage("Use command /Clan help, for access to clan system");
         }
-        // /Clan help/create/info/mates/join/accept/leave/top/kick/promote/demote
+        // /Clan help/create/info/mates/join/accept/leave/top/kick/promote/demote/requests
         else if (args[0].equalsIgnoreCase( "help")) {
                 sender.sendMessage("##################### CLAN HELP #####################");
                 sender.sendMessage("/Clan help         - to call this menu");
@@ -104,22 +107,22 @@ public class ClanCommand extends Command {
                 return true;
             }
             else if (args[0].equalsIgnoreCase("mates")) {
-                sender.sendMessage("########## CLANMATES ##########");
-                if (SenderClan != null) {
+                if (SenderClan == null) {
                     sender.sendMessage("You havent Clan!");
                     return false;
                 }
+                sender.sendMessage("########## CLANMATES ##########");
                 for (ClanMember tempMember: SenderClan.getMembers()) {
                     sender.sendMessage(tempMember.getMemberRole().toString() + "\t\t" + tempMember.getPlayerName());
                 }
                 return true;
             }
             else if (args[0].equalsIgnoreCase("info")) {
-                sender.sendMessage("########## CLAN INFO ##########");
-                if (SenderClan != null) {
+                if (SenderClan == null) {
                     sender.sendMessage("You havent Clan!");
                     return false;
                 }
+                sender.sendMessage("########## CLAN INFO ##########");
                 sender.sendMessage("# Name: " + SenderClan.getNameClan());
                 sender.sendMessage("# LeaderName: " + SenderClan.getLeaderName());
                 sender.sendMessage("# Prefix: " + SenderClan.getPrefixClan());
@@ -128,7 +131,7 @@ public class ClanCommand extends Command {
                 return true;
             }
             else if (args[0].equalsIgnoreCase("accept")) {
-                if (SenderClan == null) {
+                if (SenderClan != null) {
                     if (SenderRole == ClanRole.LEADER || SenderRole == ClanRole.OFFICER) {
                         sender.sendMessage("You forgot about player %name, use /Clan kick %name, %name = name of player, which you want to kick");
                     }
@@ -142,7 +145,7 @@ public class ClanCommand extends Command {
                 return true;
             }
             else if (args[0].equalsIgnoreCase("kick")) {
-                if (SenderClan == null) {
+                if (SenderClan != null) {
                     if (SenderRole == SenderClan.getSettingsClan().RoleCanKick) {
                         sender.sendMessage("You forgot about player %name, use /Clan kick %name, %name = name of player, which you want to kick");
                     }
@@ -156,7 +159,7 @@ public class ClanCommand extends Command {
                 return true;
             }
             else if (args[0].equalsIgnoreCase("promote")) {
-                if (SenderClan == null) {
+                if (SenderClan != null) {
                     if (SenderRole == ClanRole.OFFICER || SenderRole == ClanRole.LEADER) {
                         sender.sendMessage("You forgot about player %name and %rank, use /Clan promote %name %rank");
                     }
@@ -170,7 +173,7 @@ public class ClanCommand extends Command {
                 return true;
             }
             else if (args[0].equalsIgnoreCase("demote")) {
-                if (SenderClan == null) {
+                if (SenderClan != null) {
                     if (SenderRole == ClanRole.LEADER) {
                         sender.sendMessage("You forgot about player %name and %rank, use /Clan promote %name %rank");
                     }
@@ -190,13 +193,17 @@ public class ClanCommand extends Command {
         }
         else if (size == 2) {
             if (args[0].equalsIgnoreCase("create")) {
-
-                if (args[1].length() < 4) {
-                    sender.sendMessage("Your name is too short, name must be >4 symbols");
+                if (SenderClan != null) {
+                    sender.sendMessage("You already in clan!");
                     return false;
                 }
-                else if (args[1].length() > 14) {
-                    sender.sendMessage("Your name is too short, name must be >4 symbols");
+
+                if (args[1].length() < 3) {
+                    sender.sendMessage("Your name is too short, name must be >3 symbols");
+                    return false;
+                }
+                else if (args[1].length() > 6) {
+                    sender.sendMessage("Your name is too long, name must be <7 symbols");
                     return false;
                 }
                 // check for bad symbols
@@ -221,7 +228,9 @@ public class ClanCommand extends Command {
                 }
                 EconomyResponse response = UselessClan.EconomyPtr.withdrawPlayer(tempPlayer, 10000.d);
 
-                ManagerPtr.getServerClans().put(args[1], new Clan(args[1], tempPlayer.getName()));
+                Clan NewClan = new Clan(args[1], tempPlayer.getName());
+                NewClan.PlayerJoinToClan(ClanRole.LEADER, tempPlayer.getName());
+                ManagerPtr.getServerClans().put(args[1], NewClan);
                 sender.sendMessage("Clan " + args[1] + " was created successfully!");
             }
             else if (args[0].equalsIgnoreCase("join")) {
@@ -243,7 +252,7 @@ public class ClanCommand extends Command {
                 return true;
             }
             else if (args[0].equalsIgnoreCase("accept")) {
-                if (SenderClan == null) {
+                if (SenderClan != null) {
                     if (SenderRole == ClanRole.LEADER || SenderRole == ClanRole.OFFICER) {
                         String AcceptedPlayerName = args[1];
                         if (ManagerPtr.FindClanToPlayer(AcceptedPlayerName) != null) {
@@ -266,7 +275,7 @@ public class ClanCommand extends Command {
                 return true;
             }
             else if (args[0].equalsIgnoreCase("kick")) {
-                if (SenderClan == null) {
+                if (SenderClan != null) {
                     if (SenderRole == SenderClan.getSettingsClan().RoleCanKick) {
                         ClanMember tempMember = SenderClan.getClanMember(args[1]);
                         if (tempMember == null) {
@@ -286,7 +295,7 @@ public class ClanCommand extends Command {
                 return true;
             }
             else if (args[0].equalsIgnoreCase("promote")) {
-                if (SenderClan == null) {
+                if (SenderClan != null) {
                     if (SenderRole == ClanRole.OFFICER || SenderRole == ClanRole.LEADER) {
                         ClanMember tempClanMember = SenderClan.getClanMember(args[1]);
                         if (tempClanMember == null) {
@@ -338,7 +347,7 @@ public class ClanCommand extends Command {
                 return true;
             }
             else if (args[0].equalsIgnoreCase("demote")) {
-                if (SenderClan == null) {
+                if (SenderClan != null) {
                     if (SenderRole == ClanRole.OFFICER || SenderRole == ClanRole.LEADER) {
                         ClanMember tempClanMember = SenderClan.getClanMember(args[1]);
                         if (tempClanMember == null) {
