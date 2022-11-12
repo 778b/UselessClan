@@ -69,8 +69,9 @@ public class ClanCommand extends Command {
         else if (size == 1) {
             if (args[0].equalsIgnoreCase("top")) {
                 sender.sendMessage("########## CLAN TOP ##########");
+                sender.sendMessage("# ClanName              Bank #");
                 for (Clan tempClan : ManagerPtr.getServerClans().values()) {
-                    sender.sendMessage(tempClan.getNameClan());
+                    sender.sendMessage("# " + tempClan.getNameClan() + "\t\t\t" + tempClan.getMoneyClan());
                 }
                 return true;
             }
@@ -92,15 +93,6 @@ public class ClanCommand extends Command {
                     sender.sendMessage("You havent Clan!");
                     return false;
                 }
-                /*PlayerClan.getMembers().sort(new Comparator<ClanMember>() {
-                    @Override
-                    public int compare(ClanMember o1, ClanMember o2) {
-                        if (o1.getMemberRole().ordinal() > o2.getMemberRole().ordinal()) {
-
-                        }
-                        return 0;
-                    }
-                }); */
                 for (ClanMember tempMember: PlayerClan.getMembers()) {
                     sender.sendMessage(tempMember.getMemberRole().toString() + "\t\t" + tempMember.getPlayerName());
                 }
@@ -112,11 +104,12 @@ public class ClanCommand extends Command {
                     sender.sendMessage("You havent Clan!");
                     return false;
                 }
+
                 return true;
             }
             else if (args[0].equalsIgnoreCase("accept")) {
                 if (PlayerClan == null) {
-                    if (PlayerRole == PlayerClan.getSettingsClan().RoleCanKick) {
+                    if (PlayerRole == ClanRole.LEADER || PlayerRole == ClanRole.OFFICER) {
                         sender.sendMessage("You forgot about player %name, use /Clan kick %name, %name = name of player, which you want to kick");
                     }
                     else {
@@ -182,26 +175,23 @@ public class ClanCommand extends Command {
                     sender.sendMessage("Your name is too short, name must be >4 symbols");
                     return false;
                 }
-
-                // check for bad symbols
-                boolean success = true;
-                for (char tempChar : args[1].toCharArray()) {
-                    if (!(tempChar == 32 || tempChar == 95 || (tempChar >= 65 && tempChar <= 90) || (tempChar >= 97 && tempChar <= 122))) {
-                        success = false;
-                        break;
-                    }
-                }
-
-                if (!success) {
-                    sender.sendMessage("Invalid clan name, use [A-Z; a-z; space; _]");
+                else if (args[1].length() > 14) {
+                    sender.sendMessage("Your name is too short, name must be >4 symbols");
                     return false;
                 }
-                else {
-                    // check another clan name collision
-                    if (ManagerPtr.getServerClans().get(args[1]) != null) {
-                        sender.sendMessage("Clan with this name already exist!");
+                // check for bad symbols
+                for (char tempChar : args[1].toCharArray()) {
+                    if (!(tempChar == 95 || (tempChar >= 65 && tempChar <= 90) ||
+                            (tempChar >= 97 && tempChar <= 122) ||
+                            (tempChar >= 48 && tempChar <= 57))) {
+                        sender.sendMessage("Invalid clan name, use [A-Z; a-z; _; 0-9]");
                         return false;
                     }
+                }
+                // check another clan name collision
+                if (ManagerPtr.getServerClans().get(args[1]) != null) {
+                    sender.sendMessage("Clan with this name already exist!");
+                    return false;
                 }
                 // Creating new clan
                 double moneyToClan = 10000;
