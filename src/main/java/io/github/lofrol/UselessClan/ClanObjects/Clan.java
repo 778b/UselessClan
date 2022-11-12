@@ -54,6 +54,12 @@ public class Clan {
         SettingsClan = new ClanSettings();
     }
 
+    public void SendMessageForOnlinePlayers(String Message) {
+        for (Player tempPlayer : OnlineMembers.keySet()) {
+            tempPlayer.sendMessage("[" + PrefixClan + "] " + Message);
+        }
+    }
+
     public boolean IsClanMember(String PlayerName) {
         for (ClanMember tempMember : Members) {
             if (tempMember.getPlayerName().equals(PlayerName)) return true;
@@ -73,6 +79,16 @@ public class Clan {
         return false;
     }
 
+    public ClanMember getClanMember(String PlayerName) {
+        if (!IsClanMember(PlayerName)) return null;
+
+        for (ClanMember tempMember : Members) {
+            if (tempMember.getPlayerName().equals(PlayerName)) {
+                return tempMember;
+            }
+        }
+        return null;
+    }
     public ClanRole getMemberRole(String PlayerName) {
         if (!IsClanMember(PlayerName)) return ClanRole.NONE;
 
@@ -82,6 +98,41 @@ public class Clan {
             }
         }
         return ClanRole.NONE;
+    }
+
+    public boolean SendRequestForJoin(String playerName) {
+        for (String tempRequest : Requests) {
+            if (tempRequest.equals(playerName)) {
+                return false;
+            }
+        }
+        Requests.add(playerName);
+        return true;
+    }
+
+    public void ChangeLeader(String NewLeaderName) {
+        LeaderName = NewLeaderName;
+        for (ClanMember tempMember : Members) {
+            if (tempMember.getMemberRole() == ClanRole.LEADER) {
+                tempMember.setMemberRole(ClanRole.OFFICER);
+            }
+        }
+        for (ClanMember tempMember : Members) {
+            if (tempMember.getPlayerName().equals(NewLeaderName)) {
+                tempMember.setMemberRole(ClanRole.LEADER);
+            }
+        }
+    }
+
+    public boolean ChangeMemberRole(String MemberName, ClanRole newRole) {
+        for (ClanMember tempMember : Members) {
+            if (tempMember.getPlayerName().equals(MemberName)) {
+                if (tempMember.getMemberRole() == newRole) return false;
+                tempMember.setMemberRole(newRole);
+                break;
+            }
+        }
+        return true;
     }
 
     public boolean PlayerJoinToClan(ClanRole Role, String PlayerName) {

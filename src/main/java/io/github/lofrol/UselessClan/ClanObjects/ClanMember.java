@@ -8,6 +8,7 @@ public class ClanMember {
         PlayerName = player;
         GeneralPlayerDeposit = 0.d;
     }
+
     private ClanRole MemberRole;
     private String PlayerName;
     private Double GeneralPlayerDeposit;
@@ -22,5 +23,13 @@ public class ClanMember {
 
     public Double getGeneralPlayerDeposit() {
         return GeneralPlayerDeposit;
+    }
+
+    public void setMemberRole(ClanRole memberRole) {
+        MemberRole = memberRole;
+    }
+
+    public void addGeneralPlayerDeposit(Double generalPlayerDeposit) {
+        GeneralPlayerDeposit += generalPlayerDeposit;
     }
 }
