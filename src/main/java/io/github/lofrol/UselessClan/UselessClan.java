@@ -8,8 +8,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.logging.Level;
 
-import static org.bukkit.Bukkit.getServer;
-
 
 public final class UselessClan extends JavaPlugin {
 
@@ -41,7 +39,8 @@ public final class UselessClan extends JavaPlugin {
         MainManager = new ClanManager(this);
 
         MainCommand = ClanCommand.CreateDefaultInts(MainManager);
-        MainCommand.registerComamnd();
+        if (MainCommand.registerComamnd()) getLogger().log(Level.INFO, "Clan Command Loaded successfully!");
+        else getLogger().log(Level.OFF, "Clan Command cant be loaded!");
         getLogger().log(Level.INFO, "Loaded successfully!");
     }
 

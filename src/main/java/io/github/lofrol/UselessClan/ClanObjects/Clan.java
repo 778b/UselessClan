@@ -23,6 +23,7 @@ public class Clan {
     private String DescriptionClan;
 
     private List<ClanMember> Members;
+
     private List<String> Requests;
 
     private Map<Player, ClanMember> OnlineMembers;
@@ -56,7 +57,16 @@ public class Clan {
 
     public void SendMessageForOnlinePlayers(String Message) {
         for (Player tempPlayer : OnlineMembers.keySet()) {
-            tempPlayer.sendMessage("[" + PrefixClan + "] " + Message);
+            tempPlayer.sendMessage(String.format("[%s] %s", PrefixClan, Message));
+        }
+    }
+
+    public void SendMessageForOnlineOfficers(String Message) {
+        for (Player tempPlayer : OnlineMembers.keySet()) {
+            ClanRole tempRole = OnlineMembers.get(tempPlayer).getMemberRole();
+            if (tempRole == ClanRole.OFFICER || tempRole == ClanRole.LEADER) {
+                tempPlayer.sendMessage(String.format("[%s] %s", PrefixClan, Message));
+            }
         }
     }
 
@@ -125,22 +135,20 @@ public class Clan {
         return true;
     }
 
-    public boolean PlayerJoinToClan(ClanRole Role, String PlayerName) {
+    public void PlayerJoinToClan(ClanRole Role, String PlayerName) {
         if (IsClanMember(PlayerName)) {
-            return false;
+            return;
         }
-
         ClanMember tempClanMember = new ClanMember(Role, PlayerName);
         Player tempPlayer = getServer().getPlayer(PlayerName);
         if (tempPlayer != null) {
             OnlineMembers.put(tempPlayer, tempClanMember);
         }
         Members.add(tempClanMember);
-        getServer().getLogger().log(Level.INFO, "Player "+ PlayerName + " is joined to clan "+ this.getNameClan());
-        return true;
+        return;
     }
-    public boolean PlayerLeavedFromClan(String PlayerName) {
-        if (!IsClanMember(PlayerName)) return false;
+    public void PlayerLeavedFromClan(String PlayerName) {
+        if (!IsClanMember(PlayerName)) return;
 
         Player tempPlayer = getServer().getPlayer(PlayerName);
         if (tempPlayer != null) {
@@ -149,16 +157,13 @@ public class Clan {
         for (ClanMember tempMember : Members) {
             if (tempMember.getPlayerName().equals(PlayerName)) {
                 Members.remove(tempMember);
-                return true;
+                return;
             }
         }
-
-        return true;
     }
-    public boolean PlayerLeavedFromClan(Player player) {
+    public void PlayerLeavedFromClan(Player player) {
         OnlineMembers.remove(player);
         Members.remove(player);
-        return true;
     }
 
 
@@ -192,6 +197,9 @@ public class Clan {
     public String getPrefixClan() { return PrefixClan; }
     public Double getMoneyClan() { return MoneyClan; }
 
+    public List<String> getRequests() {
+        return Requests;
+    }
     public int getRequestCount() {
         return Requests.size();
     }

@@ -13,11 +13,11 @@ import java.util.logging.Level;
 
 public class ClanManager {
 
-    private static String ClanFolder = "Clans";
-    private UselessClan OwnerPlugin;
+    private static final String ClanFolder = "Clans";
+    private final UselessClan OwnerPlugin;
 
-    private Map<Player, OnlinePlayerClan> OnlineClanPlayers;
-    private Map<String, Clan> ServerClans;
+    private final Map<Player, OnlinePlayerClan> OnlineClanPlayers;
+    private final Map<String, Clan> ServerClans;
 
     public ClanManager(UselessClan owner) {
         ServerClans = new HashMap<>();

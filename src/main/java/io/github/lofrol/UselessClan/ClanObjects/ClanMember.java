@@ -10,7 +10,7 @@ public class ClanMember {
     }
 
     private ClanRole MemberRole;
-    private String PlayerName;
+    private final String PlayerName;
     private Double GeneralPlayerDeposit;
 
     public ClanRole getMemberRole() {

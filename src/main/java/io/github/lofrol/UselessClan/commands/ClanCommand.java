@@ -6,7 +6,6 @@ import io.github.lofrol.UselessClan.ClanObjects.ClanMember;
 import io.github.lofrol.UselessClan.ClanObjects.ClanRole;
 import io.github.lofrol.UselessClan.UselessClan;
 import net.milkbowl.vault.economy.Economy;
-import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -18,8 +17,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static io.github.lofrol.UselessClan.UselessClan.EconomyPtr;
-import static org.bukkit.Bukkit.getPlayer;
 import static org.bukkit.Bukkit.getServer;
 
 public class ClanCommand extends Command {
@@ -50,7 +47,7 @@ public class ClanCommand extends Command {
 
         Player tempPlayer = ((Player)sender);
         Clan SenderClan = ManagerPtr.FindClanToPlayer(tempPlayer.getName());
-        ClanRole SenderRole = null;
+        ClanRole SenderRole = ClanRole.NONE;
         if (SenderClan != null) {
             SenderRole = SenderClan.getMemberRole(tempPlayer.getName());
         }
@@ -62,14 +59,20 @@ public class ClanCommand extends Command {
         }
         // /Clan help/create/info/mates/join/accept/leave/top/kick/promote/demote/requests
         else if (args[0].equalsIgnoreCase( "help")) {
-                sender.sendMessage("##################### CLAN HELP #####################");
-                sender.sendMessage("/Clan help         - to call this menu");
-                sender.sendMessage("/Clan top          - top of all clans");
-                sender.sendMessage("/Clan create %name - to create your own clan with name %name");
-                sender.sendMessage("/Clan leave        - to leave from your clan");
-                sender.sendMessage("/Clan join %name   - to send request for join the clan %name");
-                sender.sendMessage("/Clan info         - to info about your clan");
-                sender.sendMessage("/Clan accept %name - to accept %name for join to your clan");
+                sender.sendMessage("################### CLAN HELP ###################");
+                sender.sendMessage("/Clan help          - to call this menu");
+                sender.sendMessage("/Clan top           - top of all clans");
+                sender.sendMessage("/Clan create %name  - to create your own clan with name %name");
+                sender.sendMessage("/Clan leave         - to leave from your clan");
+                sender.sendMessage("/Clan join %name    - to send request for join the clan %name");
+                sender.sendMessage("/Clan info          - to info about your clan");
+                if (SenderRole == ClanRole.OFFICER || SenderRole == ClanRole.LEADER) {
+                    sender.sendMessage("/Clan requests      - to see list of all requests to join your clan");
+                    sender.sendMessage("/Clan accept %name  - to accept %name for join to your clan");
+                    sender.sendMessage("/Clan kick %name    - to kick player %name from your clan");
+                    sender.sendMessage("/Clan promote %name - to promote player %name of your clan");
+                    sender.sendMessage("/Clan demote %name  - to demote player %name of your clan");
+                }
                 return true;
             }
         else if (size == 1) {
@@ -77,7 +80,7 @@ public class ClanCommand extends Command {
                 sender.sendMessage("########## CLAN TOP ##########");
                 sender.sendMessage("# ClanName              Bank #");
                 for (Clan tempClan : ManagerPtr.getServerClans().values()) {
-                    sender.sendMessage("# " + tempClan.getNameClan() + "\t\t\t" + tempClan.getMoneyClan());
+                    sender.sendMessage(String.format("# %s          %s ", tempClan.getNameClan(), tempClan.getMoneyClan()));
                 }
                 return true;
             }
@@ -103,7 +106,7 @@ public class ClanCommand extends Command {
                     return false;
                 }
                 SenderClan.PlayerLeavedFromClan(tempPlayer);
-                sender.sendMessage("You successfully leaved from " + SenderClan.getNameClan());
+                sender.sendMessage(String.format("You successfully leaved from %s", SenderClan.getNameClan()));
                 return true;
             }
             else if (args[0].equalsIgnoreCase("mates")) {
@@ -113,7 +116,8 @@ public class ClanCommand extends Command {
                 }
                 sender.sendMessage("########## CLANMATES ##########");
                 for (ClanMember tempMember: SenderClan.getMembers()) {
-                    sender.sendMessage(tempMember.getMemberRole().toString() + "\t\t" + tempMember.getPlayerName());
+                    sender.sendMessage(String.format(
+                            "# %s      %s", tempMember.getMemberRole().toString(), tempMember.getPlayerName()));
                 }
                 return true;
             }
@@ -123,12 +127,29 @@ public class ClanCommand extends Command {
                     return false;
                 }
                 sender.sendMessage("########## CLAN INFO ##########");
-                sender.sendMessage("# Name: " + SenderClan.getNameClan());
-                sender.sendMessage("# LeaderName: " + SenderClan.getLeaderName());
-                sender.sendMessage("# Prefix: " + SenderClan.getPrefixClan());
-                sender.sendMessage("# Count of Members: " + SenderClan.getMembers().size());
-                sender.sendMessage("# Money: " + SenderClan.getMoneyClan());
-                sender.sendMessage("# Your rank: " + SenderRole.toString());
+                sender.sendMessage(String.format("# Name: %s", SenderClan.getNameClan()));
+                sender.sendMessage(String.format("# LeaderName: %s", SenderClan.getLeaderName()));
+                sender.sendMessage(String.format("# Prefix: %s", SenderClan.getPrefixClan()));
+                sender.sendMessage(String.format("# Count of Members: %s", SenderClan.getMembers().size()));
+                sender.sendMessage(String.format("# Money: %s", SenderClan.getMoneyClan()));
+                sender.sendMessage(String.format("# Your rank: %s", SenderRole.toString()));
+                return true;
+            }
+            else if (args[0].equalsIgnoreCase("requests")) {
+                if (SenderClan == null) {
+                    sender.sendMessage("You havent Clan!");
+                    return false;
+                }
+                if (SenderRole == ClanRole.LEADER || SenderRole == ClanRole.OFFICER) {
+                    sender.sendMessage("######## CLAN REQUESTS ########");
+                    for (String tempMemberName: SenderClan.getRequests()) {
+                        sender.sendMessage(String.format("# %s", tempMemberName));
+                    }
+                }
+                else {
+                    sender.sendMessage("You rank is too low to do that!");
+                    return false;
+                }
                 return true;
             }
             else if (args[0].equalsIgnoreCase("accept")) {
@@ -224,15 +245,15 @@ public class ClanCommand extends Command {
                 // Creating new clan
                 double moneyToClan = 10000;
                 if (!UselessClan.EconomyPtr.has(tempPlayer, moneyToClan)) {
-                    sender.sendMessage("For create your own clan you must have more than " + moneyToClan + "$");
+                    sender.sendMessage(String.format("For create your own clan you must have more than %s$", moneyToClan));
                     return false;
                 }
-                EconomyResponse response = UselessClan.EconomyPtr.withdrawPlayer(tempPlayer, 10000.d);
+                UselessClan.EconomyPtr.withdrawPlayer(tempPlayer, 10000.d);
 
                 Clan NewClan = new Clan(args[1], tempPlayer.getName());
                 NewClan.PlayerJoinToClan(ClanRole.LEADER, tempPlayer.getName());
                 ManagerPtr.getServerClans().put(args[1], NewClan);
-                sender.sendMessage("Clan " + args[1] + " was created successfully!");
+                sender.sendMessage(String.format("Clan %s was created successfully!", args[1]));
             }
             else if (args[0].equalsIgnoreCase("join")) {
                 if (SenderClan != null) {
@@ -261,8 +282,8 @@ public class ClanCommand extends Command {
                             return false;
                         }
                         SenderClan.PlayerJoinToClan(ClanRole.ROOKIE, AcceptedPlayerName);
-                        SenderClan.SendMessageForOnlinePlayers(AcceptedPlayerName +
-                                " was joined to your clan!");
+                        SenderClan.SendMessageForOnlinePlayers(String.format(
+                                "Player %s joined to your clan!", AcceptedPlayerName));
                     }
                     else {
                         sender.sendMessage("You rank is too low to do that!");
@@ -284,7 +305,8 @@ public class ClanCommand extends Command {
                             return false;
                         }
                         SenderClan.PlayerLeavedFromClan(tempMember.getPlayerName());
-                        sender.sendMessage("You successfully kicked the " + tempMember.getPlayerName() + " from your clan.");
+                        SenderClan.SendMessageForOnlinePlayers(String.format(
+                                "Player %s was kicked from your clan!", tempMember.getPlayerName()));
                     }
                     else {
                         sender.sendMessage("You rank is too low to do that!");
@@ -308,8 +330,8 @@ public class ClanCommand extends Command {
                                 sender.sendMessage("This Player already have this rank!");
                                 return false;
                             }
-                            SenderClan.SendMessageForOnlinePlayers(tempClanMember.getPlayerName() +
-                                    " was promoted to " + ClanRole.MEMBER.toString());
+                            SenderClan.SendMessageForOnlinePlayers(String.format(
+                                    "Player %s was promoted to %s", tempClanMember.getPlayerName(), ClanRole.MEMBER.toString()));
                         }
                         else if (tempClanMember.getMemberRole() == ClanRole.MEMBER) {
                             if (SenderRole == ClanRole.LEADER) {
@@ -317,8 +339,8 @@ public class ClanCommand extends Command {
                                     sender.sendMessage("This Player already have this rank!");
                                     return false;
                                 }
-                                SenderClan.SendMessageForOnlinePlayers(tempClanMember.getPlayerName() +
-                                        " was promoted to " + ClanRole.OFFICER.toString());
+                                SenderClan.SendMessageForOnlinePlayers(String.format(
+                                        "Player %s was promoted to %s", tempClanMember.getPlayerName(), ClanRole.OFFICER.toString()));
                             }
                             else {
                                 sender.sendMessage("You rank is too low to do that!");
@@ -327,8 +349,8 @@ public class ClanCommand extends Command {
                         else if (tempClanMember.getMemberRole() == ClanRole.OFFICER) {
                             if (SenderRole == ClanRole.LEADER) {
                                 SenderClan.ChangeLeader(tempClanMember.getPlayerName());
-                                SenderClan.SendMessageForOnlinePlayers("Leader is changed! New leader of clan is "
-                                        + tempClanMember.getPlayerName());
+                                SenderClan.SendMessageForOnlinePlayers(String.format(
+                                        "Leader is changed! New leader of clan is %s", tempClanMember.getPlayerName()));
                             }
                             else {
                                 sender.sendMessage("You rank is too low to do that!");
@@ -360,8 +382,8 @@ public class ClanCommand extends Command {
                                 sender.sendMessage("This Player already have this rank!");
                                 return false;
                             }
-                            SenderClan.SendMessageForOnlinePlayers(tempClanMember.getPlayerName() +
-                                    " was demoted to " + ClanRole.ROOKIE.toString());
+                            SenderClan.SendMessageForOnlinePlayers(String.format(
+                                    "Player %s was demoted to %s", tempClanMember.getPlayerName(), ClanRole.ROOKIE.toString()));
                         }
                         else if (tempClanMember.getMemberRole() == ClanRole.OFFICER) {
                             if (SenderRole == ClanRole.LEADER) {
@@ -369,8 +391,8 @@ public class ClanCommand extends Command {
                                     sender.sendMessage("This Player already have this rank!");
                                     return false;
                                 }
-                                SenderClan.SendMessageForOnlinePlayers(tempClanMember.getPlayerName() +
-                                        " was demoted to " + ClanRole.MEMBER.toString());
+                                SenderClan.SendMessageForOnlinePlayers(String.format(
+                                        "Player %s was demoted to %s", tempClanMember.getPlayerName(), ClanRole.MEMBER.toString()));
                             }
                             else {
                                 sender.sendMessage("You rank is too low to do that!");

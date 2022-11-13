@@ -13,7 +13,7 @@ import java.util.logging.Level;
 
 public class UselessListeners implements Listener {
 
-    private UselessClan OwnerPlugin;
+    private final UselessClan OwnerPlugin;
 
     public UselessListeners(UselessClan owner) {
         OwnerPlugin = owner;
