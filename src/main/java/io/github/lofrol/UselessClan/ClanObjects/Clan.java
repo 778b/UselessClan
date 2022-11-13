@@ -163,7 +163,7 @@ public class Clan {
     }
     public void PlayerLeavedFromClan(Player player) {
         OnlineMembers.remove(player);
-        Members.remove(player);
+        Members.remove(getClanMember(player.getName()));
     }
 
 

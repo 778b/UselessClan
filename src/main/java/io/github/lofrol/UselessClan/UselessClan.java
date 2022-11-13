@@ -1,5 +1,6 @@
 package io.github.lofrol.UselessClan;
 
+import io.github.lofrol.UselessClan.External.UselessClanPlaceholder;
 import io.github.lofrol.UselessClan.Listeners.UselessListeners;
 import io.github.lofrol.UselessClan.commands.ClanCommand;
 import net.milkbowl.vault.economy.Economy;
@@ -34,6 +35,10 @@ public final class UselessClan extends JavaPlugin {
                 getLogger().log(Level.INFO, "Loaded Vault depends!");
                 EconomyPtr = rsp.getProvider();
             }
+        }
+
+        if(getServer().getPluginManager().getPlugin("PlaceholderAPI") != null) {
+            new UselessClanPlaceholder(this).register();
         }
 
         MainManager = new ClanManager(this);
