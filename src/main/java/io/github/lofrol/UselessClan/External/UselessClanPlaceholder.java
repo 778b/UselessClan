@@ -7,8 +7,11 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class UselessClanPlaceholder extends PlaceholderExpansion {
-    UselessClan OwnerPlugin = null;
+    private UselessClan OwnerPlugin = null;
 
     public UselessClanPlaceholder(UselessClan owner) {
         OwnerPlugin = owner;
@@ -30,10 +33,23 @@ public class UselessClanPlaceholder extends PlaceholderExpansion {
     }
 
     @Override
-    public String onRequest(final OfflinePlayer player, @NotNull final String params) {
+    public boolean persist() { return true; }
+
+    @Override
+    public List<String> getPlaceholders() {
+        List<String> tempList = new ArrayList<>();
+        tempList.add("prefix");
+        return tempList;
+    }
+    @Override
+    public String onPlaceholderRequest(Player player, @NotNull String params) {
+        if (player == null) {
+            return "";
+        }
         if(params.equalsIgnoreCase("prefix")) {
             Clan tempClan = OwnerPlugin.getMainManager().FindClanToPlayer(player.getName());
-            return tempClan.getPrefixClan();
+            if (tempClan == null) return "";
+            return String.format("&r[&6%s&r]", tempClan.getPrefixClan());
         }
         return "";
     }

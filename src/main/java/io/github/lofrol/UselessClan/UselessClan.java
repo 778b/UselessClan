@@ -3,6 +3,7 @@ package io.github.lofrol.UselessClan;
 import io.github.lofrol.UselessClan.External.UselessClanPlaceholder;
 import io.github.lofrol.UselessClan.Listeners.UselessListeners;
 import io.github.lofrol.UselessClan.commands.ClanCommand;
+import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -13,6 +14,7 @@ import java.util.logging.Level;
 public final class UselessClan extends JavaPlugin {
 
     public ClanCommand MainCommand;
+    public PlaceholderExpansion tempPlaceholderClan;
     public static Economy EconomyPtr = null;
     private ClanManager MainManager;
 
@@ -38,7 +40,13 @@ public final class UselessClan extends JavaPlugin {
         }
 
         if(getServer().getPluginManager().getPlugin("PlaceholderAPI") != null) {
-            new UselessClanPlaceholder(this).register();
+            tempPlaceholderClan = new UselessClanPlaceholder(this);
+            tempPlaceholderClan.register();
+            String Multistring = "";
+            for (String placeholder : tempPlaceholderClan.getPlaceholders()) {
+                Multistring += " " + placeholder;
+            }
+            getLogger().log(Level.INFO, "Placeholders:"+ Multistring );
         }
 
         MainManager = new ClanManager(this);

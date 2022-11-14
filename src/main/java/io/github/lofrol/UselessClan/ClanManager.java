@@ -14,7 +14,7 @@ import java.util.logging.Level;
 public class ClanManager {
 
     private static final String ClanFolder = "Clans";
-    private final UselessClan OwnerPlugin;
+    public final UselessClan OwnerPlugin; //@todo private
 
     private final Map<Player, OnlinePlayerClan> OnlineClanPlayers;
     private final Map<String, Clan> ServerClans;
