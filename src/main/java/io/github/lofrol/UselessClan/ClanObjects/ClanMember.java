@@ -32,4 +32,14 @@ public class ClanMember {
     public void addGeneralPlayerDeposit(Double generalPlayerDeposit) {
         GeneralPlayerDeposit += generalPlayerDeposit;
     }
+
+    public static String ClanRoleSolver(ClanRole role) {
+        return switch (role) {
+            case ROOKIE -> "-";
+            case MEMBER -> "=";
+            case OFFICER -> "+";
+            case LEADER -> "++";
+            default -> "";
+        };
+    }
 }

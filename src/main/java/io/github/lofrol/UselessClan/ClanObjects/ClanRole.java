@@ -7,3 +7,4 @@ public enum ClanRole {
     OFFICER,
     LEADER,
 }
+

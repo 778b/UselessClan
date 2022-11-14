@@ -1,6 +1,7 @@
 package io.github.lofrol.UselessClan.External;
 
 import io.github.lofrol.UselessClan.ClanObjects.Clan;
+import io.github.lofrol.UselessClan.ClanObjects.ClanMember;
 import io.github.lofrol.UselessClan.UselessClan;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.OfflinePlayer;
@@ -38,7 +39,8 @@ public class UselessClanPlaceholder extends PlaceholderExpansion {
     @Override
     public List<String> getPlaceholders() {
         List<String> tempList = new ArrayList<>();
-        tempList.add("prefix");
+        tempList.add("UselessClan_prefix");
+        tempList.add("UselessClan_role");
         return tempList;
     }
     @Override
@@ -50,6 +52,12 @@ public class UselessClanPlaceholder extends PlaceholderExpansion {
             Clan tempClan = OwnerPlugin.getMainManager().FindClanToPlayer(player.getName());
             if (tempClan == null) return "";
             return String.format("&r[&6%s&r]", tempClan.getPrefixClan());
+        }
+        else if (params.equalsIgnoreCase("role")) {
+            Clan tempClan = OwnerPlugin.getMainManager().FindClanToPlayer(player.getName());
+            if (tempClan == null) return "";
+            ClanMember tempMember = tempClan.getClanMember(player.getName());
+            return String.format("&r[&6%s&r]", ClanMember.ClanRoleSolver(tempMember.getMemberRole()));
         }
         return "";
     }
