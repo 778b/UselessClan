@@ -1,6 +1,7 @@
 package io.github.lofrol.UselessClan.ClanObjects;
 
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 
 import java.io.File;
@@ -11,6 +12,7 @@ import java.util.Map;
 import java.util.logging.Level;
 
 import static org.bukkit.Bukkit.getServer;
+import static org.bukkit.Bukkit.getWorld;
 
 public class Clan {
 
@@ -29,9 +31,11 @@ public class Clan {
     private Map<Player, ClanMember> OnlineMembers;
 
     private String LeaderName;
+
     private Location HomeClan;
 
     private ClanSettings SettingsClan;
+
 
     private Double MoneyClan;
     private Double MaxPrivateDistance;
@@ -196,7 +200,7 @@ public class Clan {
     }
     public String getPrefixClan() { return PrefixClan; }
     public Double getMoneyClan() { return MoneyClan; }
-
+    public Location getHomeClan() { return HomeClan; }
     public List<String> getRequests() {
         return Requests;
     }
@@ -224,7 +228,17 @@ public class Clan {
         return false;
     }
 
+    public void setHomeClan(Location newHomeLocation) {
+        HomeClan = newHomeLocation;
+    }
 
+    public void DepositMoneyToClan(Double moneyClan) {
+        MoneyClan += moneyClan;
+    }
+
+    public void WithdrawMoneyFromClan(Double moneyClan) {
+        MoneyClan -= moneyClan;
+    }
 
     public void SerializeClan(File Folder) {
 

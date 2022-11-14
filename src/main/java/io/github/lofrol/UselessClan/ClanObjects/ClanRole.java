@@ -1,10 +1,14 @@
 package io.github.lofrol.UselessClan.ClanObjects;
 
 public enum ClanRole {
-    NONE,
-    ROOKIE,
-    MEMBER,
-    OFFICER,
-    LEADER,
+    NONE(0),
+    ROOKIE(1),
+    MEMBER(2),
+    OFFICER(3),
+    LEADER(4),
+    ;
+
+    ClanRole(int i) {
+    }
 }
 

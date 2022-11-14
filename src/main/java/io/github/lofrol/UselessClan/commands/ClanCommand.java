@@ -6,6 +6,7 @@ import io.github.lofrol.UselessClan.ClanObjects.ClanMember;
 import io.github.lofrol.UselessClan.ClanObjects.ClanRole;
 import io.github.lofrol.UselessClan.UselessClan;
 import net.milkbowl.vault.economy.Economy;
+import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -47,7 +48,7 @@ public class ClanCommand extends Command {
 
         Player tempPlayer = ((Player)sender);
         Clan SenderClan = ManagerPtr.FindClanToPlayer(tempPlayer.getName());
-        ClanRole SenderRole = ClanRole.NONE;
+        ClanRole SenderRole = null;
         if (SenderClan != null) {
             SenderRole = SenderClan.getMemberRole(tempPlayer.getName());
         }
@@ -57,7 +58,7 @@ public class ClanCommand extends Command {
             // just only /Clan
             sender.sendMessage("Use command /Clan help, for access to clan system");
         }
-        // /Clan help/create/info/mates/join/accept/leave/top/kick/promote/demote/requests
+        // /Clan help/create/info/mates/join/accept/leave/top/kick/promote/demote/requests/home/sethome
         else if (args[0].equalsIgnoreCase( "help")) {
                 sender.sendMessage("################### CLAN HELP ###################");
                 sender.sendMessage("/Clan help          - to call this menu");
@@ -66,6 +67,7 @@ public class ClanCommand extends Command {
                 sender.sendMessage("/Clan leave         - to leave from your clan");
                 sender.sendMessage("/Clan join %name    - to send request for join the clan %name");
                 sender.sendMessage("/Clan info          - to info about your clan");
+                if (SenderClan == null) return false;
                 if (SenderRole == ClanRole.OFFICER || SenderRole == ClanRole.LEADER) {
                     sender.sendMessage("/Clan requests      - to see list of all requests to join your clan");
                     sender.sendMessage("/Clan accept %name  - to accept %name for join to your clan");
@@ -100,6 +102,26 @@ public class ClanCommand extends Command {
                 sender.sendMessage("You forgot about clan %name, use /Clan join %name, %name = name of clan");
                 return true;
             }
+            else if (args[0].equalsIgnoreCase("deposit")) {
+                if (SenderClan == null) {
+                    sender.sendMessage("You havent Clan!");
+                    return false;
+                }
+                sender.sendMessage("You forgot about value of deposit, use /clan deposit %money");
+                return true;
+            }
+            else if (args[0].equalsIgnoreCase("withdraw")) {
+                if (SenderClan == null) {
+                    sender.sendMessage("You havent Clan!");
+                    return false;
+                }
+                if (SenderRole.ordinal() < SenderClan.getSettingsClan().MinRoleForWithdraw.ordinal()) {
+                    sender.sendMessage("You rank is too low to do that!");
+                    return false;
+                }
+                sender.sendMessage("You forgot about value of withdraw, use /clan withdraw %money");
+                return true;
+            }
             else if (args[0].equalsIgnoreCase("leave")) {
                 if (SenderClan == null) {
                     sender.sendMessage("You havent a clan!");
@@ -107,6 +129,38 @@ public class ClanCommand extends Command {
                 }
                 SenderClan.PlayerLeavedFromClan(tempPlayer);
                 sender.sendMessage(String.format("You successfully leaved from %s", SenderClan.getNameClan()));
+                return true;
+            }
+            else if (args[0].equalsIgnoreCase("home")) {
+                if (SenderClan == null) {
+                    sender.sendMessage("You havent a clan!");
+                    return false;
+                }
+                Location tempHome = SenderClan.getHomeClan();
+                if (tempHome == null) {
+                    sender.sendMessage("Your clan doesnt have home!");
+                    return false;
+                }
+                tempPlayer.teleport(tempHome);
+                return true;
+            }
+            else if (args[0].equalsIgnoreCase("sethome")) {
+                if (SenderClan == null) {
+                    sender.sendMessage("You havent a clan!");
+                    return false;
+                }
+                if (SenderRole.ordinal() >= SenderClan.getSettingsClan().HomeChangerMinRole.ordinal() || SenderRole == ClanRole.LEADER) {
+                    if (tempPlayer.getWorld().getName().equals("world")) {
+                        Location tempLoc = tempPlayer.getLocation();
+                        SenderClan.setHomeClan(tempLoc);
+                    }
+                    else {
+                        sender.sendMessage("You cant set home there!");
+                    }
+                }
+                else {
+                    sender.sendMessage("You rank is too low to do that!");
+                }
                 return true;
             }
             else if (args[0].equalsIgnoreCase("mates")) {
@@ -271,6 +325,37 @@ public class ClanCommand extends Command {
                     return false;
                 }
                 sender.sendMessage("You send request for join to this clan, wait until leader or officer accept this request");
+                return true;
+            }
+            else if (args[0].equalsIgnoreCase("deposit")) {
+                if (SenderClan == null) {
+                    sender.sendMessage("You havent Clan!");
+                    return false;
+                }
+                double moneyToDeposit = Double.parseDouble(args[1]);
+                if (moneyToDeposit <= 0) {
+                    sender.sendMessage("Wrong money count! Use [0;+inf)");
+                }
+                SenderClan.DepositMoneyToClan(moneyToDeposit);
+                sender.sendMessage(String.format("You deposit %s to clan %s", moneyToDeposit, SenderClan.getNameClan()));
+                return true;
+            }
+            else if (args[0].equalsIgnoreCase("withdraw")) {
+                if (SenderClan == null) {
+                    sender.sendMessage("You havent Clan!");
+                    return false;
+                }
+                if (SenderRole.ordinal() < SenderClan.getSettingsClan().MinRoleForWithdraw.ordinal()) {
+                    sender.sendMessage("You rank is too low to do that!");
+                    return false;
+                }
+                double moneyToWithdraw = Double.parseDouble(args[1]);
+                if (moneyToWithdraw  <= 0) {
+                    sender.sendMessage("Wrong money count! Use [0;+inf)");
+                }
+                
+                SenderClan.DepositMoneyToClan(moneyToWithdraw );
+                sender.sendMessage(String.format("You withdraw %s from clan %s", moneyToWithdraw , SenderClan.getNameClan()));
                 return true;
             }
             else if (args[0].equalsIgnoreCase("accept")) {
