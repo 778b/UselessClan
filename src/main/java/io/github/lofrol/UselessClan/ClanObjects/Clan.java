@@ -2,6 +2,7 @@ package io.github.lofrol.UselessClan.ClanObjects;
 
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
 import java.io.File;
@@ -43,6 +44,42 @@ public class Clan {
     @Deprecated
     public Clan() {
 
+    }
+
+    public static Clan CreateClanFromConfig(FileConfiguration ClanConfig)  {
+        String ClanPrefix = ClanConfig.getString("UselessClan.ClanPrefix");
+        String ClanName = ClanConfig.getString("UselessClan.ClanName");
+        String LeaderName = ClanConfig.getString("UselessClan.ClanLeader");
+        double MoneyClan = ClanConfig.getDouble("UselessClan.Money");
+        String DescriptionClan = ClanConfig.getString("UselessClan.Description");
+        Location HomeClan = ClanConfig.getLocation("UselessClan.Home");
+        List<String> Requests = ClanConfig.getStringList("UselessClan.Requests");
+        List<ClanMember> Members = (List<ClanMember>)ClanConfig.getList("UselessClan.Members");
+        ClanSettings SettingsClan = (ClanSettings)ClanConfig.get("UselessClan.Settings");
+
+        if (ClanPrefix != null && ClanName != null && LeaderName != null && DescriptionClan != null &&
+                HomeClan != null && Requests != null && Members != null && SettingsClan != null) {
+            return new Clan(ClanPrefix, ClanName, LeaderName, MoneyClan,
+                    HomeClan, Requests, Members, DescriptionClan, SettingsClan);
+        }
+        return null;
+    }
+
+    // Creating by file loader
+    private Clan(String ClanPrefix, String ClanName, String LeaderName,
+                Double MoneyClan, Location HomeClan, List<String> Requests,
+                List<ClanMember> Members, String DescriptionClan, ClanSettings SettingsClan)  {
+        this.PrefixClan = ClanPrefix;
+        this.NameClan = ClanName;
+        this.LeaderName =  LeaderName;
+        this.Requests = Requests;
+        this.Members = Members;
+        this.MoneyClan = MoneyClan;
+        this.DescriptionClan = DescriptionClan;
+        this.HomeClan = HomeClan;
+        this.SettingsClan = SettingsClan;
+
+        this.OnlineMembers = new HashMap<>();
     }
 
     // Creating by leader
