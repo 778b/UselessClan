@@ -5,9 +5,11 @@ import io.github.lofrol.UselessClan.Listeners.UselessListeners;
 import io.github.lofrol.UselessClan.commands.ClanCommand;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import net.milkbowl.vault.economy.Economy;
+import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.io.IOException;
 import java.util.logging.Level;
 
 
@@ -54,12 +56,15 @@ public final class UselessClan extends JavaPlugin {
         MainCommand = ClanCommand.CreateDefaultInts(MainManager);
         if (MainCommand.registerComamnd()) getLogger().log(Level.INFO, "Clan Command Loaded successfully!");
         else getLogger().log(Level.OFF, "Clan Command cant be loaded!");
+
+        MainManager.LoadClans();
+
         getLogger().log(Level.INFO, "Loaded successfully!");
     }
 
     @Override
     public void onDisable() {
-
+        MainManager.SaveClans();
     }
 
     public ClanManager getMainManager() {

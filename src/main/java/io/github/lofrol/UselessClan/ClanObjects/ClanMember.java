@@ -9,6 +9,12 @@ public class ClanMember {
         GeneralPlayerDeposit = 0.d;
     }
 
+    public ClanMember(ClanRole role, String player, Double deposit) {
+        MemberRole = role;
+        PlayerName = player;
+        GeneralPlayerDeposit = deposit;
+    }
+
     private ClanRole MemberRole;
     private final String PlayerName;
     private Double GeneralPlayerDeposit;

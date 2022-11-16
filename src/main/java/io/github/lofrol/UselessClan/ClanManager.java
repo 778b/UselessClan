@@ -31,102 +31,79 @@ public class ClanManager {
         OwnerPlugin = owner;
     }
 
-    public void LoadClans() throws IOException, InvalidConfigurationException {
-        OwnerPlugin.getLogger().log(Level.INFO, "Starting load clans from plugin folder...");
-        File PluginFolder = OwnerPlugin.getDataFolder();
+    public void LoadClans() {
+        try {
+            File tempDir = checkPluginFolderOrCreate();
+
+            if (tempDir.listFiles() != null) {
+                for (File tempClanFile : tempDir.listFiles()) {
+                    FileConfiguration ClanConfig = new YamlConfiguration();
+                    ClanConfig.load(tempClanFile);
+
+                    Clan tempClan = Clan.CreateClanFromConfig(ClanConfig);
+                    if (tempClan == null) continue;
+                    else {
+                        OwnerPlugin.getLogger().log(Level.FINE, String.format("Clan %s was loaded successfully!", tempClan.getPrefixClan()));
+                        ServerClans.put(tempClan.getPrefixClan(), tempClan);
+                    }
+                }
+            }
+
+            OwnerPlugin.getLogger().log(Level.FINE, "Clans was loaded successfully!");
+        } catch (IOException | InvalidConfigurationException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void SaveClans() {
+        try {
+            File tempDir = checkPluginFolderOrCreate();
+
+            OwnerPlugin.getLogger().log(Level.INFO, "Starting save clans to plugin folder...");
+            for (Clan TempClan : ServerClans.values()) {
+                File tempClanFile = new File(tempDir, String.format("%s.yml", TempClan.getPrefixClan()));
+
+                FileConfiguration ClanConfig = TempClan.SaveClanToConfig();
+                if (ClanConfig == null) {
+                    OwnerPlugin.getLogger().log(Level.FINE, String.format("%s was skipped save", TempClan.getNameClan()));
+                    continue;
+                }
+
+                ClanConfig.save(tempClanFile);
+
+                OwnerPlugin.getLogger().log(Level.FINE, String.format("%s was saved", TempClan.getNameClan()));
+
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    // Return Clans folder
+    private File checkPluginFolderOrCreate() {
+        OwnerPlugin.getLogger().log(Level.INFO, "Finding plugin folder...");
+
+        File PluginDir = OwnerPlugin.getDataFolder();
+        if (!PluginDir.exists()) {
+            if (PluginDir.mkdir()) {
+                OwnerPlugin.getLogger().log(Level.INFO, "Creating folder of plugin...");
+            } else {
+                OwnerPlugin.getLogger().log(Level.SEVERE, "Cant create plugin folder!");
+            }
+        }
         File tempDir = new File(OwnerPlugin.getDataFolder(), ClanFolder);
 
         if (!tempDir.exists()) {
             OwnerPlugin.getLogger().log(Level.WARNING, String.format("%s folder not found!", ClanFolder));
-            if (tempDir.createNewFile()) {
-                OwnerPlugin.getLogger().log(Level.INFO, String.format("Creating %s folder in plugin dir", ClanFolder));
-            }
-            else {
-                OwnerPlugin.getLogger().log(Level.WARNING, "Cant create clan folder!");
+            if (tempDir.mkdir()) {
+                OwnerPlugin.getLogger().log(Level.INFO, String.format("Creating %s folder in plugin dir...", ClanFolder));
+            } else {
+                OwnerPlugin.getLogger().log(Level.SEVERE, "Cant create clan folder!");
             }
         }
-
-        for (File tempClanFile: tempDir.listFiles()) {
-            String ClanName = tempClanFile.getName();
-            FileConfiguration ClanConfig = new YamlConfiguration();
-            ClanConfig.load(tempClanFile);
-
-            Clan tempClan = Clan.CreateClanFromConfig(ClanConfig);
-            if (tempClan == null) continue;
-            else ServerClans.put(tempClan.getPrefixClan(), tempClan);
-        }
-
-
-        //Clan(String ClanPrefix, String ClanName, String LeaderName,
-        //        Double MoneyClan, Location HomeClan, List<String> Requests,
-        //        List<ClanMember> Members, String DescriptionClan, ClanSettings SettingsClan);
-
-        OwnerPlugin.getLogger().log(Level.FINE, "Clans was loaded successfully!");
+        return tempDir;
     }
 
-    public void SaveClans() {
-        ClanConfig.set("UselessClan.Requests",new ClanMember(ClanRole.ROOKIE,"petya"));
-    }
-
-    public void serializeClans() throws IOException {
-        boolean isCreateNew = true;
-        File tempFolder = null;
-        for (File tempForFile : OwnerPlugin.getDataFolder().listFiles()) {
-            if (!tempForFile.isDirectory()) continue;
-
-            if (tempForFile.getName().equalsIgnoreCase(ClanFolder)) {
-                OwnerPlugin.getLogger().log(Level.INFO, "On Serialization: Finded clan folder");
-                tempFolder = tempForFile;
-                isCreateNew = false;
-                break;
-            }
-        }
-        if (isCreateNew) {
-            tempFolder = new File(OwnerPlugin.getDataFolder(), ClanFolder);
-        }
-        if (tempFolder == null) {
-            OwnerPlugin.getLogger().log(Level.WARNING, "On Serialization: Clan folder is NULL!");
-            return;
-        }
-        for (Map.Entry<String, Clan> entry : ServerClans.entrySet()) {
-
-            entry.getValue().SerializeClan(tempFolder);
-        }
-    }
-    public void deserializeClans() {
-        boolean isCreateNew = true;
-        File tempFolder = null;
-        for (File tempForFile : OwnerPlugin.getDataFolder().listFiles()) {
-            if (!tempForFile.isDirectory()) continue;
-
-            if (tempForFile.getName().equalsIgnoreCase(ClanFolder)) {
-                OwnerPlugin.getLogger().log(Level.INFO, "On Deserialization: Finded clan folder");
-                tempFolder = tempForFile;
-                isCreateNew = false;
-                break;
-            }
-        }
-        if (isCreateNew) {
-            tempFolder = new File(OwnerPlugin.getDataFolder(), ClanFolder);
-        }
-        if (tempFolder == null) {
-            OwnerPlugin.getLogger().log(Level.WARNING, "On Deserialization: Clan folder is NULL!");
-            return;
-        }
-        else {
-            for (File tempForFile :tempFolder.listFiles()) {
-                if (!tempForFile.isFile()) continue;
-
-                Clan tempClan = Clan.DeserializeClan(tempForFile);
-                if (tempClan == null) continue;
-                else {
-
-                    ServerClans.put(tempClan.getNameClan(),tempClan);
-                    OwnerPlugin.getLogger().log(Level.INFO, "On Deserialization: Loaded clan - " + tempClan.getNameClan());
-                }
-            }
-        }
-    }
 
     public Map<String, Clan> getServerClans() {
         return ServerClans;

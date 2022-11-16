@@ -3,7 +3,9 @@ package io.github.lofrol.UselessClan.ClanObjects;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -29,7 +31,7 @@ public class Clan {
 
     private List<String> Requests;
 
-    private Map<Player, ClanMember> OnlineMembers;
+    private transient Map<Player, ClanMember> OnlineMembers;
 
     private String LeaderName;
 
@@ -41,28 +43,11 @@ public class Clan {
     private Double MoneyClan;
     private Double MaxPrivateDistance;
 
+    private boolean NeedToSave = false;
+
     @Deprecated
     public Clan() {
 
-    }
-
-    public static Clan CreateClanFromConfig(FileConfiguration ClanConfig)  {
-        String ClanPrefix = ClanConfig.getString("UselessClan.ClanPrefix");
-        String ClanName = ClanConfig.getString("UselessClan.ClanName");
-        String LeaderName = ClanConfig.getString("UselessClan.ClanLeader");
-        double MoneyClan = ClanConfig.getDouble("UselessClan.Money");
-        String DescriptionClan = ClanConfig.getString("UselessClan.Description");
-        Location HomeClan = ClanConfig.getLocation("UselessClan.Home");
-        List<String> Requests = ClanConfig.getStringList("UselessClan.Requests");
-        List<ClanMember> Members = (List<ClanMember>)ClanConfig.getList("UselessClan.Members");
-        ClanSettings SettingsClan = (ClanSettings)ClanConfig.get("UselessClan.Settings");
-
-        if (ClanPrefix != null && ClanName != null && LeaderName != null && DescriptionClan != null &&
-                HomeClan != null && Requests != null && Members != null && SettingsClan != null) {
-            return new Clan(ClanPrefix, ClanName, LeaderName, MoneyClan,
-                    HomeClan, Requests, Members, DescriptionClan, SettingsClan);
-        }
-        return null;
     }
 
     // Creating by file loader
@@ -80,6 +65,164 @@ public class Clan {
         this.SettingsClan = SettingsClan;
 
         this.OnlineMembers = new HashMap<>();
+        NeedToSave = true;
+    }
+
+    public FileConfiguration SaveClanToConfig() {
+        if (!NeedToSave) return null;
+
+        FileConfiguration ClanConfig = new YamlConfiguration();
+
+        ClanConfig.set("UselessClan.ClanPrefix", PrefixClan);
+        ClanConfig.set("UselessClan.ClanName", NameClan);
+        ClanConfig.set("UselessClan.ClanLeader", LeaderName);
+        ClanConfig.set("UselessClan.Money", MoneyClan);
+        ClanConfig.set("UselessClan.Description", DescriptionClan);
+
+        ClanConfig.set("UselessClan.Requests.size", Requests.size());
+        for (int i = 0; i< Requests.size(); ++i) {
+            ClanConfig.set(String.format("UselessClan.Requests.%d", i), Requests.get(i));
+        }
+
+        ClanConfig.set("UselessClan.Home", (HomeClan != null));
+        if (HomeClan != null) {
+            ClanConfig.set("UselessClan.Home.X",HomeClan.getBlockX());
+            ClanConfig.set("UselessClan.Home.Y",HomeClan.getBlockY());
+            ClanConfig.set("UselessClan.Home.Z",HomeClan.getBlockZ());
+        }
+
+        ClanConfig.set("UselessClan.Members.size", Members.size());
+        for (int i = 0; i< Members.size(); ++i) {
+            ClanMember tempMember = Members.get(i);
+            String MasterStringMember = String.format("%s/%d/%s/",
+                    tempMember.getPlayerName(), tempMember.getMemberRole().ordinal(), tempMember.getGeneralPlayerDeposit());
+            ClanConfig.set(String.format("UselessClan.Members.%d", i), MasterStringMember);
+        }
+        String MasterSettingsString = String.format("%d/%d/%d/%d/",
+                SettingsClan.DefaultJoinRole.ordinal(), SettingsClan.HomeChangerMinRole.ordinal(),
+                SettingsClan.MinRoleForWithdraw.ordinal(), SettingsClan.RoleCanKick.ordinal());
+        ClanConfig.set("UselessClan.Settings", MasterSettingsString);
+
+        NeedToSave = false;
+        return ClanConfig;
+    }
+
+    public static Clan CreateClanFromConfig(FileConfiguration ClanConfig)  {
+        String ClanPrefix = ClanConfig.getString("UselessClan.ClanPrefix");
+        String ClanName = ClanConfig.getString("UselessClan.ClanName");
+        String LeaderName = ClanConfig.getString("UselessClan.ClanLeader");
+        double MoneyClan = ClanConfig.getDouble("UselessClan.Money");
+        String DescriptionClan = ClanConfig.getString("UselessClan.Description");
+
+        // Home start
+        Location HomeClan = null;
+        if (ClanConfig.getBoolean("UselessClan.Home")) {
+            int tempX = ClanConfig.getInt("UselessClan.Home.X");
+            int tempY = ClanConfig.getInt("UselessClan.Home.Y");
+            int tempZ = ClanConfig.getInt("UselessClan.Home.Z");
+            World tempWorld = getServer().getWorld("world");
+            HomeClan = new Location(tempWorld, tempX,tempY,tempZ);
+        }
+        // Home end
+
+        // Requests start
+        List<String> TempRequest = new ArrayList<>();
+        int tempSize = ClanConfig.getInt("UselessClan.Requests.size");
+        for (int i = 0; i< tempSize; ++i) {
+            String tempString = ClanConfig.getString(String.format("UselessClan.Requests.%d", i));
+            if (tempString == null) continue;
+            TempRequest.add(tempString);
+        }
+        // Requests end
+
+        // Members start
+        List<ClanMember> TempMembers = new ArrayList<>();
+        tempSize = ClanConfig.getInt("UselessClan.Members.size");
+        for (int i = 0; i< tempSize; ++i) {
+            String rawMemberString = ClanConfig.getString(String.format("UselessClan.Members.%d", i));
+            if (rawMemberString == null) continue;
+            String TempName = null;
+            ClanRole TempRole = null;
+            double TempDeposit = 0;
+
+            StringBuilder param = new StringBuilder();
+            int Stage = 0;
+            for (char tc: rawMemberString.toCharArray()) {
+                if (tc == '/') {
+                    if (Stage == 0) {
+                        TempName = param.toString();
+                        param = new StringBuilder();
+                        ++Stage;
+                    }
+                    else if (Stage == 1) {
+                        switch (Integer.parseInt(param.toString())) {
+                            case 1 -> TempRole = ClanRole.ROOKIE;
+                            case 2 -> TempRole = ClanRole.MEMBER;
+                            case 3 -> TempRole = ClanRole.OFFICER;
+                            case 4 -> TempRole = ClanRole.LEADER;
+                            default -> TempRole = ClanRole.NONE;
+                        }
+                        param = new StringBuilder();
+                        ++Stage;
+                    }
+                    else if (Stage == 2) {
+                        TempDeposit = Double.parseDouble(param.toString());
+                        param = new StringBuilder();
+                        ++Stage;
+                    }
+                }
+                else param.append(tc);
+            }
+            TempMembers.add(new ClanMember(TempRole, TempName, TempDeposit));
+        }
+        // Members end
+
+        // Settings start
+        ClanSettings TempSettings = new ClanSettings();
+        String MasterSettingsString = ClanConfig.getString("UselessClan.Settings");
+        if (MasterSettingsString == null) {
+            getServer().getLogger().log(Level.SEVERE, "Cant read UselessClan.Settings");
+            return null;
+        }
+        StringBuilder param = new StringBuilder();
+        int Stage = 0;
+        for (char tc: MasterSettingsString.toCharArray()) {
+            if (tc == '/') {
+                ClanRole TempRole = null;
+                switch (Integer.parseInt(param.toString())) {
+                    case 1 -> TempRole = ClanRole.ROOKIE;
+                    case 2 -> TempRole = ClanRole.MEMBER;
+                    case 3 -> TempRole = ClanRole.OFFICER;
+                    case 4 -> TempRole = ClanRole.LEADER;
+                    default -> TempRole = ClanRole.NONE;
+                }
+                if (Stage == 0) {
+                    TempSettings.DefaultJoinRole = TempRole;
+                    ++Stage;
+                }
+                else if (Stage == 1) {
+                    TempSettings.HomeChangerMinRole = TempRole;
+                    ++Stage;
+                }
+                else if (Stage == 2) {
+                    TempSettings.MinRoleForWithdraw = TempRole;
+                    ++Stage;
+                }
+                else if (Stage == 3) {
+                    TempSettings.RoleCanKick = TempRole;
+                    ++Stage;
+                }
+                param = new StringBuilder();
+            }
+            else param.append(tc);
+        }
+        // Settings end
+
+        if (ClanPrefix != null && ClanName != null && LeaderName != null && DescriptionClan != null) {
+            return new Clan(ClanPrefix, ClanName, LeaderName, MoneyClan,
+                    HomeClan, TempRequest, TempMembers, DescriptionClan, TempSettings);
+        }
+        return null;
     }
 
     // Creating by leader
@@ -94,6 +237,8 @@ public class Clan {
         DescriptionClan = "Description of your clan";
         HomeClan = null;
         SettingsClan = new ClanSettings();
+
+        NeedToSave = true;
     }
 
     public void SendMessageForOnlinePlayers(String Message) {
@@ -286,4 +431,8 @@ public class Clan {
 
         return new Clan();
     }
+
+
+
+
 }
