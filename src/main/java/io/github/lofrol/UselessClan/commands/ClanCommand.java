@@ -367,6 +367,7 @@ public class ClanCommand extends Command {
                             return false;
                         }
                         SenderClan.PlayerJoinToClan(ClanRole.ROOKIE, AcceptedPlayerName);
+                        SenderClan.RemoveFromRequest(AcceptedPlayerName);
                         SenderClan.SendMessageForOnlinePlayers(String.format(
                                 "Player %s joined to your clan!", AcceptedPlayerName));
                     }

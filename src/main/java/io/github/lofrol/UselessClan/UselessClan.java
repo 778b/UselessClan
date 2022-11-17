@@ -59,13 +59,13 @@ public final class UselessClan extends JavaPlugin {
 
         MainManager.LoadClans();
 
-        getServer().getScheduler().runTask(this, new Runnable() {
+        getServer().getScheduler().runTaskTimer(this, new Runnable() {
             @Override
             public void run() {
                 getMainManager().SaveClans();
                 getLogger().log(Level.INFO, "Clans was saved by autosave");
             }
-        });
+        }, 24000, 24000);
 
         getLogger().log(Level.INFO, "Loaded successfully!");
     }

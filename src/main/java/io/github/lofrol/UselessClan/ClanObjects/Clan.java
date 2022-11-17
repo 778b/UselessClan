@@ -39,7 +39,6 @@ public class Clan {
 
     private ClanSettings SettingsClan;
 
-
     private Double MoneyClan;
     private Double MaxPrivateDistance;
 
@@ -356,6 +355,10 @@ public class Clan {
         OnlineMembers.remove(player);
         Members.remove(getClanMember(player.getName()));
         NeedToSave = true;
+    }
+
+    public void RemoveFromRequest(String PlayerName) {
+        Requests.remove(PlayerName);
     }
 
 
