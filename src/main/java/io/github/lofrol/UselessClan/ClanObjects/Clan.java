@@ -293,6 +293,7 @@ public class Clan {
             }
         }
         Requests.add(playerName);
+        NeedToSave = true;
         return true;
     }
 
@@ -308,6 +309,7 @@ public class Clan {
                 tempMember.setMemberRole(ClanRole.LEADER);
             }
         }
+        NeedToSave = true;
     }
 
     public boolean ChangeMemberRole(String MemberName, ClanRole newRole) {
@@ -318,6 +320,7 @@ public class Clan {
                 break;
             }
         }
+        NeedToSave = true;
         return true;
     }
 
@@ -331,6 +334,7 @@ public class Clan {
             OnlineMembers.put(tempPlayer, tempClanMember);
         }
         Members.add(tempClanMember);
+        NeedToSave = true;
         return;
     }
     public void PlayerLeavedFromClan(String PlayerName) {
@@ -343,6 +347,7 @@ public class Clan {
         for (ClanMember tempMember : Members) {
             if (tempMember.getPlayerName().equals(PlayerName)) {
                 Members.remove(tempMember);
+                NeedToSave = true;
                 return;
             }
         }
@@ -350,6 +355,7 @@ public class Clan {
     public void PlayerLeavedFromClan(Player player) {
         OnlineMembers.remove(player);
         Members.remove(getClanMember(player.getName()));
+        NeedToSave = true;
     }
 
 
@@ -393,18 +399,19 @@ public class Clan {
     /*
      *  Setters FUnctions
      */
-    public boolean setPrefixClan(String prefixClan) {
-        if (prefixClan.length() >= 3 && prefixClan.length() <=5) {
-            for (char tempChar : prefixClan.toCharArray()) {
-                // check for 0-9 or A-Z or a-z
+    public boolean setClanName(String newNameClan) {
+        if (newNameClan.length() >= 5 && newNameClan.length() <=15) {
+            for (char tempChar : newNameClan.toCharArray()) {
+                // check for 0-9 or A-Z or a-z or space or _
                 if (!((tempChar >= 48 && tempChar <= 57) ||
                         (tempChar >= 65 && tempChar <= 90) ||
-                        (tempChar >= 97 && tempChar <= 122)))
-                {
+                        (tempChar >= 97 && tempChar <= 122) ||
+                        tempChar == ' ' || tempChar == '_')) {
                     return false;
                 }
             }
-            PrefixClan = prefixClan;
+            NameClan = newNameClan;
+            NeedToSave = true;
             return true;
         }
         return false;
@@ -412,14 +419,17 @@ public class Clan {
 
     public void setHomeClan(Location newHomeLocation) {
         HomeClan = newHomeLocation;
+        NeedToSave = true;
     }
 
     public void DepositMoneyToClan(Double moneyClan) {
         MoneyClan += moneyClan;
+        NeedToSave = true;
     }
 
     public void WithdrawMoneyFromClan(Double moneyClan) {
         MoneyClan -= moneyClan;
+        NeedToSave = true;
     }
 
     public void SerializeClan(File Folder) {
