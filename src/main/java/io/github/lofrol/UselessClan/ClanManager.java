@@ -135,7 +135,7 @@ public class ClanManager {
         OnlineClanPlayers.put(player, tempClanPlayer);
 
         if (playerRole == ClanRole.LEADER || playerRole == ClanRole.OFFICER) {
-            player.sendMessage(String.format("Your clan have %d requests for join to Clan", tempClan.getRequestCount()));
+            player.sendMessage(String.format("Your clan have %d requests for join! ./clan requests", tempClan.getRequestCount()));
         }
 
 

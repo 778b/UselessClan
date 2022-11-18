@@ -325,6 +325,7 @@ public class ClanCommand extends Command {
                     return false;
                 }
                 sender.sendMessage("You send request for join to this clan, wait until leader or officer accept this request");
+                ClanToRequest.SendMessageForOnlineOfficers(String.format("Player %s was send request for join to you clan, type ./clan requests", tempPlayer.getName()));
                 return true;
             }
             else if (args[0].equalsIgnoreCase("deposit")) {

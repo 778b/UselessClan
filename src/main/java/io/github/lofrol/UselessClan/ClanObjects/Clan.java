@@ -22,32 +22,27 @@ public class Clan {
     /*
      *  Variables
      */
-    private String PrefixClan;
+    private final String PrefixClan;
 
     private String NameClan;
-    private String DescriptionClan;
+    private final String DescriptionClan;
 
-    private List<ClanMember> Members;
+    private final List<ClanMember> Members;
 
-    private List<String> Requests;
+    private final List<String> Requests;
 
-    private transient Map<Player, ClanMember> OnlineMembers;
+    private final transient Map<Player, ClanMember> OnlineMembers;
 
     private String LeaderName;
 
     private Location HomeClan;
 
-    private ClanSettings SettingsClan;
+    private final ClanSettings SettingsClan;
 
     private Double MoneyClan;
     private Double MaxPrivateDistance;
 
     private boolean NeedToSave = false;
-
-    @Deprecated
-    public Clan() {
-
-    }
 
     // Creating by file loader
     private Clan(String ClanPrefix, String ClanName, String LeaderName,
@@ -434,18 +429,4 @@ public class Clan {
         MoneyClan -= moneyClan;
         NeedToSave = true;
     }
-
-    public void SerializeClan(File Folder) {
-
-    }
-
-    public static Clan DeserializeClan(File ClanFile) {
-        //Clan tempClanObj = new Clan();
-
-        return new Clan();
-    }
-
-
-
-
 }
