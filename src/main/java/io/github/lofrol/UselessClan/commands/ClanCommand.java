@@ -5,6 +5,7 @@ import io.github.lofrol.UselessClan.ClanObjects.Clan;
 import io.github.lofrol.UselessClan.ClanObjects.ClanMember;
 import io.github.lofrol.UselessClan.ClanObjects.ClanRole;
 import io.github.lofrol.UselessClan.UselessClan;
+import io.github.lofrol.UselessClan.Utils.ChatSender;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
@@ -57,7 +58,7 @@ public class ClanCommand extends Command {
         int size = args.length;
         if (size == 0) {
             // just only /Clan
-            sender.sendMessage("Use command /Clan help, for access to clan system");
+            ChatSender.MessageTo(tempPlayer,"UselessClan", String.format("Use command &a/Clan help,%s for access to clan system", ChatSender.DefaultColor));
         }
         // /Clan help/create/info/mates/join/accept/leave/top/kick/promote/demote/requests/home/sethome
         else if (args[0].equalsIgnoreCase( "help")) {
