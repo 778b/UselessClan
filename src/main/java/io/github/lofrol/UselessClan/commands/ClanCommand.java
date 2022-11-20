@@ -10,6 +10,7 @@ import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.jetbrains.annotations.NotNull;
 
@@ -84,6 +85,11 @@ public class ClanCommand extends Command {
                 for (Clan tempClan : ManagerPtr.getServerClans().values()) {
                     sender.sendMessage(String.format("# %s          %s ", tempClan.getNameClan(), tempClan.getMoneyClan()));
                 }
+                return true;
+            }
+            else if (args[0].equalsIgnoreCase("version")) {
+                PluginDescriptionFile tempDescr =  ManagerPtr.OwnerPlugin.getDescription();
+                sender.sendMessage(String.format("Plugin version is %s" ,tempDescr.getVersion()));
                 return true;
             }
             else if (args[0].equalsIgnoreCase("create")) {
