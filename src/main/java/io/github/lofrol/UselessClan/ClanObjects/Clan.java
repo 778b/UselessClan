@@ -1,5 +1,6 @@
 package io.github.lofrol.UselessClan.ClanObjects;
 
+import io.github.lofrol.UselessClan.Utils.ChatSender;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -237,15 +238,16 @@ public class Clan {
 
     public void SendMessageForOnlinePlayers(String Message) {
         for (Player tempPlayer : OnlineMembers.keySet()) {
-            tempPlayer.sendMessage(String.format("[%s] %s", PrefixClan, Message));
+            ChatSender.MessageTo(tempPlayer, PrefixClan, Message);
         }
     }
 
     public void SendMessageForOnlineOfficers(String Message) {
+        String FormattedPrefix = "&9" + PrefixClan;
         for (Player tempPlayer : OnlineMembers.keySet()) {
             ClanRole tempRole = OnlineMembers.get(tempPlayer).getMemberRole();
             if (tempRole == ClanRole.OFFICER || tempRole == ClanRole.LEADER) {
-                tempPlayer.sendMessage(String.format("[%s] %s", PrefixClan, Message));
+                ChatSender.MessageTo(tempPlayer, FormattedPrefix, Message);
             }
         }
     }
