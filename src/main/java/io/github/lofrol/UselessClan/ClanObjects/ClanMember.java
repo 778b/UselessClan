@@ -9,7 +9,7 @@ public class ClanMember {
         GeneralPlayerDeposit = 0.d;
     }
 
-    public ClanMember(ClanRole role, String player, Double deposit) {
+    public ClanMember(ClanRole role, String player, double deposit) {
         MemberRole = role;
         PlayerName = player;
         GeneralPlayerDeposit = deposit;
@@ -17,7 +17,7 @@ public class ClanMember {
 
     private ClanRole MemberRole;
     private final String PlayerName;
-    private Double GeneralPlayerDeposit;
+    private double GeneralPlayerDeposit;
 
     public ClanRole getMemberRole() {
         return MemberRole;
@@ -27,7 +27,7 @@ public class ClanMember {
         return PlayerName;
     }
 
-    public Double getGeneralPlayerDeposit() {
+    public double getGeneralPlayerDeposit() {
         return GeneralPlayerDeposit;
     }
 
