@@ -1,7 +1,26 @@
-### UselessClan
-
-Simple plugin for clans to your server. Currently contains economics, roles and clan chat
-Support PlaceholderAPI from box
+# UselessClan
+#### Simple plugin for clans to your server. 
+#### Support economy, roles, requests, joins, clan home, promote and demote roles
+#
+## Currently support API:
+### PlaceholderAPI:   %rel_UselessClan_Prefix% && %rel_UselessClan_Role%
+### VaultAPI:         Economy system of clans
+#
+## Avalible default commands:
+#### /clan create [name]         - to create clan with prefix [name]
+#### /clan join [clanname]       - to send request for join to [clanname] clan
+#### /Clan top                   - to show top list of clans
+#### /Clan leave                 - to leave from your clan
+#### /Clan info                  - to show info about your clan
+#### /Clan home                  - to teleport to clans home
+#
+## Officers and Leader commands
+#### /Clan sethome               - to set clan home
+#### /Clan requests              - to see list of all requests to join your clan
+#### /Clan accept [playername]   - to accept [playername] for join to your clan
+#### /Clan kick [playername]     - to kick player [playername] from your clan
+#### /Clan promote [playername]  - to promote player [playername] of your clan
+#### /Clan demote [playername]   - to demote player [playername] of your clan
 
 ## IN ACTIVE DEVELOPMENT
 
