@@ -396,7 +396,7 @@ public class ClanCommand extends Command {
             }
             else if (args[0].equalsIgnoreCase("kick")) {
                 if (SenderClan != null) {
-                    if (SenderRole == SenderClan.getSettingsClan().RoleCanKick) {
+                    if (SenderRole.ordinal() >= SenderClan.getSettingsClan().RoleCanKick.ordinal()) {
                         ClanMember tempMember = SenderClan.getClanMember(args[1]);
                         if (tempMember == null) {
                             ChatSender.MessageTo(tempPlayer,"UselessClan", "&cCant find this player in your clan!");

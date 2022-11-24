@@ -1,6 +1,7 @@
 package io.github.lofrol.UselessClan;
 
 import io.github.lofrol.UselessClan.ClanObjects.*;
+import io.github.lofrol.UselessClan.Utils.ChatSender;
 import org.bukkit.Location;
 import org.bukkit.Server;
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -131,18 +132,26 @@ public class ClanManager {
             return;
         }
         ClanRole playerRole = tempClan.getMemberRole(player.getName());
+
+        ClanMember tempMember = new ClanMember(playerRole, player.getName());
+        tempClan.getOnlineMembers().put(player, tempMember);
         OnlinePlayerClan tempClanPlayer = new OnlinePlayerClan(tempClan);
         OnlineClanPlayers.put(player, tempClanPlayer);
 
+
         if (playerRole == ClanRole.LEADER || playerRole == ClanRole.OFFICER) {
-            player.sendMessage(String.format("Your clan have %d requests for join! ./clan requests", tempClan.getRequestCount()));
+            ChatSender.MessageTo(player,"UselessClan",
+                    String.format("Your clan have %d requests for join! ./clan requests", tempClan.getRequestCount()));
         }
 
 
         OwnerPlugin.getLogger().log(Level.INFO, String.format(  "Clan member %s Join to server, his clan is %s", player.getName(), tempClan.getNameClan()));
     }
     public void OnPlayerLeave(Player player) {
-        if (!OnlineClanPlayers.containsKey(player)) return;
+        OnlinePlayerClan tempOnlinePlayer = OnlineClanPlayers.get(player);
+        if (tempOnlinePlayer == null) return;
+
+        tempOnlinePlayer.getPlayerClan().getOnlineMembers().remove(player);
         OnlineClanPlayers.remove(player);
         OwnerPlugin.getLogger().log(Level.INFO, String.format("Clan member %s leaved from server", player.getName()));
     }
