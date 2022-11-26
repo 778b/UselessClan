@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static org.bukkit.Bukkit.getOfflinePlayer;
 import static org.bukkit.Bukkit.getServer;
 
 public class ClanCommand extends Command {
@@ -67,8 +68,10 @@ public class ClanCommand extends Command {
             ChatSender.MessageTo(tempPlayer,"UselessClan", "&a/Clan create %name&b - to create your own clan with name %name");
             ChatSender.MessageTo(tempPlayer,"UselessClan", "&a/Clan leave&b - to leave from your clan");
             ChatSender.MessageTo(tempPlayer,"UselessClan", "&a/Clan join %name&b - to send request for join the clan %name");
-            ChatSender.MessageTo(tempPlayer,"UselessClan", "&a/Clan deposit %value&b - to deposit money to your clan");
-            ChatSender.MessageTo(tempPlayer,"UselessClan", "&a/Clan withdraw %value&b - to withdraw money from your clan");
+            if (UselessClan.EconomyPtr != null) {
+                ChatSender.MessageTo(tempPlayer,"UselessClan", "&a/Clan deposit %value&b - to deposit money to your clan");
+                ChatSender.MessageTo(tempPlayer,"UselessClan", "&a/Clan withdraw %value&b - to withdraw money from your clan");
+            }
             ChatSender.MessageTo(tempPlayer,"UselessClan", "&a/Clan info&b - to info about your clan");
             ChatSender.MessageTo(tempPlayer,"UselessClan", "&a/Clan mates&b - to execute list of clanmates");
             ChatSender.MessageTo(tempPlayer,"UselessClan", "&a/Clan home&b - to teleport to home of your clan");
@@ -117,6 +120,8 @@ public class ClanCommand extends Command {
                 return true;
             }
             else if (args[0].equalsIgnoreCase("deposit")) {
+                if (UselessClan.EconomyPtr == null) return false;
+
                 if (SenderClan == null) {
                     ChatSender.MessageTo(tempPlayer,"UselessClan", HavntClanMessage);
                     return false;
@@ -125,6 +130,8 @@ public class ClanCommand extends Command {
                 return true;
             }
             else if (args[0].equalsIgnoreCase("withdraw")) {
+                if (UselessClan.EconomyPtr == null) return false;
+
                 if (SenderClan == null) {
                     ChatSender.MessageTo(tempPlayer,"UselessClan", HavntClanMessage);
                     return false;
@@ -284,7 +291,7 @@ public class ClanCommand extends Command {
                 if (SenderClan != null) {
                     if (SenderRole.ordinal() >= ClanRole.OFFICER.ordinal()) {
                         ChatSender.MessageTo(tempPlayer,"UselessClan",
-                                "&cYou forgot about player %name and %rank, use &a/Clan promote %name %rank");
+                                "&cYou forgot about some arguments :)");
                     }
                     else {
                         ChatSender.MessageTo(tempPlayer,"UselessClan", LowRankMessage);
@@ -330,14 +337,16 @@ public class ClanCommand extends Command {
                     ChatSender.MessageTo(tempPlayer,"UselessClan", "&cClan with this name already exist!");
                     return false;
                 }
-                // Creating new clan
-                double moneyToClan = 10000;
-                if (!UselessClan.EconomyPtr.has(tempPlayer, moneyToClan)) {
-                    ChatSender.MessageTo(tempPlayer,"UselessClan", String.format("&cFor create your own clan you must have more than %s$", moneyToClan));
-                    return false;
+                // if had Economy extension
+                if (UselessClan.EconomyPtr != null) {
+                    double moneyToClan = 10000;
+                    if (!UselessClan.EconomyPtr.has(getOfflinePlayer(tempPlayer.getName()), moneyToClan)) {
+                        ChatSender.MessageTo(tempPlayer, "UselessClan", String.format("&cFor create your own clan you must have more than %s$", moneyToClan));
+                        return false;
+                    }
+                    UselessClan.EconomyPtr.withdrawPlayer(tempPlayer, 10000.d);
                 }
-                UselessClan.EconomyPtr.withdrawPlayer(tempPlayer, 10000.d);
-
+                // Creating new clan
                 Clan NewClan = new Clan(args[1], tempPlayer.getName());
                 NewClan.PlayerJoinToClan(ClanRole.LEADER, tempPlayer.getName());
                 ManagerPtr.getServerClans().put(args[1], NewClan);
@@ -363,19 +372,25 @@ public class ClanCommand extends Command {
                 return true;
             }
             else if (args[0].equalsIgnoreCase("deposit")) {
+                if (UselessClan.EconomyPtr == null) return false;
+
                 if (SenderClan == null) {
                     ChatSender.MessageTo(tempPlayer,"UselessClan", HavntClanMessage);
                     return false;
                 }
                 double moneyToDeposit = Double.parseDouble(args[1]);
-                if (moneyToDeposit <= 0) {
-                    ChatSender.MessageTo(tempPlayer,"UselessClan", "&cWrong money count! Use [0;+inf)");
+                if (moneyToDeposit <= 0 || UselessClan.EconomyPtr.has(getOfflinePlayer(tempPlayer.getName()), moneyToDeposit)) {
+                    ChatSender.MessageTo(tempPlayer,"UselessClan", "&cWrong money count!");
                 }
                 SenderClan.DepositMoneyToClan(moneyToDeposit);
-                ChatSender.MessageTo(tempPlayer,"UselessClan", String.format("&aYou deposit %s to clan %s", moneyToDeposit, SenderClan.getNameClan()));
+
+                UselessClan.EconomyPtr.withdrawPlayer(tempPlayer, moneyToDeposit);
+                SenderClan.SendMessageForOnlinePlayers(String.format("player &a%s&b deposit &a%s&b to your clan!", tempPlayer.getName(), moneyToDeposit));
                 return true;
             }
             else if (args[0].equalsIgnoreCase("withdraw")) {
+                if (UselessClan.EconomyPtr == null) return false;
+
                 if (SenderClan == null) {
                     ChatSender.MessageTo(tempPlayer,"UselessClan", HavntClanMessage);
                     return false;
@@ -389,8 +404,14 @@ public class ClanCommand extends Command {
                     ChatSender.MessageTo(tempPlayer,"UselessClan", "&cWrong money count! Use [0;+inf)");
                 }
                 
-                SenderClan.DepositMoneyToClan(moneyToWithdraw );
-                ChatSender.MessageTo(tempPlayer,"UselessClan", String.format("&aYou withdraw %s from clan %s", moneyToWithdraw , SenderClan.getNameClan()));
+                double tempValue = SenderClan.WithdrawMoneyFromClan(moneyToWithdraw);
+                if (tempValue != 0) {
+                    ChatSender.MessageTo(tempPlayer,"UselessClan", String.format("&aYou cant withdraw %s from you clan", moneyToWithdraw));
+                    return false;
+                }
+
+                UselessClan.EconomyPtr.depositPlayer(getOfflinePlayer(tempPlayer.getName()), moneyToWithdraw);
+                SenderClan.SendMessageForOnlinePlayers(String.format("player &a%s&b withdraw &a%s&b from clan balance", tempPlayer.getName(), moneyToWithdraw));
                 return true;
             }
             else if (args[0].equalsIgnoreCase("accept")) {
@@ -531,6 +552,32 @@ public class ClanCommand extends Command {
                     ChatSender.MessageTo(tempPlayer,"UselessClan", HavntClanMessage);
                 }
                 return true;
+            }
+            else if (args[0].equalsIgnoreCase("level")) {
+                if (SenderClan != null) {
+                    if (SenderRole.ordinal() >= ClanRole.OFFICER.ordinal()) {
+                        int tempLevel = Integer.parseInt(args[1]);
+                        if (tempLevel >=0 && tempLevel <=15) {
+
+                        }
+                        else {
+                            ChatSender.MessageTo(tempPlayer,"UselessClan",
+                                    "&cYour arguments is broken :(");
+                        }
+                    }
+                    else {
+                        ChatSender.MessageTo(tempPlayer,"UselessClan", LowRankMessage);
+                    }
+                }
+                else {
+                    ChatSender.MessageTo(tempPlayer,"UselessClan", HavntClanMessage);
+                }
+                return true;
+            }
+            else {
+                ChatSender.MessageTo(tempPlayer,"UselessClan",
+                        "&cInvalid command. Use command &a/Clan help&b, for access to clan system");
+                return false;
             }
         }
         return true;

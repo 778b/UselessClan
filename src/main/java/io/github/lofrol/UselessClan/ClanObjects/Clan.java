@@ -40,8 +40,8 @@ public class Clan {
 
     private final ClanSettings SettingsClan;
 
-    private Double MoneyClan;
-    private Double MaxPrivateDistance;
+    private double MoneyClan;
+    private int ClanLevel;
 
     private boolean NeedToSave = false;
 
@@ -396,6 +396,11 @@ public class Clan {
         return Requests.size();
     }
 
+    public int getClanLevel() {
+        return ClanLevel;
+    }
+
+
     /*
      *  Setters FUnctions
      */
@@ -422,13 +427,21 @@ public class Clan {
         NeedToSave = true;
     }
 
-    public void DepositMoneyToClan(Double moneyClan) {
+    public void DepositMoneyToClan(double moneyClan) {
         MoneyClan += moneyClan;
         NeedToSave = true;
     }
 
-    public void WithdrawMoneyFromClan(Double moneyClan) {
-        MoneyClan -= moneyClan;
-        NeedToSave = true;
+    public double WithdrawMoneyFromClan(double moneyClan) {
+        if (MoneyClan - moneyClan >= 0 ) {
+            MoneyClan -= moneyClan;
+            NeedToSave = true;
+            return moneyClan;
+        }
+        return 0;
+    }
+
+    public void setClanLevel(int clanLevel) {
+        ClanLevel = clanLevel;
     }
 }

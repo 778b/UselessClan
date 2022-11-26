@@ -8,6 +8,7 @@ import net.milkbowl.vault.economy.Economy;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
 import java.util.logging.Level;
@@ -17,6 +18,7 @@ public final class UselessClan extends JavaPlugin {
 
     public ClanCommand MainCommand;
     public PlaceholderExpansion tempPlaceholderClan;
+    @Nullable
     public static Economy EconomyPtr = null;
     private ClanManager MainManager;
 
