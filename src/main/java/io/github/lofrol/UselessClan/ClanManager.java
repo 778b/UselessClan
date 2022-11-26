@@ -8,6 +8,7 @@ import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitTask;
 
 import java.io.File;
 import java.io.FileFilter;
@@ -36,7 +37,7 @@ public class ClanManager {
 
     private final UselessClan OwnerPlugin;
 
-    private final Map<Player, OnlinePlayerClan> OnlineClanPlayers;
+    private final Map<String, OnlinePlayerClan> OnlineClanPlayers;
     private final Map<String, Clan> ServerClans;
 
     public ClanManager(UselessClan owner) {
@@ -44,6 +45,16 @@ public class ClanManager {
         OnlineClanPlayers = new HashMap<>();
 
         OwnerPlugin = owner;
+    }
+
+    public static String ClanRoleSolver(ClanRole role) {
+        return switch (role) {
+            case ROOKIE -> "/";
+            case MEMBER -> "//";
+            case OFFICER -> "+";
+            case LEADER -> "#";
+            default -> "";
+        };
     }
 
     public void LoadClans() {
@@ -126,7 +137,7 @@ public class ClanManager {
     public Map<String, Clan> getServerClans() {
         return ServerClans;
     }
-    public Map<Player, OnlinePlayerClan> getOnlineClanPlayers() {
+    public Map<String, OnlinePlayerClan> getOnlineClanPlayers() {
         return OnlineClanPlayers;
     }
     public Clan getClanByName(String nameOfClan) {
@@ -161,24 +172,29 @@ public class ClanManager {
 
         ClanMember tempMember = new ClanMember(playerRole, player.getName());
         tempClan.getOnlineMembers().put(player, tempMember);
-        OnlinePlayerClan tempClanPlayer = new OnlinePlayerClan(tempClan);
-        OnlineClanPlayers.put(player, tempClanPlayer);
 
+        OnlinePlayerClan tempClanPlayer = new OnlinePlayerClan(tempClan, player);
+        OnlineClanPlayers.put(player.getName(), tempClanPlayer);
 
-        if (playerRole == ClanRole.LEADER || playerRole == ClanRole.OFFICER) {
-            ChatSender.MessageTo(player,"UselessClan",
-                    String.format("Your clan have %d requests for join! ./clan requests", tempClan.getRequestCount()));
+        getServer().getScheduler().runTaskLater(OwnerPlugin, new Runnable() {
+            @Override
+            public void run() {
+                if (playerRole == ClanRole.LEADER || playerRole == ClanRole.OFFICER) {
+                    ChatSender.MessageTo(player,"UselessClan",
+                            String.format("Your clan have %d requests for join! ./clan requests", tempClan.getRequestCount()));
+                }
+            }
         }
-
+        , 200);
 
         OwnerPlugin.getLogger().log(Level.INFO, String.format(  "Clan member %s Join to server, his clan is %s", player.getName(), tempClan.getNameClan()));
     }
     public void OnPlayerLeave(Player player) {
-        OnlinePlayerClan tempOnlinePlayer = OnlineClanPlayers.get(player);
+        OnlinePlayerClan tempOnlinePlayer = OnlineClanPlayers.get(player.getName());
         if (tempOnlinePlayer == null) return;
 
         tempOnlinePlayer.getPlayerClan().getOnlineMembers().remove(player);
-        OnlineClanPlayers.remove(player);
+        OnlineClanPlayers.remove(player.getName());
         OwnerPlugin.getLogger().log(Level.INFO, String.format("Clan member %s leaved from server", player.getName()));
     }
 

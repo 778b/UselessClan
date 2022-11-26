@@ -43,30 +43,27 @@ public class ClanChatCommand extends Command {
         int size = args.length;
         if (size == 0) return false;
 
-        OnlinePlayerClan SenderClan = ManagerPtr.getOnlineClanPlayers().get(tempPlayer);
+        OnlinePlayerClan SenderClan = ManagerPtr.getOnlineClanPlayers().get(tempPlayer.getName());
         if (SenderClan.getPlayerClan().getOnlineMembers().size() < 2) {
-            tempPlayer.sendMessage(ChatColor.GOLD + "0 Players in your clan.");
+            tempPlayer.sendMessage(ChatColor.GOLD + "0 Online Players in your clan.");
             return false;
         }
         // Only $maxLength length of message alloyed
-        String MegaString = "";
+        StringBuilder MegaString = new StringBuilder();
         int currentLength = 0;
         int maxLength = 200;
         for (String tempString : args) {
             currentLength += tempString.length();
             if (currentLength > maxLength) {
                 int rest = currentLength - maxLength;
-                MegaString += " " + tempString.substring(0, rest);
+                MegaString.append(" " ).append(tempString, 0, rest);
                 break;
             }
-            MegaString += " " + tempString;
-        }
-        for (Player OutputPlayer: SenderClan.getPlayerClan().getOnlineMembers().keySet()) {
-            OutputPlayer.sendMessage(ChatColor.GOLD + MegaString);
+            MegaString.append(" " ).append(tempString);
         }
 
-
-
+        SenderClan.getPlayerClan().SendMessageForOnlinePlayers(
+                String.format("&6%s &2->&b %s",tempPlayer.getName() ,MegaString.toString()));
         return true;
     }
 }

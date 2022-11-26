@@ -25,7 +25,7 @@ public class UselessListeners implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void PlayerJoin(PlayerJoinEvent event) {
-        getServer().getScheduler().runTaskLater(OwnerPlugin, bukkitTask -> OwnerPlugin.getMainManager().OnPlayerJoin(event.getPlayer()), 200);
+        OwnerPlugin.getMainManager().OnPlayerJoin(event.getPlayer());
     }
 
     @EventHandler(priority = EventPriority.MONITOR)

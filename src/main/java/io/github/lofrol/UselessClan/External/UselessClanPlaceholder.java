@@ -58,7 +58,7 @@ public class UselessClanPlaceholder extends PlaceholderExpansion {
             Clan tempClan = OwnerPlugin.getMainManager().FindClanToPlayer(player.getName());
             if (tempClan == null) return "";
             ClanMember tempMember = tempClan.getClanMember(player.getName());
-            return String.format("&r[&6%s&r]", ClanMember.ClanRoleSolver(tempMember.getMemberRole()));
+            return String.format("&r[&6%s&r]", ClanManager.ClanRoleSolver(tempMember.getMemberRole()));
         }
         else if (params.equalsIgnoreCase("clanlevel")) {
             Clan tempClan = OwnerPlugin.getMainManager().FindClanToPlayer(player.getName());
