@@ -42,13 +42,15 @@ public class Clan {
 
     private double MoneyClan;
     private int ClanLevel;
+    private String ClanRegionName;
 
     private boolean NeedToSave = false;
 
     // Creating by file loader
     private Clan(String ClanPrefix, String ClanName, String LeaderName,
                 Double MoneyClan, Location HomeClan, List<String> Requests,
-                List<ClanMember> Members, String DescriptionClan, ClanSettings SettingsClan)  {
+                List<ClanMember> Members, String DescriptionClan, ClanSettings SettingsClan,
+                int level, String RegionName)  {
         this.PrefixClan = ClanPrefix;
         this.NameClan = ClanName;
         this.LeaderName =  LeaderName;
@@ -58,6 +60,8 @@ public class Clan {
         this.DescriptionClan = DescriptionClan;
         this.HomeClan = HomeClan;
         this.SettingsClan = SettingsClan;
+        this.ClanLevel = level;
+        this.ClanRegionName = RegionName;
 
         this.OnlineMembers = new HashMap<>();
         NeedToSave = true;
@@ -73,6 +77,9 @@ public class Clan {
         ClanConfig.set("UselessClan.ClanLeader", LeaderName);
         ClanConfig.set("UselessClan.Money", MoneyClan);
         ClanConfig.set("UselessClan.Description", DescriptionClan);
+        ClanConfig.set("UselessClan.ClanLevel", ClanLevel);
+        ClanConfig.set("UselessClan.ClanRegionName", ClanRegionName);
+
 
         ClanConfig.set("UselessClan.Requests.size", Requests.size());
         for (int i = 0; i< Requests.size(); ++i) {
@@ -108,6 +115,8 @@ public class Clan {
         String LeaderName = ClanConfig.getString("UselessClan.ClanLeader");
         double MoneyClan = ClanConfig.getDouble("UselessClan.Money");
         String DescriptionClan = ClanConfig.getString("UselessClan.Description");
+        int ClanLevel = ClanConfig.getInt("UselessClan.ClanLevel");
+        String ClanRegion = ClanConfig.getString("UselessClan.ClanRegionName");
 
         // Home start
         Location HomeClan = null;
@@ -215,7 +224,8 @@ public class Clan {
 
         if (ClanPrefix != null && ClanName != null && LeaderName != null && DescriptionClan != null) {
             return new Clan(ClanPrefix, ClanName, LeaderName, MoneyClan,
-                    HomeClan, TempRequest, TempMembers, DescriptionClan, TempSettings);
+                    HomeClan, TempRequest, TempMembers, DescriptionClan,
+                    TempSettings, ClanLevel, ClanRegion);
         }
         return null;
     }
@@ -228,7 +238,9 @@ public class Clan {
         Requests = new ArrayList<>();
         Members = new ArrayList<>();
         OnlineMembers = new HashMap<>();
+        ClanLevel = 0;
         MoneyClan = 0.d;
+        ClanRegionName = null;
         DescriptionClan = "Description of your clan";
         HomeClan = null;
         SettingsClan = new ClanSettings();

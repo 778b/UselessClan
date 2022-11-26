@@ -2,6 +2,8 @@ package io.github.lofrol.UselessClan;
 
 import io.github.lofrol.UselessClan.External.UselessClanPlaceholder;
 import io.github.lofrol.UselessClan.Listeners.UselessListeners;
+import io.github.lofrol.UselessClan.commands.ClanAdminCommand;
+import io.github.lofrol.UselessClan.commands.ClanChatCommand;
 import io.github.lofrol.UselessClan.commands.ClanCommand;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import net.milkbowl.vault.economy.Economy;
@@ -15,8 +17,6 @@ import java.util.logging.Level;
 
 
 public final class UselessClan extends JavaPlugin {
-
-    public ClanCommand MainCommand;
     public PlaceholderExpansion tempPlaceholderClan;
     @Nullable
     public static Economy EconomyPtr = null;
@@ -46,18 +46,21 @@ public final class UselessClan extends JavaPlugin {
         if(getServer().getPluginManager().getPlugin("PlaceholderAPI") != null) {
             tempPlaceholderClan = new UselessClanPlaceholder(this);
             tempPlaceholderClan.register();
-            String Multistring = "";
+            StringBuilder Multistring = new StringBuilder();
             for (String placeholder : tempPlaceholderClan.getPlaceholders()) {
-                Multistring += " " + placeholder;
+                Multistring.append(" ").append(placeholder);
             }
             getLogger().log(Level.INFO, "Placeholders:"+ Multistring );
         }
 
         MainManager = new ClanManager(this);
 
-        MainCommand = ClanCommand.CreateDefaultInts(MainManager);
-        if (MainCommand.registerComamnd()) getLogger().log(Level.INFO, "Clan Command Loaded successfully!");
-        else getLogger().log(Level.OFF, "Clan Command cant be loaded!");
+        if (ClanCommand.CreateDefaultInts(MainManager).registerComamnd()) getLogger().log(Level.INFO, "Clan Command Loaded successfully!");
+        else getLogger().log(Level.SEVERE, "Clan Command cant be loaded!");
+        if (ClanAdminCommand.CreateDefaultInts(MainManager).registerComamnd()) getLogger().log(Level.INFO, "Admin Clan Command Loaded successfully!");
+        else getLogger().log(Level.SEVERE, "Admin Clan Command cant be loaded!");
+        if (ClanChatCommand.CreateDefaultInts(MainManager).registerComamnd()) getLogger().log(Level.INFO, "Clan Chat Command Loaded successfully!");
+        else getLogger().log(Level.SEVERE, "Clan Chat Command cant be loaded!");
 
         MainManager.LoadClans();
 

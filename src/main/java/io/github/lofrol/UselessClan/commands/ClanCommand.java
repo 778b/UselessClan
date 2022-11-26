@@ -99,7 +99,7 @@ public class ClanCommand extends Command {
                 return true;
             }
             else if (args[0].equalsIgnoreCase("version")) {
-                PluginDescriptionFile tempDescr =  ManagerPtr.OwnerPlugin.getDescription();
+                PluginDescriptionFile tempDescr =  ManagerPtr.getOwnerPlugin().getDescription();
                 ChatSender.MessageTo(tempPlayer,"UselessClan", String.format("Plugin version is %s" ,tempDescr.getVersion()));
                 return true;
             }
@@ -203,8 +203,9 @@ public class ClanCommand extends Command {
                 }
                 ChatSender.MessageTo(tempPlayer,"UselessClan", "########## CLAN INFO ##########");
                 ChatSender.MessageTo(tempPlayer,"UselessClan", String.format("# Name: %s", SenderClan.getNameClan()));
-                ChatSender.MessageTo(tempPlayer,"UselessClan", String.format("# LeaderName: %s", SenderClan.getLeaderName()));
                 ChatSender.MessageTo(tempPlayer,"UselessClan", String.format("# Prefix: %s", SenderClan.getPrefixClan()));
+                ChatSender.MessageTo(tempPlayer,"UselessClan", String.format("# Level: %s", SenderClan.getClanLevel()));
+                ChatSender.MessageTo(tempPlayer,"UselessClan", String.format("# LeaderName: %s", SenderClan.getLeaderName()));
                 ChatSender.MessageTo(tempPlayer,"UselessClan", String.format("# Count of Members: %s", SenderClan.getMembers().size()));
                 ChatSender.MessageTo(tempPlayer,"UselessClan", String.format("# Money: %s", SenderClan.getMoneyClan()));
                 ChatSender.MessageTo(tempPlayer,"UselessClan", String.format("# Your rank: %s", SenderRole.toString()));

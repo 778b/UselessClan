@@ -12,15 +12,29 @@ import org.bukkit.entity.Player;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.*;
 import java.util.logging.Level;
 
 import static org.bukkit.Bukkit.getServer;
 
 public class ClanManager {
+    public final static String[] ClanLevelColors = {
+            "&f",       //1 lvl
+            "&a",       //2 lvl
+            "&2",       //3 lvl
+            "&3",       //4 lvl
+            "&9",       //5 lvl
+            "&1",       //6 lvl
+            "&e",       //7 lvl
+            "&6",       //8 lvl
+            "&d",       //9 lvl
+            "&5",       //10 lvl
+    };
 
     private static final String ClanFolder = "Clans";
-    public final UselessClan OwnerPlugin; //@todo private
+
+    private final UselessClan OwnerPlugin;
 
     private final Map<Player, OnlinePlayerClan> OnlineClanPlayers;
     private final Map<String, Clan> ServerClans;
@@ -106,6 +120,9 @@ public class ClanManager {
     }
 
 
+    /*
+     *  Getters Functions
+     */
     public Map<String, Clan> getServerClans() {
         return ServerClans;
     }
@@ -115,6 +132,10 @@ public class ClanManager {
     public Clan getClanByName(String nameOfClan) {
         return ServerClans.get(nameOfClan);
     }
+    public UselessClan getOwnerPlugin() {
+        return OwnerPlugin;
+    }
+
     public Clan FindClanToPlayer(String PlayerName) {
         for (Clan tempClan : ServerClans.values()) {
             for (ClanMember tempMember : tempClan.getMembers()) {
@@ -125,6 +146,11 @@ public class ClanManager {
         }
         return null;
     }
+
+
+    /*
+     *  Listeners Functions
+     */
     public void OnPlayerJoin(Player player) {
         Clan tempClan = FindClanToPlayer(player.getName());
         if (tempClan == null) {

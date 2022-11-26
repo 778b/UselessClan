@@ -1,5 +1,6 @@
 package io.github.lofrol.UselessClan.External;
 
+import io.github.lofrol.UselessClan.ClanManager;
 import io.github.lofrol.UselessClan.ClanObjects.Clan;
 import io.github.lofrol.UselessClan.ClanObjects.ClanMember;
 import io.github.lofrol.UselessClan.UselessClan;
@@ -51,13 +52,19 @@ public class UselessClanPlaceholder extends PlaceholderExpansion {
         if(params.equalsIgnoreCase("prefix")) {
             Clan tempClan = OwnerPlugin.getMainManager().FindClanToPlayer(player.getName());
             if (tempClan == null) return "";
-            return String.format("&r[&6%s&r]", tempClan.getPrefixClan());
+            return String.format("&r[&6%s%s&r]", ClanManager.ClanLevelColors[tempClan.getClanLevel()], tempClan.getPrefixClan());
         }
         else if (params.equalsIgnoreCase("role")) {
             Clan tempClan = OwnerPlugin.getMainManager().FindClanToPlayer(player.getName());
             if (tempClan == null) return "";
             ClanMember tempMember = tempClan.getClanMember(player.getName());
             return String.format("&r[&6%s&r]", ClanMember.ClanRoleSolver(tempMember.getMemberRole()));
+        }
+        else if (params.equalsIgnoreCase("clanlevel")) {
+            Clan tempClan = OwnerPlugin.getMainManager().FindClanToPlayer(player.getName());
+            if (tempClan == null) return "";
+
+            return String.format("&r[&6%d&r]", tempClan.getClanLevel());
         }
         return "";
     }

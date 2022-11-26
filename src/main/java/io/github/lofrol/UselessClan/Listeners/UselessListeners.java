@@ -12,6 +12,8 @@ import org.bukkit.plugin.Plugin;
 
 import java.util.logging.Level;
 
+import static org.bukkit.Bukkit.getServer;
+
 public class UselessListeners implements Listener {
 
     private final UselessClan OwnerPlugin;
@@ -20,9 +22,10 @@ public class UselessListeners implements Listener {
         OwnerPlugin = owner;
     }
 
+
     @EventHandler(priority = EventPriority.MONITOR)
     public void PlayerJoin(PlayerJoinEvent event) {
-        OwnerPlugin.getMainManager().OnPlayerJoin(event.getPlayer());
+        getServer().getScheduler().runTaskLater(OwnerPlugin, bukkitTask -> OwnerPlugin.getMainManager().OnPlayerJoin(event.getPlayer()), 200);
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
