@@ -61,20 +61,28 @@ public class ClanCommand extends Command {
         }
         // /Clan help/create/info/mates/join/accept/leave/top/kick/promote/demote/requests/home/sethome
         else if (args[0].equalsIgnoreCase( "help")) {
-            ChatSender.MessageTo(tempPlayer,"UselessClan", "################### CLAN HELP ###################");
-            ChatSender.MessageTo(tempPlayer,"UselessClan", "&a/Clan help&b          - to call this menu");
-            ChatSender.MessageTo(tempPlayer,"UselessClan", "&a/Clan top&b           - top of all clans");
-            ChatSender.MessageTo(tempPlayer,"UselessClan", "&a/Clan create %name&b  - to create your own clan with name %name");
-            ChatSender.MessageTo(tempPlayer,"UselessClan", "&a/Clan leave&b         - to leave from your clan");
-            ChatSender.MessageTo(tempPlayer,"UselessClan", "&a/Clan join %name&b    - to send request for join the clan %name");
-            ChatSender.MessageTo(tempPlayer,"UselessClan", "&a/Clan info&b          - to info about your clan");
+            ChatSender.MessageTo(tempPlayer,"UselessClan", "############# CLAN HELP #############");
+            ChatSender.MessageTo(tempPlayer,"UselessClan", "&a/Clan help&b - to call this menu");
+            ChatSender.MessageTo(tempPlayer,"UselessClan", "&a/Clan top&b - top of all clans");
+            ChatSender.MessageTo(tempPlayer,"UselessClan", "&a/Clan create %name&b - to create your own clan with name %name");
+            ChatSender.MessageTo(tempPlayer,"UselessClan", "&a/Clan leave&b - to leave from your clan");
+            ChatSender.MessageTo(tempPlayer,"UselessClan", "&a/Clan join %name&b - to send request for join the clan %name");
+            ChatSender.MessageTo(tempPlayer,"UselessClan", "&a/Clan deposit %value&b - to deposit money to your clan");
+            ChatSender.MessageTo(tempPlayer,"UselessClan", "&a/Clan withdraw %value&b - to withdraw money from your clan");
+            ChatSender.MessageTo(tempPlayer,"UselessClan", "&a/Clan info&b - to info about your clan");
+            ChatSender.MessageTo(tempPlayer,"UselessClan", "&a/Clan mates&b - to execute list of clanmates");
+            ChatSender.MessageTo(tempPlayer,"UselessClan", "&a/Clan home&b - to teleport to home of your clan");
                 if (SenderClan == null) return false;
                 if (SenderRole == ClanRole.OFFICER || SenderRole == ClanRole.LEADER) {
-                    ChatSender.MessageTo(tempPlayer,"UselessClan", "&a/Clan requests&b      - to see list of all requests to join your clan");
-                    ChatSender.MessageTo(tempPlayer,"UselessClan", "&a/Clan accept %name&b  - to accept %name for join to your clan");
-                    ChatSender.MessageTo(tempPlayer,"UselessClan", "&a/Clan kick %name&b    - to kick player %name from your clan");
+                    ChatSender.MessageTo(tempPlayer,"UselessClan", "&a/Clan requests&b - to see list of all requests to join your clan");
+                    ChatSender.MessageTo(tempPlayer,"UselessClan", "&a/Clan accept %name&b - to accept %name for join to your clan");
+                    ChatSender.MessageTo(tempPlayer,"UselessClan", "&a/Clan kick %name&b - to kick player %name from your clan");
                     ChatSender.MessageTo(tempPlayer,"UselessClan", "&a/Clan promote %name&b - to promote player %name of your clan");
-                    ChatSender.MessageTo(tempPlayer,"UselessClan", "&a/Clan demote %name&b  - to demote player %name of your clan");
+                    ChatSender.MessageTo(tempPlayer,"UselessClan", "&a/Clan demote %name&b - to demote player %name of your clan");
+                    ChatSender.MessageTo(tempPlayer,"UselessClan", "&a/Clan level %???&b - to change level of your clan");
+                }
+                if (SenderRole.ordinal() >= SenderClan.getSettingsClan().HomeChangerMinRole.ordinal()) {
+                    ChatSender.MessageTo(tempPlayer,"UselessClan", "&a/Clan sethome&b - to set home location of your clan");
                 }
                 return true;
             }
@@ -260,6 +268,21 @@ public class ClanCommand extends Command {
             else if (args[0].equalsIgnoreCase("demote")) {
                 if (SenderClan != null) {
                     if (SenderRole == ClanRole.LEADER) {
+                        ChatSender.MessageTo(tempPlayer,"UselessClan",
+                                "&cYou forgot about player %name and %rank, use &a/Clan promote %name %rank");
+                    }
+                    else {
+                        ChatSender.MessageTo(tempPlayer,"UselessClan", LowRankMessage);
+                    }
+                }
+                else {
+                    ChatSender.MessageTo(tempPlayer,"UselessClan", HavntClanMessage);
+                }
+                return true;
+            }
+            else if (args[0].equalsIgnoreCase("level")) {
+                if (SenderClan != null) {
+                    if (SenderRole.ordinal() >= ClanRole.OFFICER.ordinal()) {
                         ChatSender.MessageTo(tempPlayer,"UselessClan",
                                 "&cYou forgot about player %name and %rank, use &a/Clan promote %name %rank");
                     }
