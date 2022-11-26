@@ -217,9 +217,14 @@ public class ClanCommand extends Command {
                     return false;
                 }
                 if (SenderRole == ClanRole.LEADER || SenderRole == ClanRole.OFFICER) {
-                    ChatSender.MessageTo(tempPlayer,"UselessClan", "######## CLAN REQUESTS ########");
-                    for (String tempMemberName: SenderClan.getRequests()) {
-                        ChatSender.MessageTo(tempPlayer,"UselessClan", String.format("# %s", tempMemberName));
+                    if (SenderClan.getRequests().size() > 0) {
+                        ChatSender.MessageTo(tempPlayer,"UselessClan", "######## CLAN REQUESTS ########");
+                        for (String tempMemberName: SenderClan.getRequests()) {
+                            ChatSender.MessageTo(tempPlayer,"UselessClan", String.format("# %s", tempMemberName));
+                        }
+                    }
+                    else {
+                        ChatSender.MessageTo(tempPlayer,"UselessClan", "0 requests for join to your clan");
                     }
                 }
                 else {

@@ -63,7 +63,7 @@ public class ClanChatCommand extends Command {
         }
 
         SenderClan.getPlayerClan().SendMessageForOnlinePlayers(
-                String.format("&6%s &2->&b %s",tempPlayer.getName() ,MegaString.toString()));
+                String.format("&6%s &2->&b%s",tempPlayer.getName() ,MegaString.toString()));
         return true;
     }
 }
