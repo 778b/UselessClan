@@ -412,6 +412,7 @@ public class Clan {
     public int getRequestCount() {
         return Requests.size();
     }
+    public String getClanRegionName() { return ClanRegionName; }
 
     public int getClanLevel() {
         return ClanLevel;
@@ -461,6 +462,7 @@ public class Clan {
         NeedToSave = true;
         return tempMoney;
     }
+    public void setClanRegionName(String regionName) { ClanRegionName = regionName; }
 
     public void setClanLevel(int clanLevel) {
         ClanLevel = clanLevel;

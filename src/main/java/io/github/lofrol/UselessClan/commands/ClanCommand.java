@@ -1,5 +1,10 @@
 package io.github.lofrol.UselessClan.commands;
 
+import com.sk89q.worldedit.bukkit.BukkitAdapter;
+import com.sk89q.worldguard.LocalPlayer;
+import com.sk89q.worldguard.WorldGuard;
+import com.sk89q.worldguard.protection.managers.RegionManager;
+import com.sk89q.worldguard.protection.regions.RegionContainer;
 import io.github.lofrol.UselessClan.ClanManager;
 import io.github.lofrol.UselessClan.ClanObjects.Clan;
 import io.github.lofrol.UselessClan.ClanObjects.ClanMember;
@@ -279,33 +284,40 @@ public class ClanCommand extends Command {
                 return true;
             }
             else if (args[0].equalsIgnoreCase("demote")) {
-                if (SenderClan != null) {
-                    if (SenderRole == ClanRole.LEADER) {
-                        ChatSender.MessageTo(tempPlayer,"UselessClan",
-                                "&cYou forgot about player %name and %rank, use &a/Clan promote %name %rank");
-                    }
-                    else {
-                        ChatSender.MessageTo(tempPlayer,"UselessClan", LowRankMessage);
-                    }
+                if (SenderClan == null) {
+                    ChatSender.MessageTo(tempPlayer, "UselessClan", HavntClanMessage);
+                    return false;
+                }
+                if (SenderRole == ClanRole.LEADER) {
+                    ChatSender.MessageTo(tempPlayer, "UselessClan",
+                            "&cYou forgot about player %name and %rank, use &a/Clan promote %name %rank");
                 }
                 else {
-                    ChatSender.MessageTo(tempPlayer,"UselessClan", HavntClanMessage);
+                    ChatSender.MessageTo(tempPlayer, "UselessClan", LowRankMessage);
                 }
                 return true;
             }
-            else if (args[0].equalsIgnoreCase("level")) {
-                if (SenderClan != null) {
-                    if (SenderRole.ordinal() >= ClanRole.OFFICER.ordinal()) {
-                        ChatSender.MessageTo(tempPlayer,"UselessClan",
-                                "&cYou forgot about some arguments :)");
-                    }
-                    else {
-                        ChatSender.MessageTo(tempPlayer,"UselessClan", LowRankMessage);
-                    }
+            else if (args[0].equalsIgnoreCase("claim")) {
+                if (SenderClan == null) {
+                    ChatSender.MessageTo(tempPlayer, "UselessClan", HavntClanMessage);
+                    return false;
                 }
-                else {
-                    ChatSender.MessageTo(tempPlayer,"UselessClan", HavntClanMessage);
+
+                if (SenderRole.ordinal() < ClanRole.OFFICER.ordinal()) {
+                    ChatSender.MessageTo(tempPlayer, "UselessClan", LowRankMessage);
+                    return false;
                 }
+
+
+                RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
+                RegionManager regions = container.get(BukkitAdapter.adapt(tempPlayer.getWorld()));
+
+
+
+                //regions.addRegion();
+
+                ChatSender.MessageTo(tempPlayer, "UselessClan",
+                        "&cYou forgot about some arguments :)");
                 return true;
             }
             else {
@@ -574,7 +586,7 @@ public class ClanCommand extends Command {
                 }
                 return true;
             }
-            else if (args[0].equalsIgnoreCase("level")) {
+            else if (args[0].equalsIgnoreCase("claim")) {
                 if (SenderClan != null) {
                     if (SenderRole.ordinal() >= ClanRole.OFFICER.ordinal()) {
                         int tempLevel = Integer.parseInt(args[1]);

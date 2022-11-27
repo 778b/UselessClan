@@ -25,7 +25,7 @@ repositories {
         url = 'https://repo.extendedclip.com/content/repositories/placeholderapi/'
     }
     maven {
-        name = 'worldguard-api'
+        name = 'worldguard-edit-api'
         url "https://maven.enginehub.org/repo/"
     }
 }
@@ -35,6 +35,7 @@ dependencies {
     compileOnly "com.github.MilkBowl:VaultAPI:1.7"
     compileOnly "me.clip:placeholderapi:2.11.2"
     compileOnly 'com.sk89q.worldguard:worldguard-bukkit:7.0.7'
+    compileOnly 'com.sk89q.worldedit:worldedit-bukkit:7.2.12'
 }
 
 def targetJavaVersion = 17

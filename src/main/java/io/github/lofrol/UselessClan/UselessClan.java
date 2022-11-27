@@ -1,5 +1,6 @@
 package io.github.lofrol.UselessClan;
 
+import com.sk89q.worldguard.WorldGuard;
 import io.github.lofrol.UselessClan.External.UselessClanPlaceholder;
 import io.github.lofrol.UselessClan.Listeners.UselessListeners;
 import io.github.lofrol.UselessClan.commands.ClanAdminCommand;
@@ -20,6 +21,7 @@ public final class UselessClan extends JavaPlugin {
     public PlaceholderExpansion tempPlaceholderClan;
     @Nullable
     public static Economy EconomyPtr = null;
+
     private ClanManager MainManager;
 
     @Override
