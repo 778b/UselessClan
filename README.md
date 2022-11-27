@@ -7,10 +7,14 @@
 ### VaultAPI:         Economy system of clans
 #
 ## Avalible default commands:
+#### /Clan version               - to show version of the plugin
 #### /clan create [name]         - to create clan with prefix [name]
 #### /clan join [clanname]       - to send request for join to [clanname] clan
 #### /Clan top                   - to show top list of clans
+#### /Clan mates                 - to show list of clanmates
 #### /Clan leave                 - to leave from your clan
+#### /Clan deposit [value]       - to deposite money to your clan
+#### /Clan withdraw [value]      - to withdraw money from your clan
 #### /Clan info                  - to show info about your clan
 #### /Clan home                  - to teleport to clans home
 #
