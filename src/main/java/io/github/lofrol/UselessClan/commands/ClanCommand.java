@@ -387,8 +387,9 @@ public class ClanCommand extends Command {
                     return false;
                 }
                 double moneyToDeposit = Double.parseDouble(args[1]);
-                if (moneyToDeposit <= 0 || UselessClan.EconomyPtr.has(getOfflinePlayer(tempPlayer.getName()), moneyToDeposit)) {
+                if (moneyToDeposit <= 0 || !UselessClan.EconomyPtr.has(getOfflinePlayer(tempPlayer.getName()), moneyToDeposit)) {
                     ChatSender.MessageTo(tempPlayer,"UselessClan", "&cWrong money count!");
+                    return false;
                 }
                 SenderClan.DepositMoneyToClan(moneyToDeposit);
 
@@ -413,13 +414,13 @@ public class ClanCommand extends Command {
                 }
                 
                 double tempValue = SenderClan.WithdrawMoneyFromClan(moneyToWithdraw);
-                if (tempValue != 0) {
-                    ChatSender.MessageTo(tempPlayer,"UselessClan", String.format("&aYou cant withdraw %s from you clan", moneyToWithdraw));
+                if (tempValue == 0) {
+                    ChatSender.MessageTo(tempPlayer,"UselessClan", String.format("&cYou cant withdraw &a%s&c from you clan", moneyToWithdraw));
                     return false;
                 }
 
-                UselessClan.EconomyPtr.depositPlayer(getOfflinePlayer(tempPlayer.getName()), moneyToWithdraw);
-                SenderClan.SendMessageForOnlinePlayers(String.format("player &a%s&b withdraw &a%s&b from clan balance", tempPlayer.getName(), moneyToWithdraw));
+                UselessClan.EconomyPtr.depositPlayer(getOfflinePlayer(tempPlayer.getName()), tempValue);
+                SenderClan.SendMessageForOnlinePlayers(String.format("player &a%s&b withdraw &a%s&b from clan balance", tempPlayer.getName(), tempValue));
                 return true;
             }
             else if (args[0].equalsIgnoreCase("accept")) {

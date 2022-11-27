@@ -450,12 +450,16 @@ public class Clan {
     }
 
     public double WithdrawMoneyFromClan(double moneyClan) {
+        double tempMoney = moneyClan;
         if (MoneyClan - moneyClan >= 0 ) {
             MoneyClan -= moneyClan;
-            NeedToSave = true;
-            return moneyClan;
         }
-        return 0;
+        else {
+            tempMoney = MoneyClan;
+            MoneyClan = 0;
+        }
+        NeedToSave = true;
+        return tempMoney;
     }
 
     public void setClanLevel(int clanLevel) {
