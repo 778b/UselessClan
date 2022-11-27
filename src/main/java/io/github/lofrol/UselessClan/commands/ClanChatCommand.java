@@ -45,7 +45,7 @@ public class ClanChatCommand extends Command {
 
         OnlinePlayerClan SenderClan = ManagerPtr.getOnlineClanPlayers().get(tempPlayer.getName());
         if (SenderClan.getPlayerClan().getOnlineMembers().size() < 2) {
-            tempPlayer.sendMessage(ChatColor.GOLD + "0 Online Players in your clan.");
+            tempPlayer.sendMessage(ChatColor.GOLD + "Only you're online of your clan");
             return false;
         }
         // Only $maxLength length of message alloyed
