@@ -295,14 +295,19 @@ public class Clan {
     }
 
     public boolean SendRequestForJoin(String playerName) {
-        for (String tempRequest : Requests) {
-            if (tempRequest.equals(playerName)) {
-                return false;
-            }
-        }
+        if (HaveRequestFromPlayer(playerName)) return false;
         Requests.add(playerName);
         NeedToSave = true;
         return true;
+    }
+
+    public boolean HaveRequestFromPlayer(String playerName) {
+        for (String tempRequest : Requests) {
+            if (tempRequest.equals(playerName)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public void ChangeLeader(String NewLeaderName) {

@@ -4,6 +4,7 @@ import io.github.lofrol.UselessClan.ClanManager;
 import io.github.lofrol.UselessClan.ClanObjects.Clan;
 import io.github.lofrol.UselessClan.ClanObjects.ClanMember;
 import io.github.lofrol.UselessClan.ClanObjects.ClanRole;
+import io.github.lofrol.UselessClan.ClanObjects.OnlinePlayerClan;
 import io.github.lofrol.UselessClan.UselessClan;
 import io.github.lofrol.UselessClan.Utils.ChatSender;
 import net.milkbowl.vault.economy.Economy;
@@ -20,8 +21,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static org.bukkit.Bukkit.getOfflinePlayer;
-import static org.bukkit.Bukkit.getServer;
+import static org.bukkit.Bukkit.*;
 
 public class ClanCommand extends Command {
 
@@ -354,8 +354,10 @@ public class ClanCommand extends Command {
                 }
                 // Creating new clan
                 Clan NewClan = new Clan(args[1], tempPlayer.getName());
-                NewClan.PlayerJoinToClan(ClanRole.LEADER, tempPlayer.getName());
                 ManagerPtr.getServerClans().put(args[1], NewClan);
+
+                NewClan.PlayerJoinToClan(ClanRole.LEADER, tempPlayer.getName());
+                ManagerPtr.RegisterOnlineClanPlayer(NewClan, tempPlayer);
                 ChatSender.MessageTo(tempPlayer,"UselessClan", String.format("Clan %s was created successfully!", args[1]));
             }
             else if (args[0].equalsIgnoreCase("join")) {
@@ -428,10 +430,22 @@ public class ClanCommand extends Command {
                             ChatSender.MessageTo(tempPlayer,"UselessClan", "&cThis player already in Clan");
                             return false;
                         }
+                        if (!SenderClan.HaveRequestFromPlayer(AcceptedPlayerName)) {
+                            ChatSender.MessageTo(tempPlayer,"UselessClan", "&cThis player didn't send request to you Clan");
+                            return false;
+                        }
                         SenderClan.PlayerJoinToClan(ClanRole.ROOKIE, AcceptedPlayerName);
                         SenderClan.RemoveFromRequest(AcceptedPlayerName);
-                        SenderClan.SendMessageForOnlinePlayers(String.format(
-                                "&aPlayer %s joined to your clan!", AcceptedPlayerName));
+                        Player AcceptedPlayer = getPlayer(AcceptedPlayerName);
+                        if (AcceptedPlayer != null) {
+                            ManagerPtr.RegisterOnlineClanPlayer(SenderClan, AcceptedPlayer);
+                            SenderClan.SendMessageForOnlinePlayers(String.format(
+                                    "Player &a%s&b joined to your clan!", AcceptedPlayerName));
+                        }
+                        else {
+                            SenderClan.SendMessageForOnlinePlayers(String.format(
+                                    "Player &a%s&b accepted to your clan!", AcceptedPlayerName));
+                        }
                     }
                     else {
                         ChatSender.MessageTo(tempPlayer,"UselessClan", LowRankMessage);
@@ -582,7 +596,7 @@ public class ClanCommand extends Command {
             }
             else {
                 ChatSender.MessageTo(tempPlayer,"UselessClan",
-                        "&cInvalid command. Use command &a/Clan help&b, for access to clan system");
+                        "&cInvalid command. Use command &a/Clan help&c, for access to clan system");
                 return false;
             }
         }

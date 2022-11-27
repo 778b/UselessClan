@@ -37,7 +37,7 @@ public class ClanManager {
 
     private final UselessClan OwnerPlugin;
 
-    private final Map<String, OnlinePlayerClan> OnlineClanPlayers;
+    private final Map<Player, OnlinePlayerClan> OnlineClanPlayers;
     private final Map<String, Clan> ServerClans;
 
     public ClanManager(UselessClan owner) {
@@ -137,7 +137,7 @@ public class ClanManager {
     public Map<String, Clan> getServerClans() {
         return ServerClans;
     }
-    public Map<String, OnlinePlayerClan> getOnlineClanPlayers() {
+    public Map<Player, OnlinePlayerClan> getOnlineClanPlayers() {
         return OnlineClanPlayers;
     }
     public Clan getClanByName(String nameOfClan) {
@@ -158,6 +158,16 @@ public class ClanManager {
         return null;
     }
 
+    public void RegisterOnlineClanPlayer(Clan playerClan, Player player) {
+        ClanRole playerRole = playerClan.getMemberRole(player.getName());
+
+        ClanMember tempMember = new ClanMember(playerRole, player.getName());
+        playerClan.getOnlineMembers().put(player, tempMember);
+
+        OnlinePlayerClan tempClanPlayer = new OnlinePlayerClan(playerClan);
+        OnlineClanPlayers.put(player, tempClanPlayer);
+    }
+
 
     /*
      *  Listeners Functions
@@ -170,12 +180,7 @@ public class ClanManager {
         }
         ClanRole playerRole = tempClan.getMemberRole(player.getName());
 
-        ClanMember tempMember = new ClanMember(playerRole, player.getName());
-        tempClan.getOnlineMembers().put(player, tempMember);
-
-        OnlinePlayerClan tempClanPlayer = new OnlinePlayerClan(tempClan, player);
-        OnlineClanPlayers.put(player.getName(), tempClanPlayer);
-
+        RegisterOnlineClanPlayer(tempClan, player);
         getServer().getScheduler().runTaskLater(OwnerPlugin, new Runnable() {
             @Override
             public void run() {
@@ -190,11 +195,11 @@ public class ClanManager {
         OwnerPlugin.getLogger().log(Level.INFO, String.format(  "Clan member %s Join to server, his clan is %s", player.getName(), tempClan.getNameClan()));
     }
     public void OnPlayerLeave(Player player) {
-        OnlinePlayerClan tempOnlinePlayer = OnlineClanPlayers.get(player.getName());
+        OnlinePlayerClan tempOnlinePlayer = OnlineClanPlayers.get(player);
         if (tempOnlinePlayer == null) return;
 
         tempOnlinePlayer.getPlayerClan().getOnlineMembers().remove(player);
-        OnlineClanPlayers.remove(player.getName());
+        OnlineClanPlayers.remove(player);
         OwnerPlugin.getLogger().log(Level.INFO, String.format("Clan member %s leaved from server", player.getName()));
     }
 

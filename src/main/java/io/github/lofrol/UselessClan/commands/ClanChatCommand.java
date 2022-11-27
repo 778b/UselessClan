@@ -2,6 +2,7 @@ package io.github.lofrol.UselessClan.commands;
 
 import io.github.lofrol.UselessClan.ClanManager;
 import io.github.lofrol.UselessClan.ClanObjects.OnlinePlayerClan;
+import io.github.lofrol.UselessClan.Utils.ChatSender;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -43,9 +44,10 @@ public class ClanChatCommand extends Command {
         int size = args.length;
         if (size == 0) return false;
 
-        OnlinePlayerClan SenderClan = ManagerPtr.getOnlineClanPlayers().get(tempPlayer.getName());
+        OnlinePlayerClan SenderClan = ManagerPtr.getOnlineClanPlayers().get(tempPlayer);
         if (SenderClan.getPlayerClan().getOnlineMembers().size() < 2) {
-            tempPlayer.sendMessage(ChatColor.GOLD + "Only you're online of your clan");
+            ChatSender.MessageTo(tempPlayer,"UselessClan",
+                    "&cOnly you are online from you clan");
             return false;
         }
         // Only $maxLength length of message alloyed
@@ -56,14 +58,14 @@ public class ClanChatCommand extends Command {
             currentLength += tempString.length();
             if (currentLength > maxLength) {
                 int rest = currentLength - maxLength;
-                MegaString.append(" " ).append(tempString, 0, rest);
+                MegaString.append(" ").append(tempString, 0, rest);
                 break;
             }
-            MegaString.append(" " ).append(tempString);
+            MegaString.append(" ").append(tempString);
         }
 
         SenderClan.getPlayerClan().SendMessageForOnlinePlayers(
-                String.format("&6%s &2->&b%s",tempPlayer.getName() ,MegaString.toString()));
+                String.format("&6%s &2->&b%s",tempPlayer.getName(), MegaString.toString()));
         return true;
     }
 }
