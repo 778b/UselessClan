@@ -1,8 +1,8 @@
 name: UselessClan
-version: 0.7
+version: 0.8
 main: io.github.lofrol.UselessClan.UselessClan
 api-version: 1.19
 softdepend: [ PlaceholderAPI ]
-depend: [ Vault ]
+depend: [ Vault, WorldGuard ]
 authors: [ LoFRoL ]
 description: Paper plugin about simple balanced clans 
