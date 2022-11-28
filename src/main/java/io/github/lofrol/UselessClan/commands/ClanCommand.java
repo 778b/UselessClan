@@ -1,9 +1,21 @@
 package io.github.lofrol.UselessClan.commands;
 
+import com.sk89q.worldedit.IncompleteRegionException;
+import com.sk89q.worldedit.LocalSession;
+import com.sk89q.worldedit.WorldEdit;
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
+import com.sk89q.worldedit.extension.platform.Actor;
+import com.sk89q.worldedit.math.BlockVector3;
+import com.sk89q.worldedit.regions.Region;
 import com.sk89q.worldguard.LocalPlayer;
 import com.sk89q.worldguard.WorldGuard;
+import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
+import com.sk89q.worldguard.domains.DefaultDomain;
+import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.managers.RegionManager;
+import com.sk89q.worldguard.protection.managers.RemovalStrategy;
+import com.sk89q.worldguard.protection.regions.ProtectedCuboidRegion;
+import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import com.sk89q.worldguard.protection.regions.RegionContainer;
 import io.github.lofrol.UselessClan.ClanManager;
 import io.github.lofrol.UselessClan.ClanObjects.Clan;
@@ -19,6 +31,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.RegisteredServiceProvider;
+import org.bukkit.util.BlockVector;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Comparator;
@@ -308,16 +321,73 @@ public class ClanCommand extends Command {
                     return false;
                 }
 
-
                 RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
-                RegionManager regions = container.get(BukkitAdapter.adapt(tempPlayer.getWorld()));
+                RegionManager tempRegionManager = container.get(BukkitAdapter.adapt(tempPlayer.getWorld()));
 
+                LocalPlayer tempLocalPlayer = WorldGuardPlugin.inst().wrapPlayer(tempPlayer);
 
+                LocalSession tempLocalSession = WorldEdit.getInstance().getSessionManager().get(tempLocalPlayer);
 
-                //regions.addRegion();
+                if (tempLocalSession == null || tempLocalSession.getSelectionWorld() == null) {
+                    ChatSender.MessageTo(tempPlayer, "UselessClan",  "&cPlease select an area first.");
+                    return false;
+                }
+                Region tempRegion = null;
+
+                try {
+                    tempRegion = tempLocalSession.getRegionSelector(tempLocalSession.getSelectionWorld()).getRegion();
+                } catch (IncompleteRegionException e) {
+                    ChatSender.MessageTo(tempPlayer, "UselessClan",  "&cInternal error, RIP #1");
+                    throw new RuntimeException(e);
+                }
+
+                if (tempRegionManager == null) {
+                    ChatSender.MessageTo(tempPlayer, "UselessClan",  "&cInternal error, RIP #2");
+                    return false;
+                }
+                if (tempRegion == null) {
+                    ChatSender.MessageTo(tempPlayer, "UselessClan",  "&cInternal error, RIP #3");
+                    return false;
+                }
+                {
+                    double tempDistance = Math.sqrt(Math.pow(tempRegion.getMaximumPoint().getBlockX() - tempRegion.getMinimumPoint().getBlockX(), 2)
+                            + Math.pow(tempRegion.getMaximumPoint().getBlockZ() - tempRegion.getMinimumPoint().getBlockZ(), 2));
+                    if (tempDistance > SenderClan.getClanLevel() * 75) {
+                        ChatSender.MessageTo(tempPlayer, "UselessClan",
+                                String.format("&cYour clan cant have more than &a%d&a distance between points, but you selected &a%s&a", SenderClan.getClanLevel() * 75, tempDistance));
+                        return false;
+                    }
+                }
+
+                BlockVector3 FirstPoint = BlockVector3.at(tempRegion.getMinimumPoint().getBlockX(),-100,tempRegion.getMinimumPoint().getZ());
+                BlockVector3 SecondPoint = BlockVector3.at(tempRegion.getMaximumPoint().getBlockX(),300,tempRegion.getMaximumPoint().getZ());
+                ProtectedRegion tempProtectedRegion = new ProtectedCuboidRegion(SenderClan.getPrefixClan(), FirstPoint, SecondPoint);
+
+                ApplicableRegionSet tempRegionApp = tempRegionManager.getApplicableRegions(tempProtectedRegion);
+
+                if (tempRegionApp.size() > 0) {
+                    ChatSender.MessageTo(tempPlayer, "UselessClan",
+                            "&cSelected territory overlap another region!");
+                    return false;
+                }
+                ProtectedRegion tempPrevious = tempRegionManager.getRegion(SenderClan.getPrefixClan());
+                if (tempPrevious != null) {
+                    tempRegionManager.removeRegion(SenderClan.getPrefixClan(), RemovalStrategy.REMOVE_CHILDREN);
+                    ChatSender.MessageTo(tempPlayer, "UselessClan",
+                            "&aYour previous region was deleted ...");
+                }
+                DefaultDomain tempDomain = new DefaultDomain();
+
+                for (ClanMember tempMember : SenderClan.getMembers()) {
+                    tempDomain.addPlayer(tempMember.getPlayerName());
+                }
+
+                tempProtectedRegion.setMembers(tempDomain);
+
+                tempRegionManager.addRegion(tempProtectedRegion);
 
                 ChatSender.MessageTo(tempPlayer, "UselessClan",
-                        "&cYou forgot about some arguments :)");
+                        "&aYou Successfully claim this territory :)");
                 return true;
             }
             else {
@@ -362,7 +432,7 @@ public class ClanCommand extends Command {
                         ChatSender.MessageTo(tempPlayer, "UselessClan", String.format("&cFor create your own clan you must have more than %s$", moneyToClan));
                         return false;
                     }
-                    UselessClan.EconomyPtr.withdrawPlayer(tempPlayer, 10000.d);
+                    UselessClan.EconomyPtr.withdrawPlayer(tempPlayer, moneyToClan);
                 }
                 // Creating new clan
                 Clan NewClan = new Clan(args[1], tempPlayer.getName());
