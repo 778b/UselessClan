@@ -4,7 +4,6 @@ import com.sk89q.worldedit.IncompleteRegionException;
 import com.sk89q.worldedit.LocalSession;
 import com.sk89q.worldedit.WorldEdit;
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
-import com.sk89q.worldedit.extension.platform.Actor;
 import com.sk89q.worldedit.math.BlockVector3;
 import com.sk89q.worldedit.regions.Region;
 import com.sk89q.worldguard.LocalPlayer;
@@ -21,20 +20,16 @@ import io.github.lofrol.UselessClan.ClanManager;
 import io.github.lofrol.UselessClan.ClanObjects.Clan;
 import io.github.lofrol.UselessClan.ClanObjects.ClanMember;
 import io.github.lofrol.UselessClan.ClanObjects.ClanRole;
-import io.github.lofrol.UselessClan.ClanObjects.OnlinePlayerClan;
 import io.github.lofrol.UselessClan.UselessClan;
 import io.github.lofrol.UselessClan.Utils.ChatSender;
-import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginDescriptionFile;
-import org.bukkit.plugin.RegisteredServiceProvider;
-import org.bukkit.util.BlockVector;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -44,7 +39,7 @@ import static org.bukkit.Bukkit.*;
 public class ClanCommand extends Command {
 
     private ClanManager ManagerPtr;
-    public static ClanCommand CreateDefaultInts(ClanManager manager) {
+    public static ClanCommand CreateDefaultInst(ClanManager manager) {
         ClanCommand tempInst = new ClanCommand("Clan", "Default command for access to the clan system",
                 "Use &5/Clan help&r for learning more", Stream.of("clan", "Clan").collect(Collectors.toList()));
 
@@ -53,7 +48,7 @@ public class ClanCommand extends Command {
         return tempInst;
     }
 
-    public boolean registerComamnd() {
+    public boolean registerCommand() {
         return getServer().getCommandMap().register("[UselessClan]", this);
     }
 
@@ -321,6 +316,12 @@ public class ClanCommand extends Command {
                     return false;
                 }
 
+                if (SenderClan.getClanLevel() < 1) {
+                    ChatSender.MessageTo(tempPlayer, "UselessClan",
+                            "&c0 level clan cant claim a territory!");
+                    return false;
+                }
+
                 RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
                 RegionManager tempRegionManager = container.get(BukkitAdapter.adapt(tempPlayer.getWorld()));
 
@@ -332,7 +333,7 @@ public class ClanCommand extends Command {
                     ChatSender.MessageTo(tempPlayer, "UselessClan",  "&cPlease select an area first.");
                     return false;
                 }
-                Region tempRegion = null;
+                Region tempRegion;
 
                 try {
                     tempRegion = tempLocalSession.getRegionSelector(tempLocalSession.getSelectionWorld()).getRegion();
@@ -352,7 +353,7 @@ public class ClanCommand extends Command {
                 {
                     double tempDistance = Math.sqrt(Math.pow(tempRegion.getMaximumPoint().getBlockX() - tempRegion.getMinimumPoint().getBlockX(), 2)
                             + Math.pow(tempRegion.getMaximumPoint().getBlockZ() - tempRegion.getMinimumPoint().getBlockZ(), 2));
-                    if (tempDistance > SenderClan.getClanLevel() * 75) {
+                    if (tempDistance > SenderClan.getClanLevel() * 50) {
                         ChatSender.MessageTo(tempPlayer, "UselessClan",
                                 String.format("&cYour clan cant have more than &a%d&a distance between points, but you selected &a%s&a", SenderClan.getClanLevel() * 75, tempDistance));
                         return false;
@@ -366,15 +367,27 @@ public class ClanCommand extends Command {
                 ApplicableRegionSet tempRegionApp = tempRegionManager.getApplicableRegions(tempProtectedRegion);
 
                 if (tempRegionApp.size() > 0) {
-                    ChatSender.MessageTo(tempPlayer, "UselessClan",
-                            "&cSelected territory overlap another region!");
-                    return false;
+                    if (tempRegionApp.size() == 1) {
+                        ProtectedRegion tempProtected = tempRegionApp.getRegions().iterator().next();
+                        if (!tempProtected.getId().equalsIgnoreCase(SenderClan.getPrefixClan())) {
+                            ChatSender.MessageTo(tempPlayer, "UselessClan",
+                                    "&cSelected territory overlap another region!");
+                            return false;
+                        }
+                    }
+                    else {
+                        ChatSender.MessageTo(tempPlayer, "UselessClan",
+                                "&cSelected territory overlap another region!");
+                        return false;
+                    }
                 }
-                ProtectedRegion tempPrevious = tempRegionManager.getRegion(SenderClan.getPrefixClan());
-                if (tempPrevious != null) {
-                    tempRegionManager.removeRegion(SenderClan.getPrefixClan(), RemovalStrategy.REMOVE_CHILDREN);
-                    ChatSender.MessageTo(tempPlayer, "UselessClan",
-                            "&aYour previous region was deleted ...");
+                if (SenderClan.getClanRegionName() != null) {
+                    ProtectedRegion tempPrevious = tempRegionManager.getRegion(SenderClan.getClanRegionName());
+                    if (tempPrevious != null) {
+                        tempRegionManager.removeRegion(SenderClan.getPrefixClan(), RemovalStrategy.REMOVE_CHILDREN);
+                        ChatSender.MessageTo(tempPlayer, "UselessClan",
+                                "&aYour previous region was deleted ...");
+                    }
                 }
                 DefaultDomain tempDomain = new DefaultDomain();
 
@@ -385,7 +398,7 @@ public class ClanCommand extends Command {
                 tempProtectedRegion.setMembers(tempDomain);
 
                 tempRegionManager.addRegion(tempProtectedRegion);
-
+                SenderClan.setClanRegionName(tempProtectedRegion.getId());
                 ChatSender.MessageTo(tempPlayer, "UselessClan",
                         "&aYou Successfully claim this territory :)");
                 return true;
@@ -474,6 +487,8 @@ public class ClanCommand extends Command {
                     return false;
                 }
                 SenderClan.DepositMoneyToClan(moneyToDeposit);
+                ClanMember tempMember = SenderClan.getClanMember(tempPlayer.getName());
+                tempMember.addGeneralPlayerDeposit(moneyToDeposit);
 
                 UselessClan.EconomyPtr.withdrawPlayer(tempPlayer, moneyToDeposit);
                 SenderClan.SendMessageForOnlinePlayers(String.format("player &a%s&b deposit &a%s&b to your clan!", tempPlayer.getName(), moneyToDeposit));
@@ -501,6 +516,8 @@ public class ClanCommand extends Command {
                     return false;
                 }
 
+                ClanMember tempMember = SenderClan.getClanMember(tempPlayer.getName());
+                tempMember.addGeneralPlayerDeposit(-moneyToWithdraw);
                 UselessClan.EconomyPtr.depositPlayer(getOfflinePlayer(tempPlayer.getName()), tempValue);
                 SenderClan.SendMessageForOnlinePlayers(String.format("player &a%s&b withdraw &a%s&b from clan balance", tempPlayer.getName(), tempValue));
                 return true;
@@ -520,6 +537,25 @@ public class ClanCommand extends Command {
                         SenderClan.PlayerJoinToClan(ClanRole.ROOKIE, AcceptedPlayerName);
                         SenderClan.RemoveFromRequest(AcceptedPlayerName);
                         Player AcceptedPlayer = getPlayer(AcceptedPlayerName);
+                        if (SenderClan.getClanRegionName() != null) {
+                            RegionContainer tempRegionContainer = WorldGuard.getInstance().getPlatform().getRegionContainer();
+                            World tempWorld = getServer().getWorld("world");
+                            if (tempWorld == null) {
+                                ChatSender.MessageTo(tempPlayer,"UselessClan", "&cError cant add new player to region! #1");
+                                return false;
+                            }
+                            RegionManager tempRegionManager = tempRegionContainer.get(BukkitAdapter.adapt(tempWorld));
+                            if (tempRegionManager == null) {
+                                ChatSender.MessageTo(tempPlayer,"UselessClan", "&cError cant add new player to region! #2");
+                                return false;
+                            }
+                            ProtectedRegion tempRegion = tempRegionManager.getRegion(SenderClan.getClanRegionName());
+                            if (tempRegion == null) {
+                                ChatSender.MessageTo(tempPlayer,"UselessClan", "&cError cant add new player to region! #3");
+                                return false;
+                            }
+                            tempRegion.getMembers().addPlayer(AcceptedPlayerName);
+                        }
                         if (AcceptedPlayer != null) {
                             ManagerPtr.RegisterOnlineClanPlayer(SenderClan, AcceptedPlayer);
                             SenderClan.SendMessageForOnlinePlayers(String.format(
@@ -552,6 +588,25 @@ public class ClanCommand extends Command {
                         SenderClan.PlayerLeavedFromClan(tempMember.getPlayerName());
                         SenderClan.SendMessageForOnlinePlayers(String.format(
                                 "&cPlayer %s was kicked from your clan!", tempMember.getPlayerName()));
+                        if (SenderClan.getClanRegionName() != null) {
+                            RegionContainer tempRegionContainer = WorldGuard.getInstance().getPlatform().getRegionContainer();
+                            World tempWorld = getServer().getWorld("world");
+                            if (tempWorld == null) {
+                                ChatSender.MessageTo(tempPlayer,"UselessClan", "&cError cant remove player from region! #1");
+                                return false;
+                            }
+                            RegionManager tempRegionManager = tempRegionContainer.get(BukkitAdapter.adapt(tempWorld));
+                            if (tempRegionManager == null) {
+                                ChatSender.MessageTo(tempPlayer,"UselessClan", "&cError cant remove player from region! #2");
+                                return false;
+                            }
+                            ProtectedRegion tempRegion = tempRegionManager.getRegion(SenderClan.getClanRegionName());
+                            if (tempRegion == null) {
+                                ChatSender.MessageTo(tempPlayer,"UselessClan", "&cError cant remove player from region! #3");
+                                return false;
+                            }
+                            tempRegion.getMembers().removePlayer(tempMember.getPlayerName());
+                        }
                     }
                     else {
                         ChatSender.MessageTo(tempPlayer,"UselessClan", LowRankMessage);
@@ -576,7 +631,7 @@ public class ClanCommand extends Command {
                                 return false;
                             }
                             SenderClan.SendMessageForOnlinePlayers(String.format(
-                                    "&aPlayer %s was promoted to %s", tempClanMember.getPlayerName(), ClanRole.MEMBER.toString()));
+                                    "&aPlayer %s was promoted to %s", tempClanMember.getPlayerName(), ClanRole.MEMBER));
                         }
                         else if (tempClanMember.getMemberRole() == ClanRole.MEMBER) {
                             if (SenderRole == ClanRole.LEADER) {
@@ -585,7 +640,7 @@ public class ClanCommand extends Command {
                                     return false;
                                 }
                                 SenderClan.SendMessageForOnlinePlayers(String.format(
-                                        "&aPlayer %s was promoted to %s", tempClanMember.getPlayerName(), ClanRole.OFFICER.toString()));
+                                        "&aPlayer %s was promoted to %s", tempClanMember.getPlayerName(), ClanRole.OFFICER));
                             }
                             else {
                                 ChatSender.MessageTo(tempPlayer,"UselessClan", LowRankMessage);
@@ -628,7 +683,7 @@ public class ClanCommand extends Command {
                                 return false;
                             }
                             SenderClan.SendMessageForOnlinePlayers(String.format(
-                                    "&cPlayer %s was demoted to %s", tempClanMember.getPlayerName(), ClanRole.ROOKIE.toString()));
+                                    "&cPlayer %s was demoted to %s", tempClanMember.getPlayerName(), ClanRole.ROOKIE));
                         }
                         else if (tempClanMember.getMemberRole() == ClanRole.OFFICER) {
                             if (SenderRole == ClanRole.LEADER) {
@@ -637,7 +692,7 @@ public class ClanCommand extends Command {
                                     return false;
                                 }
                                 SenderClan.SendMessageForOnlinePlayers(String.format(
-                                        "&cPlayer %s was demoted to %s", tempClanMember.getPlayerName(), ClanRole.MEMBER.toString()));
+                                        "&cPlayer %s was demoted to %s", tempClanMember.getPlayerName(), ClanRole.MEMBER));
                             }
                             else {
                                 ChatSender.MessageTo(tempPlayer,"UselessClan", LowRankMessage);
@@ -645,27 +700,6 @@ public class ClanCommand extends Command {
                         }
                         else {
                             ChatSender.MessageTo(tempPlayer,"UselessClan", "Nothing changed, :(");
-                        }
-                    }
-                    else {
-                        ChatSender.MessageTo(tempPlayer,"UselessClan", LowRankMessage);
-                    }
-                }
-                else {
-                    ChatSender.MessageTo(tempPlayer,"UselessClan", HavntClanMessage);
-                }
-                return true;
-            }
-            else if (args[0].equalsIgnoreCase("claim")) {
-                if (SenderClan != null) {
-                    if (SenderRole.ordinal() >= ClanRole.OFFICER.ordinal()) {
-                        int tempLevel = Integer.parseInt(args[1]);
-                        if (tempLevel >=0 && tempLevel <=15) {
-
-                        }
-                        else {
-                            ChatSender.MessageTo(tempPlayer,"UselessClan",
-                                    "&cYour arguments is broken :(");
                         }
                     }
                     else {

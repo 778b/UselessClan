@@ -2,6 +2,7 @@ package io.github.lofrol.UselessClan.commands;
 
 import io.github.lofrol.UselessClan.ClanManager;
 import io.github.lofrol.UselessClan.ClanObjects.Clan;
+import io.github.lofrol.UselessClan.Utils.ChatSender;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -36,81 +37,91 @@ public class ClanAdminCommand extends Command {
 
     @Override
     public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] args) {
-        Player tempPlayer = (Player)(sender);
-        if (tempPlayer == null) return false;
+        if (!(sender instanceof Player tempPlayer)) return false;
 
         if (!tempPlayer.hasPermission("UselessClan.Admin")) return false;
 
         int size = args.length;
         if (size == 0) {
             // just only /ClanAdmin
-            sender.sendMessage("Use command /ClanAdmin help, for access to clan system");
+            ChatSender.MessageTo(tempPlayer, "&4UselessClan","Use command /ClanAdmin help, for access to clan system");
             return true;
         }
         else if (size == 1) {
             // /Clan help/list/info/delete/force
-            sender.sendMessage("arg[0] = " + args[0] + " size = " + size);
             if (args[0].equalsIgnoreCase( "help")) {
-                sender.sendMessage("######################### CLAN HELP #########################");
-                sender.sendMessage("/ClAd                                - to call this menu");
-                sender.sendMessage("/ClAd list                           - list of all clans");
-                sender.sendMessage("/ClAd info   %name                   - to info any clan");
-                sender.sendMessage("/ClAd delete %name                   - to info any clan");
-                sender.sendMessage("/ClAd force  %name %setting %args    - to force modify clan");
+                ChatSender.MessageTo(tempPlayer, "&4UselessClan","#################### CLAN HELP ####################");
+                ChatSender.MessageTo(tempPlayer, "&4UselessClan","/ClAd - to call this menu");
+                ChatSender.MessageTo(tempPlayer, "&4UselessClan","/ClAd list - list of all clans");
+                ChatSender.MessageTo(tempPlayer, "&4UselessClan","/ClAd info %name - to info any clan");
+                ChatSender.MessageTo(tempPlayer, "&4UselessClan","/ClAd delete %name - to info any clan");
+                ChatSender.MessageTo(tempPlayer, "&4UselessClan","/ClAd level %name %level - to force level any clan");
                 return true;
             }
             else if (args[0].equalsIgnoreCase("list")) {
-                sender.sendMessage("########## CLAN TOP ##########");
+                ChatSender.MessageTo(tempPlayer, "&4UselessClan","########## CLAN LIST ##########");
+                for (Clan tempClan : ManagerPtr.getServerClans().values()) {
+                    ChatSender.MessageTo(tempPlayer, "&4UselessClan",
+                            String.format("# Name:&a%s&b, level:&a%d&b", tempClan.getNameClan(), tempClan.getClanLevel()));
+                }
                 return true;
             }
             else if (args[0].equalsIgnoreCase("info")) {
-                sender.sendMessage("You forgot about clan %name, use /ClAd info %name, %name = name of clan");
+                ChatSender.MessageTo(tempPlayer, "&4UselessClan","You forgot about clan %name, use /ClAd info %name, %name = name of clan");
                 return true;
             }
             else if (args[0].equalsIgnoreCase("delete")) {
-                sender.sendMessage("You forgot about clan %name, use /ClAd delete %name, %name = name of clan");
-                return true;
-            }
-            else if (args[0].equalsIgnoreCase("force")) {
-                sender.sendMessage("You forgot about arguments, use /ClAd force %name %setting %args," +
-                        "%name = name of clan, %setting = setting to change, %args = new value or arguments");
+                ChatSender.MessageTo(tempPlayer, "&4UselessClan","You forgot about clan %name, use /ClAd delete %name, %name = name of clan");
                 return true;
             }
         }
         else if (size == 2) {
             if (args[0].equalsIgnoreCase("info")) {
-                sender.sendMessage("Admin Info about this clan");
+                Clan findedClan = ManagerPtr.getServerClans().get(args[1]);
+                if (findedClan == null) {
+                    ChatSender.MessageTo(tempPlayer, "&4UselessClan","&cThis clan didnt exist!");
+                    return false;
+                }
+                ChatSender.MessageTo(tempPlayer,"UselessClan", String.format("### CLAN %s INFO ###", findedClan.getPrefixClan()));
+                ChatSender.MessageTo(tempPlayer,"UselessClan", String.format("# Name: %s", findedClan.getNameClan()));
+                ChatSender.MessageTo(tempPlayer,"UselessClan", String.format("# Prefix: %s", findedClan.getPrefixClan()));
+                ChatSender.MessageTo(tempPlayer,"UselessClan", String.format("# Level: %s", findedClan.getClanLevel()));
+                ChatSender.MessageTo(tempPlayer,"UselessClan", String.format("# LeaderName: %s", findedClan.getLeaderName()));
+                ChatSender.MessageTo(tempPlayer,"UselessClan", String.format("# Count of Members: %s", findedClan.getMembers().size()));
+                ChatSender.MessageTo(tempPlayer,"UselessClan", String.format("# Money: %s", findedClan.getMoneyClan()));
                 return true;
             }
             else if (args[0].equalsIgnoreCase("delete")) {
-                sender.sendMessage("You deleted a clan");
+                // @todo transfer config to another dir and remove from servers clan
+                ChatSender.MessageTo(tempPlayer, "&4UselessClan","You deleted a clan");
                 return true;
             }
-            else if (args[0].equalsIgnoreCase("force")) {
-                sender.sendMessage("You forgot about arguments, use /ClAd force %name %setting %args," +
-                        "%name = name of clan, %setting = setting to change, %args = new value or arguments");
+            else if (args[0].equalsIgnoreCase("level")) {
+                ChatSender.MessageTo(tempPlayer, "&4UselessClan","You forgot about clan %level, use /ClAd level %name %level, %level = level to give");
                 return true;
             }
         }
-        else if (size > 3) {
-            // /clanadmin force %clanName %setting arg == 4 > 3
-            if (args[0].equalsIgnoreCase("force")) {
-                Clan FindedClan = null;
-                for (Clan tempClan: ManagerPtr.getServerClans().values())
-                {
-                    if (args[1].equalsIgnoreCase(tempClan.getNameClan())) {
-                        FindedClan = tempClan;
-                        break;
-                    }
+        else if (size == 3) {
+            if (args[0].equalsIgnoreCase("level")) {
+                Clan findedClan = ManagerPtr.getServerClans().get(args[1]);
+                if (findedClan == null) {
+                    ChatSender.MessageTo(tempPlayer, "&4UselessClan","&cThis clan didnt exist!");
+                    return false;
                 }
-                if (FindedClan != null) {
-                    sender.sendMessage("You forgot about arguments, use /ClAd force %name %setting %args," +
-                            "%name = name of clan, %setting = setting to change, %args = new value or arguments");
-                    return true;
+                int tempLevel = Integer.parseInt(args[2]);
+
+                if (tempLevel < 0 || tempLevel > ClanManager.ClanLevelColors.length) {
+                    ChatSender.MessageTo(tempPlayer, "&4UselessClan","&cWrong level number!");
+                    return false;
                 }
+
+                findedClan.setClanLevel(tempLevel);
+                ChatSender.MessageTo(tempPlayer, "&4UselessClan",
+                        String.format("&aLevel of clan %s was changed to %d", findedClan.getPrefixClan(), findedClan.getClanLevel()));
+                return true;
             }
         }
-        sender.sendMessage("Invalid command. Use command /Clan help, for access to clan system");
+        ChatSender.MessageTo(tempPlayer, "&4UselessClan","&cInvalid command. Use command /Clan help, for access to clan system");
         return false;
     }
 }

@@ -5,7 +5,6 @@ import io.github.lofrol.UselessClan.ClanObjects.Clan;
 import io.github.lofrol.UselessClan.ClanObjects.ClanMember;
 import io.github.lofrol.UselessClan.UselessClan;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -13,24 +12,24 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UselessClanPlaceholder extends PlaceholderExpansion {
-    private UselessClan OwnerPlugin = null;
+    private final UselessClan OwnerPlugin;
 
     public UselessClanPlaceholder(UselessClan owner) {
         OwnerPlugin = owner;
     }
 
     @Override
-    public String getAuthor() {
+    public @NotNull String getAuthor() {
         return "778b";
     }
 
     @Override
-    public String getIdentifier() {
+    public @NotNull String getIdentifier() {
         return "UselessClan";
     }
 
     @Override
-    public String getVersion() {
+    public @NotNull String getVersion() {
         return "1.0.0";
     }
 
@@ -38,7 +37,7 @@ public class UselessClanPlaceholder extends PlaceholderExpansion {
     public boolean persist() { return true; }
 
     @Override
-    public List<String> getPlaceholders() {
+    public @NotNull List<String> getPlaceholders() {
         List<String> tempList = new ArrayList<>();
         tempList.add("UselessClan_prefix");
         tempList.add("UselessClan_role");
@@ -52,7 +51,7 @@ public class UselessClanPlaceholder extends PlaceholderExpansion {
         if(params.equalsIgnoreCase("prefix")) {
             Clan tempClan = OwnerPlugin.getMainManager().FindClanToPlayer(player.getName());
             if (tempClan == null) return "";
-            return String.format("&r[&6%s%s&r]", ClanManager.ClanLevelColors[tempClan.getClanLevel()], tempClan.getPrefixClan());
+            return String.format("&r[%s%s&r]", ClanManager.ClanLevelColors[tempClan.getClanLevel()], tempClan.getPrefixClan());
         }
         else if (params.equalsIgnoreCase("role")) {
             Clan tempClan = OwnerPlugin.getMainManager().FindClanToPlayer(player.getName());

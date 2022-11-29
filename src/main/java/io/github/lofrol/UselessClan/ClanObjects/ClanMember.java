@@ -1,6 +1,5 @@
 package io.github.lofrol.UselessClan.ClanObjects;
 
-import org.bukkit.entity.Player;
 
 public class ClanMember {
     public ClanMember(ClanRole role, String player) {

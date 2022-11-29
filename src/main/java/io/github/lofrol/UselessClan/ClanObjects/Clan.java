@@ -44,7 +44,7 @@ public class Clan {
     private int ClanLevel;
     private String ClanRegionName;
 
-    private boolean NeedToSave = false;
+    private boolean NeedToSave;
 
     // Creating by file loader
     private Clan(String ClanPrefix, String ClanName, String LeaderName,

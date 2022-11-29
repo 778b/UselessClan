@@ -3,7 +3,6 @@ package io.github.lofrol.UselessClan.commands;
 import io.github.lofrol.UselessClan.ClanManager;
 import io.github.lofrol.UselessClan.ClanObjects.OnlinePlayerClan;
 import io.github.lofrol.UselessClan.Utils.ChatSender;
-import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -19,7 +18,7 @@ public class ClanChatCommand extends Command {
 
     private ClanManager ManagerPtr;
 
-    public static ClanChatCommand CreateDefaultInts(ClanManager manager) {
+    public static ClanChatCommand CreateDefaultInst(ClanManager manager) {
         ClanChatCommand tempInst = new ClanChatCommand("ClanChat", "Default command for clan chat",
                 "Use &5/Clan help&r for learning more", Stream.of("ucc").collect(Collectors.toList()));
 
@@ -28,7 +27,7 @@ public class ClanChatCommand extends Command {
         return tempInst;
     }
 
-    public boolean registerComamnd() {
+    public boolean registerCommand() {
         return getServer().getCommandMap().register("[UselessClan]", this);
     }
 
@@ -38,8 +37,7 @@ public class ClanChatCommand extends Command {
 
     @Override
     public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] args) {
-        Player tempPlayer = (Player) (sender);
-        if (tempPlayer == null) return false;
+        if (!(sender instanceof Player tempPlayer)) return false;
 
         int size = args.length;
         if (size == 0) return false;
@@ -65,7 +63,7 @@ public class ClanChatCommand extends Command {
         }
 
         SenderClan.getPlayerClan().SendMessageForOnlinePlayers(
-                String.format("&6%s &2->&b%s",tempPlayer.getName(), MegaString.toString()));
+                String.format("&6%s &2->&b%s",tempPlayer.getName(), MegaString));
         return true;
     }
 }

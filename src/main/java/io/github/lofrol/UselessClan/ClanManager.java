@@ -2,18 +2,13 @@ package io.github.lofrol.UselessClan;
 
 import io.github.lofrol.UselessClan.ClanObjects.*;
 import io.github.lofrol.UselessClan.Utils.ChatSender;
-import org.bukkit.Location;
-import org.bukkit.Server;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitTask;
 
 import java.io.File;
-import java.io.FileFilter;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.*;
 import java.util.logging.Level;
 
@@ -21,16 +16,17 @@ import static org.bukkit.Bukkit.getServer;
 
 public class ClanManager {
     public final static String[] ClanLevelColors = {
-            "&f",       //1 lvl
-            "&a",       //2 lvl
-            "&2",       //3 lvl
-            "&3",       //4 lvl
-            "&9",       //5 lvl
-            "&1",       //6 lvl
-            "&e",       //7 lvl
-            "&6",       //8 lvl
-            "&d",       //9 lvl
-            "&5",       //10 lvl
+            "&f",       //0 lvl
+            "&a",       //1 lvl
+            "&2",       //2 lvl
+            "&3",       //3 lvl
+            "&9",       //4 lvl
+            "&1",       //5 lvl
+            "&e",       //6 lvl
+            "&6",       //7 lvl
+            "&d",       //8 lvl
+            "&5",       //9 lvl
+            "&0",       //10 lvl
     };
 
     private static final String ClanFolder = "Clans";
@@ -61,20 +57,15 @@ public class ClanManager {
         try {
             File tempDir = checkPluginFolderOrCreate();
 
-            if (tempDir.listFiles() != null) {
-                for (File tempClanFile : tempDir.listFiles()) {
-                    FileConfiguration ClanConfig = new YamlConfiguration();
-                    ClanConfig.load(tempClanFile);
+            for (File tempClanFile : Objects.requireNonNull(tempDir.listFiles())) {
+                FileConfiguration ClanConfig = new YamlConfiguration();
+                ClanConfig.load(tempClanFile);
 
-                    Clan tempClan = Clan.CreateClanFromConfig(ClanConfig);
-                    if (tempClan == null) continue;
-                    else {
-                        OwnerPlugin.getLogger().log(Level.FINE, String.format("Clan %s was loaded successfully!", tempClan.getPrefixClan()));
-                        ServerClans.put(tempClan.getPrefixClan(), tempClan);
-                    }
-                }
+                Clan tempClan = Clan.CreateClanFromConfig(ClanConfig);
+                if (tempClan == null) continue;
+                OwnerPlugin.getLogger().log(Level.FINE, String.format("Clan %s was loaded successfully!", tempClan.getPrefixClan()));
+                ServerClans.put(tempClan.getPrefixClan(), tempClan);
             }
-
             OwnerPlugin.getLogger().log(Level.FINE, "Clans was loaded successfully!");
         } catch (IOException | InvalidConfigurationException e) {
             throw new RuntimeException(e);
@@ -181,16 +172,13 @@ public class ClanManager {
         ClanRole playerRole = tempClan.getMemberRole(player.getName());
 
         RegisterOnlineClanPlayer(tempClan, player);
-        getServer().getScheduler().runTaskLater(OwnerPlugin, new Runnable() {
-            @Override
-            public void run() {
-                if (playerRole == ClanRole.LEADER || playerRole == ClanRole.OFFICER) {
-                    ChatSender.MessageTo(player,"UselessClan",
-                            String.format("Your clan have %d requests for join! ./clan requests", tempClan.getRequestCount()));
-                }
+        getServer().getScheduler().runTaskLater(OwnerPlugin, () -> {
+            if (playerRole == ClanRole.LEADER || playerRole == ClanRole.OFFICER) {
+                ChatSender.MessageTo(player,"UselessClan",
+                        String.format("Your clan have %d requests for join! ./clan requests", tempClan.getRequestCount()));
             }
         }
-        , 200);
+                , 200);
 
         OwnerPlugin.getLogger().log(Level.INFO, String.format(  "Clan member %s Join to server, his clan is %s", player.getName(), tempClan.getNameClan()));
     }
