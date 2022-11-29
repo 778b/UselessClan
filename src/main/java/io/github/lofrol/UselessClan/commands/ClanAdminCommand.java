@@ -62,7 +62,7 @@ public class ClanAdminCommand extends Command {
                 ChatSender.MessageTo(tempPlayer, "&4UselessClan","########## CLAN LIST ##########");
                 for (Clan tempClan : ManagerPtr.getServerClans().values()) {
                     ChatSender.MessageTo(tempPlayer, "&4UselessClan",
-                            String.format("# Name:&a%s&b, level:&a%d&b", tempClan.getNameClan(), tempClan.getClanLevel()));
+                            String.format("# Name: &a%s&b, level: &a%d&b", tempClan.getNameClan(), tempClan.getClanLevel()));
                 }
                 return true;
             }
