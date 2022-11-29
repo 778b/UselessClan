@@ -90,12 +90,12 @@ public class ClanCommand extends Command {
             ChatSender.MessageTo(tempPlayer,"UselessClan", "&a/Clan home&b - to teleport to home of your clan");
                 if (SenderClan == null) return false;
                 if (SenderRole == ClanRole.OFFICER || SenderRole == ClanRole.LEADER) {
+                    ChatSender.MessageTo(tempPlayer,"UselessClan", "&a/Clan claim&b - to claim territory what you selected to clan territory");
                     ChatSender.MessageTo(tempPlayer,"UselessClan", "&a/Clan requests&b - to see list of all requests to join your clan");
                     ChatSender.MessageTo(tempPlayer,"UselessClan", "&a/Clan accept %name&b - to accept %name for join to your clan");
                     ChatSender.MessageTo(tempPlayer,"UselessClan", "&a/Clan kick %name&b - to kick player %name from your clan");
                     ChatSender.MessageTo(tempPlayer,"UselessClan", "&a/Clan promote %name&b - to promote player %name of your clan");
                     ChatSender.MessageTo(tempPlayer,"UselessClan", "&a/Clan demote %name&b - to demote player %name of your clan");
-                    ChatSender.MessageTo(tempPlayer,"UselessClan", "&a/Clan level %???&b - to change level of your clan");
                 }
                 if (SenderRole.ordinal() >= SenderClan.getSettingsClan().HomeChangerMinRole.ordinal()) {
                     ChatSender.MessageTo(tempPlayer,"UselessClan", "&a/Clan sethome&b - to set home location of your clan");
@@ -162,6 +162,10 @@ public class ClanCommand extends Command {
                     return false;
                 }
                 SenderClan.PlayerLeavedFromClan(tempPlayer);
+                if (SenderRole == ClanRole.LEADER) {
+                    ChatSender.MessageTo(tempPlayer,"UselessClan", "&cYou cant leave from clan, because you are Leader of this clan");
+                    return false;
+                }
                 ChatSender.MessageTo(tempPlayer,"UselessClan", String.format("You successfully leaved from &6%s", SenderClan.getNameClan()));
                 return true;
             }
