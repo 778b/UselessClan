@@ -385,8 +385,8 @@ public class ClanCommand extends Command {
                         return false;
                     }
                 }
-                if (SenderClan.getClanRegionName() != null) {
-                    ProtectedRegion tempPrevious = tempRegionManager.getRegion(SenderClan.getClanRegionName());
+                if (SenderClan.getClanRegionId() != null) {
+                    ProtectedRegion tempPrevious = tempRegionManager.getRegion(SenderClan.getClanRegionId());
                     if (tempPrevious != null) {
                         tempRegionManager.removeRegion(SenderClan.getPrefixClan(), RemovalStrategy.REMOVE_CHILDREN);
                         ChatSender.MessageTo(tempPlayer, "UselessClan",
@@ -402,7 +402,7 @@ public class ClanCommand extends Command {
                 tempProtectedRegion.setMembers(tempDomain);
 
                 tempRegionManager.addRegion(tempProtectedRegion);
-                SenderClan.setClanRegionName(tempProtectedRegion.getId());
+                SenderClan.setClanRegionId(tempProtectedRegion.getId());
                 ChatSender.MessageTo(tempPlayer, "UselessClan",
                         "&aYou Successfully claim this territory :)");
                 return true;
@@ -541,7 +541,7 @@ public class ClanCommand extends Command {
                         SenderClan.PlayerJoinToClan(ClanRole.ROOKIE, AcceptedPlayerName);
                         SenderClan.RemoveFromRequest(AcceptedPlayerName);
                         Player AcceptedPlayer = getPlayer(AcceptedPlayerName);
-                        if (SenderClan.getClanRegionName() != null) {
+                        if (SenderClan.getClanRegionId() != null) {
                             RegionContainer tempRegionContainer = WorldGuard.getInstance().getPlatform().getRegionContainer();
                             World tempWorld = getServer().getWorld("world");
                             if (tempWorld == null) {
@@ -553,7 +553,7 @@ public class ClanCommand extends Command {
                                 ChatSender.MessageTo(tempPlayer,"UselessClan", "&cError cant add new player to region! #2");
                                 return false;
                             }
-                            ProtectedRegion tempRegion = tempRegionManager.getRegion(SenderClan.getClanRegionName());
+                            ProtectedRegion tempRegion = tempRegionManager.getRegion(SenderClan.getClanRegionId());
                             if (tempRegion == null) {
                                 ChatSender.MessageTo(tempPlayer,"UselessClan", "&cError cant add new player to region! #3");
                                 return false;
@@ -592,7 +592,7 @@ public class ClanCommand extends Command {
                         SenderClan.PlayerLeavedFromClan(tempMember.getPlayerName());
                         SenderClan.SendMessageForOnlinePlayers(String.format(
                                 "&cPlayer %s was kicked from your clan!", tempMember.getPlayerName()));
-                        if (SenderClan.getClanRegionName() != null) {
+                        if (SenderClan.getClanRegionId() != null) {
                             RegionContainer tempRegionContainer = WorldGuard.getInstance().getPlatform().getRegionContainer();
                             World tempWorld = getServer().getWorld("world");
                             if (tempWorld == null) {
@@ -604,7 +604,7 @@ public class ClanCommand extends Command {
                                 ChatSender.MessageTo(tempPlayer,"UselessClan", "&cError cant remove player from region! #2");
                                 return false;
                             }
-                            ProtectedRegion tempRegion = tempRegionManager.getRegion(SenderClan.getClanRegionName());
+                            ProtectedRegion tempRegion = tempRegionManager.getRegion(SenderClan.getClanRegionId());
                             if (tempRegion == null) {
                                 ChatSender.MessageTo(tempPlayer,"UselessClan", "&cError cant remove player from region! #3");
                                 return false;

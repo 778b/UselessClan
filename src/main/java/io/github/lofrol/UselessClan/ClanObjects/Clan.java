@@ -6,9 +6,7 @@ import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -42,7 +40,7 @@ public class Clan {
 
     private double MoneyClan;
     private int ClanLevel;
-    private String ClanRegionName;
+    private String ClanRegionId;
 
     private boolean NeedToSave;
 
@@ -61,7 +59,7 @@ public class Clan {
         this.HomeClan = HomeClan;
         this.SettingsClan = SettingsClan;
         this.ClanLevel = level;
-        this.ClanRegionName = RegionName;
+        this.ClanRegionId = RegionName;
 
         this.OnlineMembers = new HashMap<>();
         NeedToSave = true;
@@ -78,7 +76,7 @@ public class Clan {
         ClanConfig.set("UselessClan.Money", MoneyClan);
         ClanConfig.set("UselessClan.Description", DescriptionClan);
         ClanConfig.set("UselessClan.ClanLevel", ClanLevel);
-        ClanConfig.set("UselessClan.ClanRegionName", ClanRegionName);
+        ClanConfig.set("UselessClan.ClanRegionName", ClanRegionId);
 
 
         ClanConfig.set("UselessClan.Requests.size", Requests.size());
@@ -240,7 +238,7 @@ public class Clan {
         OnlineMembers = new HashMap<>();
         ClanLevel = 0;
         MoneyClan = 0.d;
-        ClanRegionName = null;
+        ClanRegionId = null;
         DescriptionClan = "Description of your clan";
         HomeClan = null;
         SettingsClan = new ClanSettings();
@@ -412,7 +410,7 @@ public class Clan {
     public int getRequestCount() {
         return Requests.size();
     }
-    public String getClanRegionName() { return ClanRegionName; }
+    public String getClanRegionId() { return ClanRegionId; }
 
     public int getClanLevel() {
         return ClanLevel;
@@ -462,7 +460,7 @@ public class Clan {
         NeedToSave = true;
         return tempMoney;
     }
-    public void setClanRegionName(String regionName) { ClanRegionName = regionName; }
+    public void setClanRegionId(String regionName) { ClanRegionId = regionName; }
 
     public void setClanLevel(int clanLevel) {
         ClanLevel = clanLevel;
