@@ -460,6 +460,7 @@ public class Clan {
         NeedToSave = true;
         return tempMoney;
     }
+
     public void setClanRegionId(String regionName) { ClanRegionId = regionName; }
 
     public void setClanLevel(int clanLevel) {

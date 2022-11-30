@@ -161,11 +161,13 @@ public class ClanCommand extends Command {
                     ChatSender.MessageTo(tempPlayer,"UselessClan", HavntClanMessage);
                     return false;
                 }
-                SenderClan.PlayerLeavedFromClan(tempPlayer);
+
+                ManagerPtr.CalculateClanLevel(SenderClan);
                 if (SenderRole == ClanRole.LEADER) {
                     ChatSender.MessageTo(tempPlayer,"UselessClan", "&cYou cant leave from clan, because you are Leader of this clan");
                     return false;
                 }
+                SenderClan.PlayerLeavedFromClan(tempPlayer);
                 ChatSender.MessageTo(tempPlayer,"UselessClan", String.format("You successfully leaved from &6%s", SenderClan.getNameClan()));
                 return true;
             }
@@ -539,6 +541,7 @@ public class ClanCommand extends Command {
                             return false;
                         }
                         SenderClan.PlayerJoinToClan(ClanRole.ROOKIE, AcceptedPlayerName);
+                        ManagerPtr.CalculateClanLevel(SenderClan);
                         SenderClan.RemoveFromRequest(AcceptedPlayerName);
                         Player AcceptedPlayer = getPlayer(AcceptedPlayerName);
                         if (SenderClan.getClanRegionId() != null) {
@@ -590,6 +593,7 @@ public class ClanCommand extends Command {
                             return false;
                         }
                         SenderClan.PlayerLeavedFromClan(tempMember.getPlayerName());
+                        ManagerPtr.CalculateClanLevel(SenderClan);
                         SenderClan.SendMessageForOnlinePlayers(String.format(
                                 "&cPlayer %s was kicked from your clan!", tempMember.getPlayerName()));
                         if (SenderClan.getClanRegionId() != null) {

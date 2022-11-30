@@ -159,6 +159,9 @@ public class ClanManager {
         OnlineClanPlayers.put(player, tempClanPlayer);
     }
 
+    public void CalculateClanLevel(Clan ClanToLevel) {
+        // Override
+    }
 
     /*
      *  Listeners Functions
