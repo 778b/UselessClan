@@ -1,6 +1,7 @@
 package io.github.lofrol.UselessClan;
 
 import io.github.lofrol.UselessClan.ClanObjects.*;
+import io.github.lofrol.UselessClan.Extensions.ClanManagerExtension;
 import io.github.lofrol.UselessClan.Utils.ChatSender;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -33,13 +34,15 @@ public class ClanManager {
 
     private final UselessClan OwnerPlugin;
 
+    public ClanManagerExtension Extension;
     private final Map<Player, OnlinePlayerClan> OnlineClanPlayers;
     private final Map<String, Clan> ServerClans;
 
-    public ClanManager(UselessClan owner) {
+    public ClanManager(UselessClan owner, ClanManagerExtension extension) {
         ServerClans = new HashMap<>();
         OnlineClanPlayers = new HashMap<>();
 
+        Extension = extension;
         OwnerPlugin = owner;
     }
 
@@ -160,7 +163,8 @@ public class ClanManager {
     }
 
     public void CalculateClanLevel(Clan ClanToLevel) {
-        // Override
+        // Overriding by extensions if needed
+        Extension.CalculateClanLevel(ClanToLevel);
     }
 
     /*

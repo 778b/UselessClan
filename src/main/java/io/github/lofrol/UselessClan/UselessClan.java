@@ -1,5 +1,6 @@
 package io.github.lofrol.UselessClan;
 
+import io.github.lofrol.UselessClan.Extensions.ClanManagerExtension;
 import io.github.lofrol.UselessClan.External.UselessClanPlaceholder;
 import io.github.lofrol.UselessClan.Listeners.UselessListeners;
 import io.github.lofrol.UselessClan.commands.ClanAdminCommand;
@@ -52,7 +53,7 @@ public final class UselessClan extends JavaPlugin {
             getLogger().log(Level.INFO, "Placeholders:"+ MultiString );
         }
 
-        MainManager = new ClanManager(this);
+        MainManager = new ClanManager(this, new ClanManagerExtension());
 
         if (ClanCommand.CreateDefaultInst(MainManager).registerCommand()) getLogger().log(Level.INFO, "Clan Command Loaded successfully!");
         else getLogger().log(Level.SEVERE, "Clan Command cant be loaded!");
