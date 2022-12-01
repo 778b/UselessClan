@@ -100,6 +100,16 @@ public class ClanAdminCommand extends Command {
                 ChatSender.MessageTo(tempPlayer, "&4UselessClan","You forgot about clan %level, use /ClAd level %name %level, %level = level to give");
                 return true;
             }
+            else if (args[0].equalsIgnoreCase("calclvl")) {
+                Clan findedClan = ManagerPtr.getServerClans().get(args[1]);
+                if (findedClan == null) {
+                    ChatSender.MessageTo(tempPlayer, "&4UselessClan","&cThis clan didnt exist!");
+                    return false;
+                }
+                ManagerPtr.CalculateClanLevel(findedClan);
+                ChatSender.MessageTo(tempPlayer, "&4UselessClan",String.format("Calculated level of clan %s", findedClan.getPrefixClan()));
+                return true;
+            }
         }
         else if (size == 3) {
             if (args[0].equalsIgnoreCase("level")) {
