@@ -181,7 +181,12 @@ public class ClanCommand extends Command {
                     ChatSender.MessageTo(tempPlayer,"UselessClan", "&cYour clan doesnt have home!");
                     return false;
                 }
+                if (!tempPlayer.getWorld().getName().equals("world")) {
+                    ChatSender.MessageTo(tempPlayer,"UselessClan", "&cYou cant teleport clan home from this world!");
+                    return false;
+                }
                 tempPlayer.teleport(tempHome);
+                ChatSender.MessageTo(tempPlayer,"UselessClan", "&aYou teleported to clan home!");
                 return true;
             }
             else if (args[0].equalsIgnoreCase("sethome")) {
@@ -190,13 +195,13 @@ public class ClanCommand extends Command {
                     return false;
                 }
                 if (SenderRole.ordinal() >= SenderClan.getSettingsClan().HomeChangerMinRole.ordinal() || SenderRole == ClanRole.LEADER) {
-                    if (tempPlayer.getWorld().getName().equals("world")) {
-                        Location tempLoc = tempPlayer.getLocation();
-                        SenderClan.setHomeClan(tempLoc);
+                    if (!tempPlayer.getWorld().getName().equals("world")) {
+                        ChatSender.MessageTo(tempPlayer,"UselessClan", "&cYou cant set clan home in this world!");
+                        return false;
                     }
-                    else {
-                        ChatSender.MessageTo(tempPlayer,"UselessClan", "&cYou cant set home there!");
-                    }
+                    Location tempLoc = tempPlayer.getLocation();
+                    SenderClan.setHomeClan(tempLoc);
+                    ChatSender.MessageTo(tempPlayer,"UselessClan", "&aClan home set successfully!");
                 }
                 else {
                     ChatSender.MessageTo(tempPlayer,"UselessClan", LowRankMessage);
