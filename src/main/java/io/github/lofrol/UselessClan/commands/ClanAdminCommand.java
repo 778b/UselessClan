@@ -2,6 +2,7 @@ package io.github.lofrol.UselessClan.commands;
 
 import io.github.lofrol.UselessClan.ClanManager;
 import io.github.lofrol.UselessClan.ClanObjects.Clan;
+import io.github.lofrol.UselessClan.ClanObjects.ClanMember;
 import io.github.lofrol.UselessClan.Utils.ChatSender;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -54,6 +55,7 @@ public final class ClanAdminCommand extends Command {
                 ChatSender.MessageTo(tempPlayer, "&4UselessClan","/ClAd - to call this menu");
                 ChatSender.MessageTo(tempPlayer, "&4UselessClan","/ClAd list - list of all clans");
                 ChatSender.MessageTo(tempPlayer, "&4UselessClan","/ClAd info %name - to info any clan");
+                ChatSender.MessageTo(tempPlayer, "&4UselessClan","/ClAd mates %name - to mates any clan");
                 ChatSender.MessageTo(tempPlayer, "&4UselessClan","/ClAd delete %name - to info any clan");
                 ChatSender.MessageTo(tempPlayer, "&4UselessClan","/ClAd level %name %level - to force level any clan");
                 return true;
@@ -68,6 +70,10 @@ public final class ClanAdminCommand extends Command {
             }
             else if (args[0].equalsIgnoreCase("info")) {
                 ChatSender.MessageTo(tempPlayer, "&4UselessClan","You forgot about clan %name, use /ClAd info %name, %name = name of clan");
+                return true;
+            }
+            else if (args[0].equalsIgnoreCase("mates")) {
+                ChatSender.MessageTo(tempPlayer, "&4UselessClan","You forgot about clan %name, use /ClAd mates %name, %name = name of clan");
                 return true;
             }
             else if (args[0].equalsIgnoreCase("delete")) {
@@ -89,6 +95,19 @@ public final class ClanAdminCommand extends Command {
                 ChatSender.MessageTo(tempPlayer,"UselessClan", String.format("# LeaderName: %s", findedClan.getLeaderName()));
                 ChatSender.MessageTo(tempPlayer,"UselessClan", String.format("# Count of Members: %s", findedClan.getMembers().size()));
                 ChatSender.MessageTo(tempPlayer,"UselessClan", String.format("# Money: %s", findedClan.getMoneyClan()));
+                return true;
+            }
+            else if (args[0].equalsIgnoreCase("mates")) {
+                Clan findedClan = ManagerPtr.getServerClans().get(args[1]);
+                if (findedClan == null) {
+                    ChatSender.MessageTo(tempPlayer, "&4UselessClan","&cThis clan didnt exist!");
+                    return false;
+                }
+                ChatSender.MessageTo(tempPlayer,"UselessClan", "########## CLANMATES ##########");
+                for (ClanMember tempMember: findedClan.getMembers()) {
+                    ChatSender.MessageTo(tempPlayer,"UselessClan", String.format(
+                            "# %s      %s", tempMember.getMemberRole().toString(), tempMember.getPlayerName()));
+                }
                 return true;
             }
             else if (args[0].equalsIgnoreCase("delete")) {
