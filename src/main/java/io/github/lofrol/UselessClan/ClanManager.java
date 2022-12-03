@@ -31,6 +31,7 @@ public final class ClanManager {
     };
 
     private static final String ClanFolder = "Clans";
+    private static final String DeletedClanFolder = "DeletedClans";
 
     private final UselessClan OwnerPlugin;
 
@@ -55,10 +56,38 @@ public final class ClanManager {
             default -> "";
         };
     }
+    public void CalculateClanLevel(Clan ClanToLevel) {
+        // Overriding by extensions if needed
+        Extension.CalculateClanLevel(ClanToLevel);
+    }
+    public void CreateClan(String ClanName, Player LeaderPlayer) {
+        Clan NewClan = new Clan(ClanName, LeaderPlayer.getName());
+        ServerClans.put(ClanName, NewClan);
 
+        NewClan.PlayerJoinToClan(ClanRole.LEADER, LeaderPlayer.getName());
+        RegisterOnlineClanPlayer(NewClan, LeaderPlayer);
+    }
+
+    public void DeleteClan(String ClanName) {
+        Clan ClanToDelete = ServerClans.get(ClanName);
+        if (ClanToDelete == null) return;
+
+        ServerClans.remove(ClanName);
+        for (Map.Entry<Player, OnlinePlayerClan> tempEntry : OnlineClanPlayers.entrySet()) {
+            if (tempEntry.getValue().getPlayerClan().getPrefixClan().equals(ClanName)) {
+                OnlineClanPlayers.remove(tempEntry.getKey());
+            }
+        }
+        RemoveClanToDeletedClanFolder(ClanName);
+    }
+
+
+    /*
+     *  Serialize Functions
+     */
     public void LoadClans() {
         try {
-            File tempDir = checkPluginFolderOrCreate();
+            File tempDir = checkClanFolderOrCreate(ClanFolder);
 
             for (File tempClanFile : Objects.requireNonNull(tempDir.listFiles())) {
                 FileConfiguration ClanConfig = new YamlConfiguration();
@@ -77,7 +106,7 @@ public final class ClanManager {
 
     public void SaveClans() {
         try {
-            File tempDir = checkPluginFolderOrCreate();
+            File tempDir = checkClanFolderOrCreate(ClanFolder);
 
             OwnerPlugin.getLogger().log(Level.INFO, "Starting save clans to plugin folder...");
             for (Clan TempClan : ServerClans.values()) {
@@ -98,9 +127,40 @@ public final class ClanManager {
             throw new RuntimeException(e);
         }
     }
+    private void RemoveClanToDeletedClanFolder(String ClanName) {
+        File tempDeleteDir = checkClanFolderOrCreate(DeletedClanFolder);
+        File tempClanDir = checkClanFolderOrCreate(ClanFolder);
+
+        FileConfiguration ClanConfig = new YamlConfiguration();
+        String newClanName = null;
+
+        try {
+            for (File tempClanFile : Objects.requireNonNull(tempClanDir.listFiles())) {
+                if (tempClanFile.getName().equals(String.format("%s.yml", ClanName))) {
+                    ClanConfig.load(tempClanFile);
+                    newClanName = tempClanFile.getName();
+                    tempClanFile.deleteOnExit();
+                    break;
+                }
+            }
+            if (newClanName == null) {
+                OwnerPlugin.getLogger().log(Level.SEVERE, String.format("%s isnt finded!", ClanName));
+                return;
+            }
+            File newClanFile = new File(tempDeleteDir, newClanName);
+
+            ClanConfig.save(newClanFile);
+
+        } catch (IOException | InvalidConfigurationException e) {
+            throw new RuntimeException(e);
+        }
+
+        OwnerPlugin.getLogger().log(Level.FINE, String.format("%s was deleted successfully", ClanName));
+    }
+
 
     // Return Clans folder
-    private File checkPluginFolderOrCreate() {
+    private File checkClanFolderOrCreate(String FolderName) {
         OwnerPlugin.getLogger().log(Level.INFO, "Finding plugin folder...");
 
         File PluginDir = OwnerPlugin.getDataFolder();
@@ -111,12 +171,12 @@ public final class ClanManager {
                 OwnerPlugin.getLogger().log(Level.SEVERE, "Cant create plugin folder!");
             }
         }
-        File tempDir = new File(OwnerPlugin.getDataFolder(), ClanFolder);
+        File tempDir = new File(OwnerPlugin.getDataFolder(), FolderName);
 
         if (!tempDir.exists()) {
-            OwnerPlugin.getLogger().log(Level.WARNING, String.format("%s folder not found!", ClanFolder));
+            OwnerPlugin.getLogger().log(Level.WARNING, String.format("%s folder not found!", FolderName));
             if (tempDir.mkdir()) {
-                OwnerPlugin.getLogger().log(Level.INFO, String.format("Creating %s folder in plugin dir...", ClanFolder));
+                OwnerPlugin.getLogger().log(Level.INFO, String.format("Creating %s folder in plugin dir...", FolderName));
             } else {
                 OwnerPlugin.getLogger().log(Level.SEVERE, "Cant create clan folder!");
             }
@@ -162,10 +222,6 @@ public final class ClanManager {
         OnlineClanPlayers.put(player, tempClanPlayer);
     }
 
-    public void CalculateClanLevel(Clan ClanToLevel) {
-        // Overriding by extensions if needed
-        Extension.CalculateClanLevel(ClanToLevel);
-    }
 
     /*
      *  Listeners Functions

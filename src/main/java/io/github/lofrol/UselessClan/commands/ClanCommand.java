@@ -71,7 +71,7 @@ public final class ClanCommand extends Command {
         int size = args.length;
         if (size == 0) {
             // just only /Clan
-            ChatSender.MessageTo(tempPlayer,"UselessClan", "Use command &a/Clan help&b,%s for access to clan system");
+            ChatSender.MessageTo(tempPlayer,"UselessClan", "Use command &a/Clan help&b, for access to clan system");
         }
         else if (size == 1) {
             if (args[0].equalsIgnoreCase("top")) {
@@ -215,8 +215,20 @@ public final class ClanCommand extends Command {
                 ChatSender.MessageTo(tempPlayer,"UselessClan", "########## CLANMATES ##########");
                 for (ClanMember tempMember: SenderClan.getMembers()) {
                     ChatSender.MessageTo(tempPlayer,"UselessClan", String.format(
-                            "# %s      %s", tempMember.getMemberRole().toString(), tempMember.getPlayerName()));
+                            "# %s &a%s", tempMember.getMemberRole().toString(), tempMember.getPlayerName()));
                 }
+                return true;
+            }
+            else if (args[0].equalsIgnoreCase("delete")) {
+                if (SenderClan == null) {
+                    ChatSender.MessageTo(tempPlayer,"UselessClan", HavntClanMessage);
+                    return false;
+                }
+                if (SenderRole != ClanRole.LEADER) {
+                    ChatSender.MessageTo(tempPlayer,"UselessClan", LowRankMessage);
+                    return false;
+                }
+                ManagerPtr.DeleteClan(SenderClan.getNameClan());
                 return true;
             }
             else if (args[0].equalsIgnoreCase("info")) {
@@ -425,7 +437,6 @@ public final class ClanCommand extends Command {
                     ChatSender.MessageTo(tempPlayer,"UselessClan", HaveClanMessage);
                     return false;
                 }
-
                 if (args[1].length() < 3) {
                     ChatSender.MessageTo(tempPlayer,"UselessClan", "&cYour name is too short, name must be >3 symbols");
                     return false;
@@ -458,11 +469,7 @@ public final class ClanCommand extends Command {
                     UselessClan.EconomyPtr.withdrawPlayer(tempPlayer, moneyToClan);
                 }
                 // Creating new clan
-                Clan NewClan = new Clan(args[1], tempPlayer.getName());
-                ManagerPtr.getServerClans().put(args[1], NewClan);
-
-                NewClan.PlayerJoinToClan(ClanRole.LEADER, tempPlayer.getName());
-                ManagerPtr.RegisterOnlineClanPlayer(NewClan, tempPlayer);
+                ManagerPtr.CreateClan(args[1], tempPlayer);
                 ChatSender.MessageTo(tempPlayer,"UselessClan", String.format("Clan %s was created successfully!", args[1]));
             }
             else if (args[0].equalsIgnoreCase("join")) {

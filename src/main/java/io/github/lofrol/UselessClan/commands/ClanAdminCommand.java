@@ -106,13 +106,18 @@ public final class ClanAdminCommand extends Command {
                 ChatSender.MessageTo(tempPlayer,"UselessClan", "########## CLANMATES ##########");
                 for (ClanMember tempMember: findedClan.getMembers()) {
                     ChatSender.MessageTo(tempPlayer,"UselessClan", String.format(
-                            "# %s      %s", tempMember.getMemberRole().toString(), tempMember.getPlayerName()));
+                            "# %s &a%s", tempMember.getMemberRole().toString(), tempMember.getPlayerName()));
                 }
                 return true;
             }
             else if (args[0].equalsIgnoreCase("delete")) {
-                // @todo transfer config to another dir and remove from servers clan
-                ChatSender.MessageTo(tempPlayer, "&4UselessClan","You deleted a clan");
+                Clan findedClan = ManagerPtr.getServerClans().get(args[1]);
+                if (findedClan == null) {
+                    ChatSender.MessageTo(tempPlayer, "&4UselessClan","&cThis clan didnt exist!");
+                    return false;
+                }
+                ManagerPtr.DeleteClan(findedClan.getNameClan());
+                ChatSender.MessageTo(tempPlayer, "&4UselessClan",String.format("You deleted a clan %s", findedClan.getNameClan()));
                 return true;
             }
             else if (args[0].equalsIgnoreCase("level")) {
