@@ -290,7 +290,7 @@ public final class ClanCommand extends Command {
                 if (SenderClan != null) {
                     if (SenderRole == ClanRole.OFFICER || SenderRole == ClanRole.LEADER) {
                         ChatSender.MessageTo(tempPlayer,"UselessClan",
-                                "&cYou forgot about player %name and %rank, use &a/Clan promote %name %rank");
+                                "&cYou forgot about player %name, use &a/Clan promote %name");
                     }
                     else {
                         ChatSender.MessageTo(tempPlayer,"UselessClan", LowRankMessage);
@@ -308,7 +308,7 @@ public final class ClanCommand extends Command {
                 }
                 if (SenderRole == ClanRole.LEADER) {
                     ChatSender.MessageTo(tempPlayer, "UselessClan",
-                            "&cYou forgot about player %name and %rank, use &a/Clan promote %name %rank");
+                            "&cYou forgot about player %name, use &a/Clan promote %name");
                 }
                 else {
                     ChatSender.MessageTo(tempPlayer, "UselessClan", LowRankMessage);
