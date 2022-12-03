@@ -14,7 +14,7 @@ import java.util.stream.Stream;
 
 import static org.bukkit.Bukkit.getServer;
 
-public class ClanAdminCommand extends Command {
+public final class ClanAdminCommand extends Command {
 
     private ClanManager ManagerPtr;
 

@@ -311,13 +311,12 @@ public class Clan {
     public void ChangeLeader(String NewLeaderName) {
         LeaderName = NewLeaderName;
         for (ClanMember tempMember : Members) {
-            if (tempMember.getMemberRole() == ClanRole.LEADER) {
-                tempMember.setMemberRole(ClanRole.OFFICER);
-            }
-        }
-        for (ClanMember tempMember : Members) {
             if (tempMember.getPlayerName().equals(NewLeaderName)) {
                 tempMember.setMemberRole(ClanRole.LEADER);
+                continue;
+            }
+            if (tempMember.getMemberRole() == ClanRole.LEADER) {
+                tempMember.setMemberRole(ClanRole.OFFICER);
             }
         }
         NeedToSave = true;

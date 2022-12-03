@@ -15,7 +15,7 @@ import java.util.logging.Level;
 
 import static org.bukkit.Bukkit.getServer;
 
-public class ClanManager {
+public final class ClanManager {
     public final static String[] ClanLevelColors = {
             "&f",       //0 lvl
             "&a",       //1 lvl

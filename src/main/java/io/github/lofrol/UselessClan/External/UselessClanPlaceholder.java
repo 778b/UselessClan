@@ -11,7 +11,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UselessClanPlaceholder extends PlaceholderExpansion {
+public final class UselessClanPlaceholder extends PlaceholderExpansion {
     private final UselessClan OwnerPlugin;
 
     public UselessClanPlaceholder(UselessClan owner) {

@@ -36,7 +36,7 @@ import java.util.stream.Stream;
 
 import static org.bukkit.Bukkit.*;
 
-public class ClanCommand extends Command {
+public final class ClanCommand extends Command {
 
     private ClanManager ManagerPtr;
     public static ClanCommand CreateDefaultInst(ClanManager manager) {
@@ -52,7 +52,7 @@ public class ClanCommand extends Command {
         return getServer().getCommandMap().register("[UselessClan]", this);
     }
 
-    protected ClanCommand(@NotNull String name, @NotNull String description,
+    private ClanCommand(@NotNull String name, @NotNull String description,
                           @NotNull String usageMessage,
                           @NotNull List<String> aliases) {
         super(name,description,usageMessage,aliases);
@@ -73,21 +73,29 @@ public class ClanCommand extends Command {
             // just only /Clan
             ChatSender.MessageTo(tempPlayer,"UselessClan", "Use command &a/Clan help&b,%s for access to clan system");
         }
-        // /Clan help/create/info/mates/join/accept/leave/top/kick/promote/demote/requests/home/sethome
-        else if (args[0].equalsIgnoreCase( "help")) {
-            ChatSender.MessageTo(tempPlayer,"UselessClan", "############# CLAN HELP #############");
-            ChatSender.MessageTo(tempPlayer,"UselessClan", "&a/Clan help&b - to call this menu");
-            ChatSender.MessageTo(tempPlayer,"UselessClan", "&a/Clan top&b - top of all clans");
-            ChatSender.MessageTo(tempPlayer,"UselessClan", "&a/Clan create %name&b - to create your own clan with name %name");
-            ChatSender.MessageTo(tempPlayer,"UselessClan", "&a/Clan leave&b - to leave from your clan");
-            ChatSender.MessageTo(tempPlayer,"UselessClan", "&a/Clan join %name&b - to send request for join the clan %name");
-            if (UselessClan.EconomyPtr != null) {
-                ChatSender.MessageTo(tempPlayer,"UselessClan", "&a/Clan deposit %value&b - to deposit money to your clan");
-                ChatSender.MessageTo(tempPlayer,"UselessClan", "&a/Clan withdraw %value&b - to withdraw money from your clan");
+        else if (size == 1) {
+            if (args[0].equalsIgnoreCase("top")) {
+                ChatSender.MessageTo(tempPlayer,"UselessClan", "########## CLAN TOP ##########");
+                ChatSender.MessageTo(tempPlayer,"UselessClan", "# ClanName              Bank #");
+                for (Clan tempClan : ManagerPtr.getServerClans().values()) {
+                    ChatSender.MessageTo(tempPlayer,"UselessClan", String.format("# %s          %s ", tempClan.getNameClan(), tempClan.getMoneyClan()));
+                }
+                return true;
             }
-            ChatSender.MessageTo(tempPlayer,"UselessClan", "&a/Clan info&b - to info about your clan");
-            ChatSender.MessageTo(tempPlayer,"UselessClan", "&a/Clan mates&b - to execute list of clanmates");
-            ChatSender.MessageTo(tempPlayer,"UselessClan", "&a/Clan home&b - to teleport to home of your clan");
+            else if (args[0].equalsIgnoreCase("help")) {
+                ChatSender.MessageTo(tempPlayer,"UselessClan", "############# CLAN HELP #############");
+                ChatSender.MessageTo(tempPlayer,"UselessClan", "&a/Clan help&b - to call this menu");
+                ChatSender.MessageTo(tempPlayer,"UselessClan", "&a/Clan top&b - top of all clans");
+                ChatSender.MessageTo(tempPlayer,"UselessClan", "&a/Clan create %name&b - to create your own clan with name %name");
+                ChatSender.MessageTo(tempPlayer,"UselessClan", "&a/Clan leave&b - to leave from your clan");
+                ChatSender.MessageTo(tempPlayer,"UselessClan", "&a/Clan join %name&b - to send request for join the clan %name");
+                if (UselessClan.EconomyPtr != null) {
+                    ChatSender.MessageTo(tempPlayer,"UselessClan", "&a/Clan deposit %value&b - to deposit money to your clan");
+                    ChatSender.MessageTo(tempPlayer,"UselessClan", "&a/Clan withdraw %value&b - to withdraw money from your clan");
+                }
+                ChatSender.MessageTo(tempPlayer,"UselessClan", "&a/Clan info&b - to info about your clan");
+                ChatSender.MessageTo(tempPlayer,"UselessClan", "&a/Clan mates&b - to execute list of clanmates");
+                ChatSender.MessageTo(tempPlayer,"UselessClan", "&a/Clan home&b - to teleport to home of your clan");
                 if (SenderClan == null) return false;
                 if (SenderRole == ClanRole.OFFICER || SenderRole == ClanRole.LEADER) {
                     ChatSender.MessageTo(tempPlayer,"UselessClan", "&a/Clan claim&b - to claim territory what you selected to clan territory");
@@ -99,15 +107,6 @@ public class ClanCommand extends Command {
                 }
                 if (SenderRole.ordinal() >= SenderClan.getSettingsClan().HomeChangerMinRole.ordinal()) {
                     ChatSender.MessageTo(tempPlayer,"UselessClan", "&a/Clan sethome&b - to set home location of your clan");
-                }
-                return true;
-            }
-        else if (size == 1) {
-            if (args[0].equalsIgnoreCase("top")) {
-                ChatSender.MessageTo(tempPlayer,"UselessClan", "########## CLAN TOP ##########");
-                ChatSender.MessageTo(tempPlayer,"UselessClan", "# ClanName              Bank #");
-                for (Clan tempClan : ManagerPtr.getServerClans().values()) {
-                    ChatSender.MessageTo(tempPlayer,"UselessClan", String.format("# %s          %s ", tempClan.getNameClan(), tempClan.getMoneyClan()));
                 }
                 return true;
             }
@@ -631,55 +630,51 @@ public class ClanCommand extends Command {
                 return true;
             }
             else if (args[0].equalsIgnoreCase("promote")) {
-                if (SenderClan != null) {
-                    if (SenderRole == ClanRole.OFFICER || SenderRole == ClanRole.LEADER) {
-                        ClanMember tempClanMember = SenderClan.getClanMember(args[1]);
-                        if (tempClanMember == null) {
-                            ChatSender.MessageTo(tempPlayer,"UselessClan", WrongClanMessage);
+                if (SenderClan == null) {
+                    ChatSender.MessageTo(tempPlayer, "UselessClan", HavntClanMessage);
+                    return false;
+                }
+                if (!(SenderRole == ClanRole.OFFICER || SenderRole == ClanRole.LEADER)) {
+                    ChatSender.MessageTo(tempPlayer, "UselessClan", LowRankMessage);
+                    return false;
+                }
+                ClanMember tempClanMember = SenderClan.getClanMember(args[1]);
+                if (tempClanMember == null) {
+                    ChatSender.MessageTo(tempPlayer, "UselessClan", WrongClanMessage);
+                    return false;
+                }
+                if (tempClanMember.getMemberRole() == ClanRole.ROOKIE) {
+                    if (!SenderClan.ChangeMemberRole(tempClanMember.getPlayerName(), ClanRole.MEMBER)) {
+                        ChatSender.MessageTo(tempPlayer, "UselessClan", HaveRankMessage);
+                        return false;
+                    }
+                    SenderClan.SendMessageForOnlinePlayers(String.format(
+                            "&aPlayer %s was promoted to %s", tempClanMember.getPlayerName(), ClanRole.MEMBER));
+                }
+                else if (tempClanMember.getMemberRole() == ClanRole.MEMBER) {
+                    if (SenderRole == ClanRole.LEADER) {
+                        if (!SenderClan.ChangeMemberRole(tempClanMember.getPlayerName(), ClanRole.OFFICER)) {
+                            ChatSender.MessageTo(tempPlayer, "UselessClan", HaveRankMessage);
                             return false;
                         }
-                        if (tempClanMember.getMemberRole() == ClanRole.ROOKIE) {
-                            if (!SenderClan.ChangeMemberRole(tempClanMember.getPlayerName(), ClanRole.MEMBER)) {
-                                ChatSender.MessageTo(tempPlayer,"UselessClan", HaveRankMessage);
-                                return false;
-                            }
-                            SenderClan.SendMessageForOnlinePlayers(String.format(
-                                    "&aPlayer %s was promoted to %s", tempClanMember.getPlayerName(), ClanRole.MEMBER));
-                        }
-                        else if (tempClanMember.getMemberRole() == ClanRole.MEMBER) {
-                            if (SenderRole == ClanRole.LEADER) {
-                                if (!SenderClan.ChangeMemberRole(tempClanMember.getPlayerName(), ClanRole.OFFICER)) {
-                                    ChatSender.MessageTo(tempPlayer,"UselessClan", HaveRankMessage);
-                                    return false;
-                                }
-                                SenderClan.SendMessageForOnlinePlayers(String.format(
-                                        "&aPlayer %s was promoted to %s", tempClanMember.getPlayerName(), ClanRole.OFFICER));
-                            }
-                            else {
-                                ChatSender.MessageTo(tempPlayer,"UselessClan", LowRankMessage);
-                            }
-                        }
-                        else if (tempClanMember.getMemberRole() == ClanRole.OFFICER) {
-                            if (SenderRole == ClanRole.LEADER) {
-                                SenderClan.ChangeLeader(tempClanMember.getPlayerName());
-                                SenderClan.SendMessageForOnlinePlayers(String.format(
-                                        "&aLeader is changed! New leader of clan is %s", tempClanMember.getPlayerName()));
-                            }
-                            else {
-                                ChatSender.MessageTo(tempPlayer,"UselessClan", LowRankMessage);
-                            }
-                        }
-                        else {
-                            ChatSender.MessageTo(tempPlayer,"UselessClan", "Nothing changed, :(");
-                        }
-                    }
-                    else {
-                        ChatSender.MessageTo(tempPlayer,"UselessClan", LowRankMessage);
+                        SenderClan.SendMessageForOnlinePlayers(String.format(
+                                "&aPlayer %s was promoted to %s", tempClanMember.getPlayerName(), ClanRole.OFFICER));
+                    } else {
+                        ChatSender.MessageTo(tempPlayer, "UselessClan", LowRankMessage);
                     }
                 }
-                else {
-                    ChatSender.MessageTo(tempPlayer,"UselessClan", HavntClanMessage);
+                else if (tempClanMember.getMemberRole() == ClanRole.OFFICER) {
+                    if (SenderRole == ClanRole.LEADER) {
+                        SenderClan.ChangeLeader(tempClanMember.getPlayerName());
+                        SenderClan.SendMessageForOnlinePlayers(String.format(
+                                "&aLeader is changed! New leader of clan is %s", tempClanMember.getPlayerName()));
+                    } else {
+                        ChatSender.MessageTo(tempPlayer, "UselessClan", LowRankMessage);
+                    }
+                } else {
+                    ChatSender.MessageTo(tempPlayer, "UselessClan", "Nothing changed, :(");
                 }
+
                 return true;
             }
             else if (args[0].equalsIgnoreCase("demote")) {

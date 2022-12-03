@@ -8,7 +8,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.Listener;
 
 
-public class UselessListeners implements Listener {
+public final class UselessListeners implements Listener {
 
     private final UselessClan OwnerPlugin;
 
