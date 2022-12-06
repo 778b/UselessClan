@@ -25,6 +25,14 @@
 #### /Clan kick [playername]     - to kick player [playername] from your clan
 #### /Clan promote [playername]  - to promote player [playername] of your clan
 #### /Clan demote [playername]   - to demote player [playername] of your clan
+#
+## Admin's commands
+#### /ClAd list                  - list of all clans
+#### /ClAd info %name            - to info any clan
+#### /ClAd mates %name           - to mates any clan
+#### /ClAd delete %name          - to info any clan
+#### /ClAd level %name %level    - to force level any clan
+
 
 ## IN ACTIVE DEVELOPMENT
 
