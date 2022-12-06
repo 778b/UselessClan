@@ -80,6 +80,10 @@ public final class ClanAdminCommand extends Command {
                 ChatSender.MessageTo(tempPlayer, "&4UselessClan","You forgot about clan %name, use /ClAd delete %name, %name = name of clan");
                 return true;
             }
+            else if (args[0].equalsIgnoreCase("home")) {
+                ChatSender.MessageTo(tempPlayer, "&4UselessClan","You forgot about clan %name, use /ClAd home %name, %name = name of clan");
+                return true;
+            }
         }
         else if (size == 2) {
             if (args[0].equalsIgnoreCase("info")) {
@@ -122,6 +126,15 @@ public final class ClanAdminCommand extends Command {
             }
             else if (args[0].equalsIgnoreCase("level")) {
                 ChatSender.MessageTo(tempPlayer, "&4UselessClan","You forgot about clan %level, use /ClAd level %name %level, %level = level to give");
+                return true;
+            }
+            else if (args[0].equalsIgnoreCase("home")) {
+                Clan findedClan = ManagerPtr.getServerClans().get(args[1]);
+                if (findedClan == null) {
+                    ChatSender.MessageTo(tempPlayer, "&4UselessClan","&cThis clan didnt exist!");
+                    return false;
+                }
+                tempPlayer.teleport(findedClan.getHomeClan());
                 return true;
             }
             else if (args[0].equalsIgnoreCase("calclvl")) {
