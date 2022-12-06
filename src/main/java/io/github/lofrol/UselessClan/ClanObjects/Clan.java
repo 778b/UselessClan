@@ -84,7 +84,7 @@ public class Clan {
             ClanConfig.set(String.format("UselessClan.Requests.%d", i), Requests.get(i));
         }
 
-        ClanConfig.set("UselessClan.Home", (HomeClan != null));
+        ClanConfig.set("UselessClan.Home.exists", (HomeClan != null));
         if (HomeClan != null) {
             ClanConfig.set("UselessClan.Home.X",HomeClan.getBlockX());
             ClanConfig.set("UselessClan.Home.Y",HomeClan.getBlockY());
@@ -118,7 +118,7 @@ public class Clan {
 
         // Home start
         Location HomeClan = null;
-        if (ClanConfig.getBoolean("UselessClan.Home")) {
+        if (ClanConfig.getBoolean("UselessClan.Home.exists")) {
             int tempX = ClanConfig.getInt("UselessClan.Home.X");
             int tempY = ClanConfig.getInt("UselessClan.Home.Y");
             int tempZ = ClanConfig.getInt("UselessClan.Home.Z");
@@ -345,7 +345,6 @@ public class Clan {
         }
         Members.add(tempClanMember);
         NeedToSave = true;
-        return;
     }
     public void PlayerLeavedFromClan(String PlayerName) {
         if (!IsClanMember(PlayerName)) return;
