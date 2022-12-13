@@ -1,4 +1,4 @@
-package io.github.lofrol.UselessClan.commands;
+package io.github.lofrol.UselessClan.ClanCommands;
 
 import io.github.lofrol.UselessClan.ClanManager;
 import io.github.lofrol.UselessClan.ClanObjects.Clan;

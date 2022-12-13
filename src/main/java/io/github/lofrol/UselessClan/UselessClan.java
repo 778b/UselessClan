@@ -3,9 +3,9 @@ package io.github.lofrol.UselessClan;
 import io.github.lofrol.UselessClan.Extensions.ClanManagerExtension;
 import io.github.lofrol.UselessClan.External.UselessClanPlaceholder;
 import io.github.lofrol.UselessClan.Listeners.UselessListeners;
-import io.github.lofrol.UselessClan.commands.ClanAdminCommand;
-import io.github.lofrol.UselessClan.commands.ClanChatCommand;
-import io.github.lofrol.UselessClan.commands.ClanCommand;
+import io.github.lofrol.UselessClan.ClanCommands.ClanAdminCommand;
+import io.github.lofrol.UselessClan.ClanCommands.ClanChatCommand;
+import io.github.lofrol.UselessClan.ClanCommands.ClanCommand;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.plugin.RegisteredServiceProvider;
@@ -20,7 +20,7 @@ public final class UselessClan extends JavaPlugin {
     @Nullable
     public static Economy EconomyPtr = null;
 
-    private ClanManager MainManager;
+    private static ClanManager MainManager;
 
     @Override
     public void onEnable() {
@@ -77,7 +77,7 @@ public final class UselessClan extends JavaPlugin {
         MainManager.SaveClans();
     }
 
-    public ClanManager getMainManager() {
+    public static ClanManager getMainManager() {
         return MainManager;
     }
 }
