@@ -22,16 +22,10 @@ import java.util.stream.Stream;
 import static org.bukkit.Bukkit.*;
 
 public final class ClanCommand extends Command {
-
-    private ClanManager ManagerPtr;
-
-    private Map<String, CommandBase> ClanCommands;
+    private final Map<String, CommandBase> ClanCommands;
     public static ClanCommand CreateDefaultInst(ClanManager manager) {
         ClanCommand tempInst = new ClanCommand("Clan", "Default command for access to the clan system",
                 "Use &5/Clan help&r for learning more", Stream.of("clan", "Clan").collect(Collectors.toList()));
-
-        tempInst.ManagerPtr = manager;
-
         return tempInst;
     }
 
