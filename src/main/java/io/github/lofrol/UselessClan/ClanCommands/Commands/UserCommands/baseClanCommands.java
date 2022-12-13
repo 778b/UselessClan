@@ -51,8 +51,7 @@ public class baseClanCommands {
         commands.put("demote",      new demoteUserCommand());
     }
 
-    public static class claimUserCommand extends PlayerCommandBase {
-
+    private static class claimUserCommand extends PlayerCommandBase {
         @Override
         public boolean executeCommand(Player tempPlayer, Clan senderClan, String[] args) {
             ClanRole SenderRole = null;
@@ -159,8 +158,7 @@ public class baseClanCommands {
         }
     }
 
-    public static class createUserCommand extends PlayerCommandBase {
-
+    private static class createUserCommand extends PlayerCommandBase {
         @Override
         public boolean executeCommand(Player tempPlayer, Clan senderClan, String[] args) {
             if (senderClan != null) {
@@ -211,7 +209,7 @@ public class baseClanCommands {
         }
     }
 
-    public static class deleteUserCommand extends PlayerCommandBase {
+    private static class deleteUserCommand extends PlayerCommandBase {
         @Override
         public boolean executeCommand(Player tempPlayer, Clan senderClan, String[] args) {
             if (senderClan == null) {
@@ -231,7 +229,7 @@ public class baseClanCommands {
         }
     }
 
-    public static class leaveUserCommand extends PlayerCommandBase {
+    private static class leaveUserCommand extends PlayerCommandBase {
         @Override
         public boolean executeCommand(Player tempPlayer, Clan senderClan, String[] args) {
             if (senderClan == null) {
@@ -251,7 +249,7 @@ public class baseClanCommands {
         }
     }
 
-    public static class depositUserCommand extends PlayerCommandBase {
+    private static class depositUserCommand extends PlayerCommandBase {
 
         @Override
         public boolean executeCommand(Player tempPlayer, Clan senderClan, String[] args) {
@@ -292,7 +290,7 @@ public class baseClanCommands {
         }
     }
 
-    public static class withdrawUserCommand extends PlayerCommandBase {
+    private static class withdrawUserCommand extends PlayerCommandBase {
 
         @Override
         public boolean executeCommand(Player tempPlayer, Clan senderClan, String[] args) {
@@ -345,7 +343,7 @@ public class baseClanCommands {
         }
     }
 
-    public static class homeUserCommand extends PlayerCommandBase {
+    private static class homeUserCommand extends PlayerCommandBase {
 
         @Override
         public boolean executeCommand(Player tempPlayer,Clan senderClan, String[] args) {
@@ -375,7 +373,7 @@ public class baseClanCommands {
         }
     }
 
-    public static class sethomeUserCommand extends PlayerCommandBase {
+    private static class sethomeUserCommand extends PlayerCommandBase {
 
         @Override
         public boolean executeCommand(Player tempPlayer, Clan senderClan, String[] args) {
@@ -405,7 +403,7 @@ public class baseClanCommands {
         }
     }
 
-    public static class infoUserCommand extends PlayerCommandBase {
+    private static class infoUserCommand extends PlayerCommandBase {
 
         @Override
         public boolean executeCommand(Player tempPlayer,Clan senderClan, String[] args) {
@@ -430,7 +428,7 @@ public class baseClanCommands {
         }
     }
 
-    public static class matesUserCommand extends PlayerCommandBase {
+    private static class matesUserCommand extends PlayerCommandBase {
 
         @Override
         public boolean executeCommand(Player tempPlayer,Clan senderClan, String[] args) {
@@ -452,7 +450,7 @@ public class baseClanCommands {
         }
     }
 
-    public static class acceptUserCommand extends PlayerCommandBase {
+    private static class acceptUserCommand extends PlayerCommandBase {
 
         @Override
         public boolean executeCommand(Player tempPlayer, Clan senderClan, String[] args) {
@@ -534,7 +532,7 @@ public class baseClanCommands {
         }
     }
 
-    public static class joinUserCommand extends PlayerCommandBase {
+    private static class joinUserCommand extends PlayerCommandBase {
 
         @Override
         public boolean executeCommand(Player tempPlayer, Clan senderClan, String[] args) {
@@ -575,7 +573,7 @@ public class baseClanCommands {
 
     }
 
-    public static class kickUserCommand extends PlayerCommandBase {
+    private static class kickUserCommand extends PlayerCommandBase {
 
         @Override
         public boolean executeCommand(Player tempPlayer, Clan senderClan, String[] args) {
@@ -642,7 +640,7 @@ public class baseClanCommands {
         }
     }
 
-    public static class promoteUserCommand extends PlayerCommandBase {
+    private static class promoteUserCommand extends PlayerCommandBase {
         @Override
         public boolean executeCommand(Player tempPlayer, Clan senderClan, String[] args) {
             ClanRole SenderRole = null;
@@ -714,7 +712,7 @@ public class baseClanCommands {
         }
     }
 
-    public static class demoteUserCommand extends PlayerCommandBase {
+    private static class demoteUserCommand extends PlayerCommandBase {
         @Override
         public boolean executeCommand(Player tempPlayer, Clan senderClan, String[] args) {
             ClanRole SenderRole = null;

@@ -1,6 +1,8 @@
 package io.github.lofrol.UselessClan.ClanCommands;
 
 import io.github.lofrol.UselessClan.ClanCommands.Commands.CommandBase;
+import io.github.lofrol.UselessClan.ClanCommands.Commands.UserCommands.baseClanCommands;
+import io.github.lofrol.UselessClan.ClanCommands.Commands.UserCommands.requestClanCommands;
 import io.github.lofrol.UselessClan.ClanManager;
 import io.github.lofrol.UselessClan.ClanObjects.Clan;
 import io.github.lofrol.UselessClan.ClanObjects.ClanRole;
@@ -42,87 +44,26 @@ public final class ClanCommand extends Command {
                           @NotNull List<String> aliases) {
         super(name,description,usageMessage,aliases);
         ClanCommands = new HashMap<>();
-
+        baseClanCommands.setupCommands(ClanCommands);
+        requestClanCommands.setupCommands(ClanCommands);
     }
 
     @Override
     public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] args) {
         if (!(sender instanceof Player tempPlayer)) return false;
 
-        Clan SenderClan = ManagerPtr.FindClanToPlayer(tempPlayer.getName());
-        ClanRole SenderRole = null;
-        if (SenderClan != null) {
-            SenderRole = SenderClan.getMemberRole(tempPlayer.getName());
-        }
-
-        int size = args.length;
-        if (size == 0) {
-            // just only /Clan
+        if (args.length == 0) {
             ChatSender.MessageTo(tempPlayer,"UselessClan", "Use command &a/Clan help&b, for access to clan system");
         }
-        else if (size == 1) {
-            if (args[0].equalsIgnoreCase("top")) {
-            }
-            else if (args[0].equalsIgnoreCase("version")) {
-                PluginDescriptionFile tempDescr =  ManagerPtr.getOwnerPlugin().getDescription();
-                ChatSender.MessageTo(tempPlayer,"UselessClan", String.format("Plugin version is %s" ,tempDescr.getVersion()));
-                return true;
-            }
-            else if (args[0].equalsIgnoreCase("create")) {
-            }
-            else if (args[0].equalsIgnoreCase("join")) {
-            }
-            else if (args[0].equalsIgnoreCase("deposit")) {
-            }
-            else if (args[0].equalsIgnoreCase("withdraw")) {
-            }
-            else if (args[0].equalsIgnoreCase("leave")) {
-            }
-            else if (args[0].equalsIgnoreCase("home")) {
-            }
-            else if (args[0].equalsIgnoreCase("sethome")) {
-            }
-            else if (args[0].equalsIgnoreCase("mates")) {
-            }
-            else if (args[0].equalsIgnoreCase("delete")) {
-            }
-            else if (args[0].equalsIgnoreCase("info")) {
-            }
-            else if (args[0].equalsIgnoreCase("requests")) {
-            }
-            else if (args[0].equalsIgnoreCase("accept")) {
-            }
-            else if (args[0].equalsIgnoreCase("kick")) {
-            }
-            else if (args[0].equalsIgnoreCase("promote")) {
-            }
-            else if (args[0].equalsIgnoreCase("demote")) {
-            }
-            else if (args[0].equalsIgnoreCase("claim")) {
-            }
-            else {
-                ChatSender.MessageTo(tempPlayer,"UselessClan",
-                        "&cInvalid command. Use command &a/Clan help&b, for access to clan system");
-                return false;
-            }
+
+        CommandBase tempCommand = ClanCommands.get(args[0]);
+
+        if (tempCommand == null) {
+            ChatSender.MessageTo(tempPlayer, "UselessClan",
+                    "&cInvalid command. Use command &a/Clan help&c, for access to clan system");
+            return false;
         }
-        else if (size == 2) {
-            if (args[0].equalsIgnoreCase("create")) {
-            }
-            else if (args[0].equalsIgnoreCase("join")) {
-            }
-            else if (args[0].equalsIgnoreCase("deposit")) {
-            }
-            else if (args[0].equalsIgnoreCase("withdraw")) {
-            }
-            else if (args[0].equalsIgnoreCase("accept")) {
-            }
-            else {
-                ChatSender.MessageTo(tempPlayer,"UselessClan",
-                        "&cInvalid command. Use command &a/Clan help&c, for access to clan system");
-                return false;
-            }
-        }
-        return true;
+
+        return tempCommand.executeCommand(sender, args);
     }
 }

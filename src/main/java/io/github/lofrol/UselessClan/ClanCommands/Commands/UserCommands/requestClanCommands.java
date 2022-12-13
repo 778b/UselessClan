@@ -16,7 +16,8 @@ public class requestClanCommands {
         commands.put("requests",    new requestsUserCommand());
         commands.put("top",         new topUserCommand());
     }
-    public static class helpUserCommand extends PlayerCommandBase {
+
+    private static class helpUserCommand extends PlayerCommandBase {
 
         @Override
         public boolean executeCommand(Player tempPlayer,Clan senderClan, String[] args) {
@@ -54,7 +55,7 @@ public class requestClanCommands {
         }
     }
 
-    public static class requestsUserCommand extends PlayerCommandBase {
+    private static class requestsUserCommand extends PlayerCommandBase {
 
         @Override
         public boolean executeCommand(Player tempPlayer,Clan senderClan, String[] args) {
@@ -86,7 +87,7 @@ public class requestClanCommands {
         }
     }
 
-    public static class topUserCommand extends PlayerCommandBase {
+    private static class topUserCommand extends PlayerCommandBase {
 
         @Override
         public boolean executeCommand(Player tempPlayer, Clan senderClan, String[] args) {
