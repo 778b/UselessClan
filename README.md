@@ -19,12 +19,14 @@
 #### /Clan home                  - to teleport to clans home
 #
 ## Officers and Leader commands
+#### /Clan claim                 - to claim clan region
 #### /Clan sethome               - to set clan home
 #### /Clan requests              - to see list of all requests to join your clan
 #### /Clan accept [playername]   - to accept [playername] for join to your clan
 #### /Clan kick [playername]     - to kick player [playername] from your clan
 #### /Clan promote [playername]  - to promote player [playername] of your clan
 #### /Clan demote [playername]   - to demote player [playername] of your clan
+#### /Clan delete                - to delete clan(remove clan and save last config to DeletedCLan folder)
 #
 ## Admin's commands
 #### /ClAd list                  - list of all clans
