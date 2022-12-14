@@ -16,7 +16,6 @@ import java.util.logging.Level;
 
 
 public final class UselessClan extends JavaPlugin {
-    public PlaceholderExpansion tempPlaceholderClan;
     @Nullable
     public static Economy EconomyPtr = null;
 
@@ -44,7 +43,7 @@ public final class UselessClan extends JavaPlugin {
         }
 
         if(getServer().getPluginManager().getPlugin("PlaceholderAPI") != null) {
-            tempPlaceholderClan = new UselessClanPlaceholder(this);
+            PlaceholderExpansion tempPlaceholderClan = new UselessClanPlaceholder(this);
             tempPlaceholderClan.register();
             StringBuilder MultiString = new StringBuilder();
             for (String placeholder : tempPlaceholderClan.getPlaceholders()) {
