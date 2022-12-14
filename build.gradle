@@ -3,7 +3,7 @@ plugins {
 }
 
 group = 'io.github.lofrol'
-version = '0.8'
+version = '0.8a'
 
 repositories {
     mavenCentral()

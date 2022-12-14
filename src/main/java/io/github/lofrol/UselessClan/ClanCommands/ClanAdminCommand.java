@@ -1,5 +1,6 @@
 package io.github.lofrol.UselessClan.ClanCommands;
 
+import io.github.lofrol.UselessClan.ClanCommands.Commands.AdminCommands.AdminClanCommands;
 import io.github.lofrol.UselessClan.ClanCommands.Commands.CommandBase;
 import io.github.lofrol.UselessClan.ClanManager;
 import io.github.lofrol.UselessClan.ClanObjects.Clan;
@@ -34,6 +35,7 @@ public final class ClanAdminCommand extends Command {
     private ClanAdminCommand(@NotNull String name, @NotNull String description, @NotNull String usageMessage, @NotNull List<String> aliases) {
         super(name,description,usageMessage,aliases);
         ClanCommands = new HashMap<>();
+        AdminClanCommands.setupCommands(ClanCommands);
     }
 
     @Override
