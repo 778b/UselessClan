@@ -32,6 +32,7 @@ public final class ClanManager {
 
     private static final String ClanFolderName = "Clans";
     private static final String DeletedClanFolder = "DeletedClans";
+    private static final String backupClanFolder = "backups";
 
     private final UselessClan OwnerPlugin;
 
@@ -108,16 +109,19 @@ public final class ClanManager {
     }
 
     public void SaveClans() {
-        try {
-            File tempDir = checkClanFolderOrCreate(ClanFolderName);
 
-            OwnerPlugin.getLogger().log(Level.INFO, "Starting save clans to plugin folder...");
-            for (Clan TempClan : ServerClans.values()) {
+        File tempDir = checkClanFolderOrCreate(ClanFolderName);
+
+        OwnerPlugin.getLogger().log(Level.INFO, "Starting save clans to plugin folder...");
+        for (Clan TempClan : ServerClans.values()) {
+            try {
                 SaveClan(TempClan, tempDir);
             }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+            catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
+
     }
     private void SaveClan(Clan clanToSave, File clanFolder) throws IOException {
         File tempClanFile = new File(clanFolder, String.format("%s.yml", clanToSave.getPrefixClan()));
@@ -186,8 +190,6 @@ public final class ClanManager {
 
     // Return Clans folder
     private File checkClanFolderOrCreate(String FolderName) {
-        OwnerPlugin.getLogger().log(Level.INFO, "Finding plugin folder...");
-
         File PluginDir = OwnerPlugin.getDataFolder();
         if (!PluginDir.exists()) {
             if (PluginDir.mkdir()) {
@@ -281,4 +283,36 @@ public final class ClanManager {
         OwnerPlugin.getLogger().log(Level.INFO, String.format("Clan member %s leaved from server", player.getName()));
     }
 
+
+    public void createClansBackups() {
+        OwnerPlugin.getLogger().log(Level.INFO, "Starting backup of server clans...");
+        File tempDir = checkClanFolderOrCreate(backupClanFolder);
+
+        Calendar tempDate = Calendar.getInstance();
+
+        File todayBackupFile = new File(tempDir, String.format("%d-%d-%d__%d-%d_ClansBackup",
+                tempDate.get(Calendar.DAY_OF_MONTH), tempDate.get(Calendar.MONTH), tempDate.get(Calendar.YEAR),
+                tempDate.get(Calendar.HOUR), tempDate.get(Calendar.MINUTE)));
+
+        if (!todayBackupFile.exists()) {
+            if (todayBackupFile.mkdir()) {
+                OwnerPlugin.getLogger().log(Level.INFO, "Creating folder for backups...");
+            }
+            else {
+                OwnerPlugin.getLogger().log(Level.SEVERE, "Cant create backups folder!");
+                return;
+            }
+        }
+        for (Clan tempClan : ServerClans.values()) {
+            File tempClanFile = new File(todayBackupFile, String.format("%s.yml", tempClan.getPrefixClan()));
+            FileConfiguration tempConfig = tempClan.SaveClanToConfig();
+            try {
+                tempConfig.save(tempClanFile);
+            }
+            catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        OwnerPlugin.getLogger().log(Level.FINE, "Backup successfully created!");
+    }
 }

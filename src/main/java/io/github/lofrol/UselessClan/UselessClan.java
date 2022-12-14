@@ -61,11 +61,7 @@ public final class UselessClan extends JavaPlugin {
         else getLogger().log(Level.SEVERE, "Clan Chat Command cant be loaded!");
 
         MainManager.LoadClans();
-
-        getServer().getScheduler().runTaskTimer(this, () -> {
-            getMainManager().SaveClans();
-            getLogger().log(Level.INFO, "Clans was saved by AutoSave");
-        }, 24000, 24000);
+        runServerTasks();
 
         getLogger().log(Level.INFO, "Loaded successfully!");
     }
@@ -76,5 +72,17 @@ public final class UselessClan extends JavaPlugin {
     }
     public static ClanManager getMainManager() {
         return MainManager;
+    }
+
+    private void runServerTasks() {
+        getServer().getScheduler().runTaskTimer(this, () -> {
+            getMainManager().SaveClans();
+            getLogger().log(Level.INFO, "Clans was saved by AutoSave");
+        }, 24000, 24000);
+
+
+        getServer().getScheduler().runTaskTimerAsynchronously(this, () -> {
+            getMainManager().createClansBackups();
+        }, 0, 864000);          // Every 12 hours
     }
 }
