@@ -5,6 +5,7 @@
 ## Currently support API:
 ### PlaceholderAPI:   %rel_UselessClan_Prefix% && %rel_UselessClan_Role%
 ### VaultAPI:         Economy system of clans
+### WorldGuard:       Clan region system
 #
 ## Avalible default commands:
 #### /Clan version               - to show version of the plugin
