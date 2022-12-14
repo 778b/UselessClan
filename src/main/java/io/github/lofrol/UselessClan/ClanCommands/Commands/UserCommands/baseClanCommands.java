@@ -223,8 +223,7 @@ public class baseClanCommands {
                     ChatSender.MessageTo(tempPlayer,"UselessClan", "&cYou rank is too low to do that!");
                     return false;
                 }
-                UselessClan.getMainManager().SaveClanDefaultFolder(senderClan);
-                UselessClan.getMainManager().DeleteClan(senderClan.getNameClan());
+                UselessClan.getMainManager().DeleteClan(senderClan);
             }
             return true;
         }

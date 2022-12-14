@@ -68,17 +68,17 @@ public final class ClanManager {
         RegisterOnlineClanPlayer(NewClan, LeaderPlayer);
     }
 
-    public void DeleteClan(String ClanName) {
-        Clan ClanToDelete = ServerClans.get(ClanName);
+    public void DeleteClan(Clan clanToDelete) {
+        Clan ClanToDelete = ServerClans.get(clanToDelete.getPrefixClan());
         if (ClanToDelete == null) return;
 
-        ServerClans.remove(ClanName);
+        ServerClans.remove(clanToDelete.getPrefixClan());
         for (Map.Entry<Player, OnlinePlayerClan> tempEntry : OnlineClanPlayers.entrySet()) {
-            if (tempEntry.getValue().getPlayerClan().getPrefixClan().equals(ClanName)) {
+            if (tempEntry.getValue().getPlayerClan().getPrefixClan().equals(clanToDelete.getPrefixClan())) {
                 OnlineClanPlayers.remove(tempEntry.getKey());
             }
         }
-        RemoveClanToDeletedClanFolder(ClanName);
+        RemoveClanToDeletedClanFolder(clanToDelete);
     }
 
 
@@ -149,47 +149,38 @@ public final class ClanManager {
         }
     }
 
-    private void RemoveClanToDeletedClanFolder(String ClanName) {
+    private void RemoveClanToDeletedClanFolder(Clan clanToDelete) {
         File tempDeleteDir = checkClanFolderOrCreate(DeletedClanFolder);
         File tempClanDir = checkClanFolderOrCreate(ClanFolderName);
 
-        FileConfiguration ClanConfig = new YamlConfiguration();
-        String newClanName = null;
+        FileConfiguration ClanConfig = clanToDelete.SaveClanToConfig();
+        boolean isDeleted = false;
 
 
         for (File tempClanFile : Objects.requireNonNull(tempClanDir.listFiles())) {
-            if (tempClanFile.getName().equals(String.format("%s.yml", ClanName))) {
-
-                try {
-                    ClanConfig.load(tempClanFile);
-                }
-                catch (IOException | InvalidConfigurationException e) {
-                    OwnerPlugin.getLogger().log(Level.SEVERE, String.format("%s have exception on delete! #1", ClanName));
-                    throw new RuntimeException(e);
-                }
-
-                newClanName = tempClanFile.getName();
+            if (tempClanFile.getName().equals(String.format("%s.yml", clanToDelete.getPrefixClan()))) {
                 tempClanFile.deleteOnExit();
+                isDeleted = true;
                 break;
             }
         }
 
-        if (newClanName == null) {
-            OwnerPlugin.getLogger().log(Level.SEVERE, String.format("%s isnt finded!", ClanName));
+        if (!isDeleted) {
+            OwnerPlugin.getLogger().log(Level.SEVERE, String.format("%s isnt finded!", clanToDelete.getPrefixClan()));
             return;
         }
-        OwnerPlugin.getLogger().log(Level.INFO, String.format("%s is finded!", ClanName));
+        OwnerPlugin.getLogger().log(Level.INFO, String.format("%s is finded!", clanToDelete.getPrefixClan()));
 
-        File newClanFile = new File(tempDeleteDir, newClanName);
+
+        File newClanFile = new File(tempDeleteDir, clanToDelete.getPrefixClan());
         try {
             ClanConfig.save(newClanFile);
         }
         catch (IOException e) {
-            OwnerPlugin.getLogger().log(Level.SEVERE, String.format("%s have exception on delete! #2", ClanName));
             throw new RuntimeException(e);
         }
 
-        OwnerPlugin.getLogger().log(Level.FINE, String.format("%s was deleted successfully", ClanName));
+        OwnerPlugin.getLogger().log(Level.FINE, String.format("%s was deleted successfully", clanToDelete.getPrefixClan()));
     }
 
 

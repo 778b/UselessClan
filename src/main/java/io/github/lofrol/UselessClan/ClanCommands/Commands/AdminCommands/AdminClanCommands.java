@@ -108,8 +108,8 @@ public class AdminClanCommands {
                     ChatSender.MessageTo(tempPlayer, "&4UselessClan","&cThis clan didnt exist!");
                     return false;
                 }
-                UselessClan.getMainManager().DeleteClan(findedClan.getNameClan());
-                ChatSender.MessageTo(tempPlayer, "&4UselessClan",String.format("You deleted a clan %s", findedClan.getNameClan()));
+                UselessClan.getMainManager().DeleteClan(findedClan);
+                ChatSender.MessageTo(tempPlayer, "&4UselessClan",String.format("You deleted a clan %s", findedClan.getPrefixClan()));
             }
             return true;
         }
