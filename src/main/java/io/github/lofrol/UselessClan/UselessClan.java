@@ -23,17 +23,16 @@ public final class UselessClan extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        this.getServer().getPluginManager().registerEvents(new UselessListeners(this), this);
-        getLogger().log(Level.INFO, "Events was registered successfully!");
-
         if (getServer().getPluginManager().getPlugin("Vault") == null) {
-            getLogger().log(Level.INFO, "Cant find Vault");
+            getLogger().log(Level.SEVERE, "Cant find Vault, Vault is required!");
+            setEnabled(false);
             return;
         }
         else {
             RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
             if (rsp == null) {
-                getLogger().log(Level.INFO, "Cant find Vault");
+                getLogger().log(Level.SEVERE, "Vault not initialized!");
+                setEnabled(false);
                 return;
             }
             else {
@@ -75,7 +74,6 @@ public final class UselessClan extends JavaPlugin {
     public void onDisable() {
         MainManager.SaveClans();
     }
-
     public static ClanManager getMainManager() {
         return MainManager;
     }
