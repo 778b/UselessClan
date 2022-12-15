@@ -12,10 +12,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public final class UselessClanPlaceholder extends PlaceholderExpansion {
-    private final UselessClan OwnerPlugin;
 
-    public UselessClanPlaceholder(UselessClan owner) {
-        OwnerPlugin = owner;
+    public UselessClanPlaceholder() {
     }
 
     @Override
@@ -49,18 +47,18 @@ public final class UselessClanPlaceholder extends PlaceholderExpansion {
             return "";
         }
         if(params.equalsIgnoreCase("prefix")) {
-            Clan tempClan = OwnerPlugin.getMainManager().FindClanToPlayer(player.getName());
+            Clan tempClan = UselessClan.getMainManager().FindClanToPlayer(player.getName());
             if (tempClan == null) return "";
             return String.format("&r[%s%s&r]", ClanManager.ClanLevelColors[tempClan.getClanLevel()], tempClan.getPrefixClan());
         }
         else if (params.equalsIgnoreCase("role")) {
-            Clan tempClan = OwnerPlugin.getMainManager().FindClanToPlayer(player.getName());
+            Clan tempClan = UselessClan.getMainManager().FindClanToPlayer(player.getName());
             if (tempClan == null) return "";
             ClanMember tempMember = tempClan.getClanMember(player.getName());
             return String.format("&r[&6%s&r]", ClanManager.ClanRoleSolver(tempMember.getMemberRole()));
         }
         else if (params.equalsIgnoreCase("clanlevel")) {
-            Clan tempClan = OwnerPlugin.getMainManager().FindClanToPlayer(player.getName());
+            Clan tempClan = UselessClan.getMainManager().FindClanToPlayer(player.getName());
             if (tempClan == null) return "";
 
             return String.format("&r[&6%d&r]", tempClan.getClanLevel());
