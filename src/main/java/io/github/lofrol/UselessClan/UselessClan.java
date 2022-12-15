@@ -79,11 +79,16 @@ public final class UselessClan extends JavaPlugin {
         getServer().getScheduler().runTaskTimer(this, () -> {
             getMainManager().SaveClans();
             getLogger().log(Level.INFO, "Clans was saved by AutoSave");
-        }, 24000, 24000);
+        }, 24000, 24000);           // Every 20 min
+
+
+        getServer().getScheduler().runTaskTimerAsynchronously(this, () -> {
+            getMainManager().CalculateAllClansLevels();
+        }, 12000, 12000);           // Every 10 min
 
 
         getServer().getScheduler().runTaskTimerAsynchronously(this, () -> {
             getMainManager().createClansBackups();
-        }, 0, 864000);          // Every 12 hours
+        }, 0, 864000);              // Every 12 hours
     }
 }

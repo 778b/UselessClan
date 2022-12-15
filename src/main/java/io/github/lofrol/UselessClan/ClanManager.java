@@ -61,6 +61,12 @@ public final class ClanManager {
         // Overriding by extensions if needed
         Extension.CalculateClanLevel(ClanToLevel);
     }
+
+    public void CalculateAllClansLevels() {
+        for (Clan tempClan : ServerClans.values()) {
+            CalculateClanLevel(tempClan);
+        }
+    }
     public void CreateClan(String ClanName, Player LeaderPlayer) {
         Clan NewClan = new Clan(ClanName, LeaderPlayer.getName());
         ServerClans.put(ClanName, NewClan);
