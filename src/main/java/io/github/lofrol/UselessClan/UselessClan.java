@@ -2,10 +2,10 @@ package io.github.lofrol.UselessClan;
 
 import io.github.lofrol.UselessClan.Extensions.ClanManagerExtension;
 import io.github.lofrol.UselessClan.External.UselessClanPlaceholder;
-import io.github.lofrol.UselessClan.Listeners.UselessListeners;
 import io.github.lofrol.UselessClan.ClanCommands.ClanAdminCommand;
 import io.github.lofrol.UselessClan.ClanCommands.ClanChatCommand;
 import io.github.lofrol.UselessClan.ClanCommands.ClanCommand;
+import io.github.lofrol.UselessClan.Listeners.UselessListeners;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.plugin.RegisteredServiceProvider;
@@ -42,7 +42,7 @@ public final class UselessClan extends JavaPlugin {
         }
 
         if(getServer().getPluginManager().getPlugin("PlaceholderAPI") != null) {
-            PlaceholderExpansion tempPlaceholderClan = new UselessClanPlaceholder(this);
+            PlaceholderExpansion tempPlaceholderClan = new UselessClanPlaceholder();
             tempPlaceholderClan.register();
             StringBuilder MultiString = new StringBuilder();
             for (String placeholder : tempPlaceholderClan.getPlaceholders()) {
@@ -52,6 +52,7 @@ public final class UselessClan extends JavaPlugin {
         }
 
         MainManager = new ClanManager(this, new ClanManagerExtension());
+        getServer().getPluginManager().registerEvents(new UselessListeners(), this);
 
         if (ClanCommand.CreateDefaultInst(MainManager).registerCommand()) getLogger().log(Level.INFO, "Clan Command Loaded successfully!");
         else getLogger().log(Level.SEVERE, "Clan Command cant be loaded!");

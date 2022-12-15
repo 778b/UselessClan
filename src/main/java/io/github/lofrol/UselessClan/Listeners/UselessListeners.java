@@ -10,21 +10,15 @@ import org.bukkit.event.Listener;
 
 public final class UselessListeners implements Listener {
 
-    private final UselessClan OwnerPlugin;
-
-    public UselessListeners(UselessClan owner) {
-        OwnerPlugin = owner;
-    }
-
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void PlayerJoin(PlayerJoinEvent event) {
-        OwnerPlugin.getMainManager().OnPlayerJoin(event.getPlayer());
+        UselessClan.getMainManager().OnPlayerJoin(event.getPlayer());
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void PlayerQuit(PlayerQuitEvent event) {
-        OwnerPlugin.getMainManager().OnPlayerLeave(event.getPlayer());
+        UselessClan.getMainManager().OnPlayerLeave(event.getPlayer());
     }
 
 }
