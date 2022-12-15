@@ -151,15 +151,6 @@ public final class ClanManager {
 
         OwnerPlugin.getLogger().log(Level.FINE, String.format("%s was saved", clanToSave.getNameClan()));
     }
-    public void SaveClanDefaultFolder(Clan clanToSave) {
-        File tempDir = checkClanFolderOrCreate(ClanFolderName);
-        try {
-            SaveClan(clanToSave, tempDir);
-        }
-        catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
 
     private void RemoveClanToDeletedClanFolder(Clan clanToDelete) {
         File tempDeleteDir = checkClanFolderOrCreate(DeletedClanFolder);
@@ -198,23 +189,16 @@ public final class ClanManager {
 
     // Return Clans folder
     private File checkClanFolderOrCreate(String FolderName) {
-<<<<<<< Updated upstream
-        File PluginDir = OwnerPlugin.getDataFolder();
-        if (!PluginDir.exists()) {
-            if (PluginDir.mkdir()) {
-                OwnerPlugin.getLogger().log(Level.INFO, "Creating folder of plugin...");
-            }
-            else {
-                OwnerPlugin.getLogger().log(Level.SEVERE, "Cant create plugin folder!");
-            }
-=======
         if (!checkFolderOrCreate(OwnerPlugin.getDataFolder())) {
             OwnerPlugin.getLogger().log(Level.SEVERE, "Cant create plugin folder!");
->>>>>>> Stashed changes
         }
+
         File tempDir = new File(OwnerPlugin.getDataFolder(), FolderName);
 
-        if (!checkFolderOrCreate(tempDir)) {
+        if (checkFolderOrCreate(tempDir)) {
+            OwnerPlugin.getLogger().log(Level.INFO, String.format("Checked %s folder for exist", FolderName));
+        }
+        else {
             OwnerPlugin.getLogger().log(Level.SEVERE, String.format("Cant create %s folder!", FolderName));
         }
         return tempDir;
