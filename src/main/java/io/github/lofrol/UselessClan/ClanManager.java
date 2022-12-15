@@ -198,6 +198,7 @@ public final class ClanManager {
 
     // Return Clans folder
     private File checkClanFolderOrCreate(String FolderName) {
+<<<<<<< Updated upstream
         File PluginDir = OwnerPlugin.getDataFolder();
         if (!PluginDir.exists()) {
             if (PluginDir.mkdir()) {
@@ -206,19 +207,21 @@ public final class ClanManager {
             else {
                 OwnerPlugin.getLogger().log(Level.SEVERE, "Cant create plugin folder!");
             }
+=======
+        if (!checkFolderOrCreate(OwnerPlugin.getDataFolder())) {
+            OwnerPlugin.getLogger().log(Level.SEVERE, "Cant create plugin folder!");
+>>>>>>> Stashed changes
         }
         File tempDir = new File(OwnerPlugin.getDataFolder(), FolderName);
 
-        if (!tempDir.exists()) {
-            OwnerPlugin.getLogger().log(Level.WARNING, String.format("%s folder not found!", FolderName));
-            if (tempDir.mkdir()) {
-                OwnerPlugin.getLogger().log(Level.INFO, String.format("Creating %s folder in plugin dir...", FolderName));
-            }
-            else {
-                OwnerPlugin.getLogger().log(Level.SEVERE, "Cant create clan folder!");
-            }
+        if (!checkFolderOrCreate(tempDir)) {
+            OwnerPlugin.getLogger().log(Level.SEVERE, String.format("Cant create %s folder!", FolderName));
         }
         return tempDir;
+    }
+
+    private boolean checkFolderOrCreate(File Folder) {
+        return (Folder.exists() || Folder.mkdir());
     }
 
 
@@ -233,9 +236,6 @@ public final class ClanManager {
     }
     public Clan getClanByName(String nameOfClan) {
         return ServerClans.get(nameOfClan);
-    }
-    public UselessClan getOwnerPlugin() {
-        return OwnerPlugin;
     }
 
     public Clan FindClanToPlayer(String PlayerName) {
