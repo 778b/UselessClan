@@ -126,12 +126,14 @@ public final class ClanManager {
     private void SaveClan(Clan clanToSave, File clanFolder) throws IOException {
         File tempClanFile = new File(clanFolder, String.format("%s.yml", clanToSave.getPrefixClan()));
 
+        /* todo Check after update any clan config
         if (tempClanFile.exists()) {
             if (tempClanFile.delete()) {
                 OwnerPlugin.getLogger().log(Level.FINE, String.format("%s delete previous config", clanToSave.getNameClan()));
             }
             OwnerPlugin.getLogger().log(Level.FINE, String.format("%s didnt find previous config", clanToSave.getNameClan()));
         }
+        */
 
         FileConfiguration ClanConfig = clanToSave.SaveClanToConfig();
         if (ClanConfig == null) {
