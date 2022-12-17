@@ -3,6 +3,17 @@ package io.github.lofrol.UselessClan.ClanObjects;
 import org.jetbrains.annotations.NotNull;
 
 public class ClanSettings {
+
+    public ClanRole DefaultJoinRole;
+    public ClanRole RoleCanKick;
+
+    public ClanRole RoleCanSethome;
+
+    public ClanRole RoleCanWithdraw;
+
+    public ClanRole RoleCanAccept;
+
+
     public ClanSettings() {
         DefaultJoinRole = ClanRole.ROOKIE;
         RoleCanSethome = ClanRole.LEADER;
@@ -23,14 +34,7 @@ public class ClanSettings {
         int Stage = 0;
         for (char tc: settings.toCharArray()) {
             if (tc == '/') {
-                ClanRole TempRole = null;
-                switch (Integer.parseInt(param.toString())) {
-                    case 1 -> TempRole = ClanRole.ROOKIE;
-                    case 2 -> TempRole = ClanRole.MEMBER;
-                    case 3 -> TempRole = ClanRole.OFFICER;
-                    case 4 -> TempRole = ClanRole.LEADER;
-                    default -> TempRole = ClanRole.NONE;
-                }
+                ClanRole TempRole = ClanRole.fromString(param.toString());
                 if (Stage == 0) {
                     DefaultJoinRole = TempRole;
                     ++Stage;
@@ -55,17 +59,5 @@ public class ClanSettings {
             }
             else param.append(tc);
         }
-
     }
-    public ClanRole DefaultJoinRole;
-    public ClanRole RoleCanKick;
-
-    public ClanRole RoleCanSethome;
-
-    public ClanRole RoleCanWithdraw;
-
-    public ClanRole RoleCanAccept;
-
-
-
 }
