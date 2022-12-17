@@ -98,10 +98,8 @@ public class Clan {
                     tempMember.getPlayerName(), tempMember.getMemberRole().ordinal(), tempMember.getGeneralPlayerDeposit());
             ClanConfig.set(String.format("UselessClan.Members.%d", i), MasterStringMember);
         }
-        String MasterSettingsString = String.format("%d/%d/%d/%d/",
-                SettingsClan.DefaultJoinRole.ordinal(), SettingsClan.HomeChangerMinRole.ordinal(),
-                SettingsClan.MinRoleForWithdraw.ordinal(), SettingsClan.RoleCanKick.ordinal());
-        ClanConfig.set("UselessClan.Settings", MasterSettingsString);
+        
+        ClanConfig.set("UselessClan.Settings", SettingsClan.getSerializationString());
 
         NeedToSave = false;
         return ClanConfig;

@@ -8,6 +8,11 @@ public class ClanSettings {
         RoleCanKick = ClanRole.OFFICER;
     }
 
+    public String getSerializationString() {
+        return String.format("%d/%d/%d/%d/",
+                DefaultJoinRole.ordinal(), HomeChangerMinRole.ordinal(),
+                MinRoleForWithdraw.ordinal(), RoleCanKick.ordinal());
+    }
     public ClanRole DefaultJoinRole;
     public ClanRole RoleCanKick;
 
@@ -15,6 +20,6 @@ public class ClanSettings {
 
     public ClanRole MinRoleForWithdraw;
 
-    
+
 
 }
