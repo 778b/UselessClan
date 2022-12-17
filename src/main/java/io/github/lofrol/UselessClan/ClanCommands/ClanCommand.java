@@ -48,6 +48,7 @@ public final class ClanCommand extends Command {
 
         if (args.length == 0) {
             ChatSender.MessageTo(tempPlayer,"UselessClan", "Use command &a/Clan help&b, for access to clan system");
+            return false;
         }
 
         CommandBase tempCommand = ClanCommands.get(args[0]);

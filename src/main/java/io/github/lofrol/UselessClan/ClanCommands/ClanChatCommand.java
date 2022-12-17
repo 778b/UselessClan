@@ -31,7 +31,7 @@ public final class ClanChatCommand extends Command {
         return getServer().getCommandMap().register("[UselessClan]", this);
     }
 
-    protected ClanChatCommand(@NotNull String name, @NotNull String description, @NotNull String usageMessage, @NotNull List<String> aliases) {
+    private ClanChatCommand(@NotNull String name, @NotNull String description, @NotNull String usageMessage, @NotNull List<String> aliases) {
         super(name,description,usageMessage,aliases);
     }
 

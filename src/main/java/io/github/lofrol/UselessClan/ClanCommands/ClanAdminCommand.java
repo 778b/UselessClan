@@ -3,8 +3,6 @@ package io.github.lofrol.UselessClan.ClanCommands;
 import io.github.lofrol.UselessClan.ClanCommands.Commands.AdminCommands.AdminClanCommands;
 import io.github.lofrol.UselessClan.ClanCommands.Commands.CommandBase;
 import io.github.lofrol.UselessClan.ClanManager;
-import io.github.lofrol.UselessClan.ClanObjects.Clan;
-import io.github.lofrol.UselessClan.ClanObjects.ClanMember;
 import io.github.lofrol.UselessClan.Utils.ChatSender;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -28,7 +26,7 @@ public final class ClanAdminCommand extends Command {
                 "Use &5/Clan help&r for learning more", Stream.of("clanadmin", "ClanAdmin", "clad", "ClAd").collect(Collectors.toList()));
     }
 
-    public boolean registerComamnd() {
+    public boolean registerCommand() {
         return getServer().getCommandMap().register("[UselessClan]", this);
     }
 

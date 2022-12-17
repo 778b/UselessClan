@@ -56,7 +56,7 @@ public final class UselessClan extends JavaPlugin {
 
         if (ClanCommand.CreateDefaultInst(MainManager).registerCommand()) getLogger().log(Level.INFO, "Clan Command Loaded successfully!");
         else getLogger().log(Level.SEVERE, "Clan Command cant be loaded!");
-        if (ClanAdminCommand.CreateDefaultInts(MainManager).registerComamnd()) getLogger().log(Level.INFO, "Admin Clan Command Loaded successfully!");
+        if (ClanAdminCommand.CreateDefaultInts(MainManager).registerCommand()) getLogger().log(Level.INFO, "Admin Clan Command Loaded successfully!");
         else getLogger().log(Level.SEVERE, "Admin Clan Command cant be loaded!");
         if (ClanChatCommand.CreateDefaultInst(MainManager).registerCommand()) getLogger().log(Level.INFO, "Clan Chat Command Loaded successfully!");
         else getLogger().log(Level.SEVERE, "Clan Chat Command cant be loaded!");

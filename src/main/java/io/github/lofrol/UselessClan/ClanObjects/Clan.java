@@ -6,6 +6,7 @@ import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -248,7 +249,7 @@ public class Clan {
         }
         return null;
     }
-    public ClanRole getMemberRole(String PlayerName) {
+    public @NotNull ClanRole getMemberRole(String PlayerName) {
         if (!IsClanMember(PlayerName)) return ClanRole.NONE;
 
         for (ClanMember tempMember : Members) {
@@ -357,7 +358,7 @@ public class Clan {
         return LeaderName;
     }
 
-    public ClanSettings getSettingsClan() {
+    public @NotNull ClanSettings getSettingsClan() {
         return SettingsClan;
     }
     public List<ClanMember> getMembers() {

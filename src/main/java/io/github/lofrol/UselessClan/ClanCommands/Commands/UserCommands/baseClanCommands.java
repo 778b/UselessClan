@@ -61,7 +61,7 @@ public class baseClanCommands {
             }
 
             if (senderClan == null) {
-                ChatSender.MessageTo(tempPlayer, "UselessClan", "&cYou havent Clan!");
+                ChatSender.MessageTo(tempPlayer, "UselessClan", "&cYou haven't Clan!");
                 return false;
             }
 
@@ -214,7 +214,7 @@ public class baseClanCommands {
         @Override
         public boolean executeCommand(Player tempPlayer, Clan senderClan, String[] args) {
             if (senderClan == null) {
-                ChatSender.MessageTo(tempPlayer,"UselessClan", "&cYou havent Clan!");
+                ChatSender.MessageTo(tempPlayer,"UselessClan", "&cYou haven't Clan!");
                 return false;
             }
             ClanRole SenderRole = senderClan.getMemberRole(tempPlayer.getName());
@@ -234,7 +234,7 @@ public class baseClanCommands {
         @Override
         public boolean executeCommand(Player tempPlayer, Clan senderClan, String[] args) {
             if (senderClan == null) {
-                ChatSender.MessageTo(tempPlayer,"UselessClan", "&cYou havent Clan!");
+                ChatSender.MessageTo(tempPlayer,"UselessClan", "&cYou haven't Clan!");
                 return false;
             }
             ClanRole SenderRole = senderClan.getMemberRole(tempPlayer.getName());
@@ -254,27 +254,19 @@ public class baseClanCommands {
 
         @Override
         public boolean executeCommand(Player tempPlayer, Clan senderClan, String[] args) {
-            ClanRole SenderRole = null;
-            if (senderClan != null) {
-                SenderRole = senderClan.getMemberRole(tempPlayer.getName());
+            if (senderClan == null) {
+                ChatSender.MessageTo(tempPlayer,"UselessClan", "&cYou haven't Clan!");
+                return false;
             }
 
             if (args.length == 1) {
                 if (UselessClan.EconomyPtr == null) return false;
 
-                if (senderClan == null) {
-                    ChatSender.MessageTo(tempPlayer,"UselessClan", "&cYou havent Clan!");
-                    return false;
-                }
                 ChatSender.MessageTo(tempPlayer,"UselessClan", "&cYou forgot about value of deposit, use &a/clan deposit %money");
             }
             else {
                 if (UselessClan.EconomyPtr == null) return false;
 
-                if (senderClan == null) {
-                    ChatSender.MessageTo(tempPlayer,"UselessClan", "&cYou havent Clan!");
-                    return false;
-                }
                 double moneyToDeposit = Double.parseDouble(args[1]);
                 if (moneyToDeposit <= 0 || !UselessClan.EconomyPtr.has(getOfflinePlayer(tempPlayer.getName()), moneyToDeposit)) {
                     ChatSender.MessageTo(tempPlayer,"UselessClan", "&cWrong money count!");
@@ -304,7 +296,7 @@ public class baseClanCommands {
                 if (UselessClan.EconomyPtr == null) return false;
 
                 if (senderClan == null) {
-                    ChatSender.MessageTo(tempPlayer,"UselessClan", "&cYou havent Clan!");
+                    ChatSender.MessageTo(tempPlayer,"UselessClan", "&cYou haven't Clan!");
                     return false;
                 }
                 if (SenderRole.ordinal() < senderClan.getSettingsClan().RoleCanWithdraw.ordinal()) {
@@ -317,7 +309,7 @@ public class baseClanCommands {
                 if (UselessClan.EconomyPtr == null) return false;
 
                 if (senderClan == null) {
-                    ChatSender.MessageTo(tempPlayer,"UselessClan", "&cYou havent Clan!");
+                    ChatSender.MessageTo(tempPlayer,"UselessClan", "&cYou haven't Clan!");
                     return false;
                 }
                 if (SenderRole.ordinal() < senderClan.getSettingsClan().RoleCanWithdraw.ordinal()) {
@@ -327,6 +319,7 @@ public class baseClanCommands {
                 double moneyToWithdraw = Double.parseDouble(args[1]);
                 if (moneyToWithdraw  <= 0) {
                     ChatSender.MessageTo(tempPlayer,"UselessClan", "&cWrong money count! Use [0;+inf)");
+                    return false;
                 }
 
                 double tempValue = senderClan.WithdrawMoneyFromClan(moneyToWithdraw);
@@ -348,11 +341,7 @@ public class baseClanCommands {
 
         @Override
         public boolean executeCommand(Player tempPlayer,Clan senderClan, String[] args) {
-            ClanRole SenderRole = null;
-            if (senderClan != null) {
-                SenderRole = senderClan.getMemberRole(tempPlayer.getName());
-            }
-            else {
+            if (senderClan == null) {
                 ChatSender.MessageTo(tempPlayer,"UselessClan", "&cYou havent Clan!");
                 return false;
             }
@@ -433,16 +422,12 @@ public class baseClanCommands {
 
         @Override
         public boolean executeCommand(Player tempPlayer, Clan senderClan, String[] args) {
-            ClanRole SenderRole = null;
-            if (senderClan != null) {
-                SenderRole = senderClan.getMemberRole(tempPlayer.getName());
-            }
-            else {
-                ChatSender.MessageTo(tempPlayer,"UselessClan", "&cYou havent Clan!");
+            if (senderClan == null) {
+                ChatSender.MessageTo(tempPlayer,"UselessClan", "&cYou haven't Clan!");
                 return false;
             }
 
-            ChatSender.MessageTo(tempPlayer,"UselessClan", "########## CLANMATES ##########");
+            ChatSender.MessageTo(tempPlayer,"UselessClan", "####### CLANMATES #######");
             for (ClanMember tempMember: senderClan.getMembers()) {
                 ChatSender.MessageTo(tempPlayer,"UselessClan", String.format(
                         "# %s &a%s %d", tempMember.getMemberRole().toString(), tempMember.getPlayerName(), (int)tempMember.getGeneralPlayerDeposit()));
@@ -471,62 +456,58 @@ public class baseClanCommands {
                     }
                 }
                 else {
-                    ChatSender.MessageTo(tempPlayer,"UselessClan", "&cYou havent Clan!");
+                    ChatSender.MessageTo(tempPlayer,"UselessClan", "&cYou haven't Clan!");
                 }
             }
             else {
-                if (senderClan != null) {
-                    if (SenderRole.ordinal() >= senderClan.getSettingsClan().RoleCanAccept.ordinal()) {
-                        String AcceptedPlayerName = args[1];
-                        if (UselessClan.getMainManager().FindClanToPlayer(AcceptedPlayerName) != null) {
-                            ChatSender.MessageTo(tempPlayer,"UselessClan", "&cThis player already in Clan");
-                            return false;
-                        }
-                        if (!senderClan.HaveRequestFromPlayer(AcceptedPlayerName)) {
-                            ChatSender.MessageTo(tempPlayer,"UselessClan", "&cThis player didn't send request to you Clan");
-                            return false;
-                        }
-                        senderClan.PlayerJoinToClan(senderClan.getSettingsClan().DefaultJoinRole, AcceptedPlayerName);
-                        UselessClan.getMainManager().CalculateClanLevel(senderClan);
-                        senderClan.RemoveFromRequest(AcceptedPlayerName);
-                        Player AcceptedPlayer = getPlayer(AcceptedPlayerName);
-                        if (senderClan.getClanRegionId() != null) {
-                            RegionContainer tempRegionContainer = WorldGuard.getInstance().getPlatform().getRegionContainer();
-                            World tempWorld = getServer().getWorld("world");
-                            if (tempWorld == null) {
-                                ChatSender.MessageTo(tempPlayer,"UselessClan", "&cError cant add new player to region! #1");
-                                return false;
-                            }
-                            RegionManager tempRegionManager = tempRegionContainer.get(BukkitAdapter.adapt(tempWorld));
-                            if (tempRegionManager == null) {
-                                ChatSender.MessageTo(tempPlayer,"UselessClan", "&cError cant add new player to region! #2");
-                                return false;
-                            }
-                            ProtectedRegion tempRegion = tempRegionManager.getRegion(senderClan.getClanRegionId());
-                            if (tempRegion == null) {
-                                ChatSender.MessageTo(tempPlayer,"UselessClan", "&cError cant add new player to region! #3");
-                                return false;
-                            }
-                            tempRegion.getMembers().addPlayer(AcceptedPlayerName);
-                        }
-                        if (AcceptedPlayer != null) {
-                            UselessClan.getMainManager().RegisterOnlineClanPlayer(senderClan, AcceptedPlayer);
-                            senderClan.SendMessageForOnlinePlayers(String.format(
-                                    "Player &a%s&b joined to your clan!", AcceptedPlayerName));
-                        }
-                        else {
-                            senderClan.SendMessageForOnlinePlayers(String.format(
-                                    "Player &a%s&b accepted to your clan!", AcceptedPlayerName));
-                        }
-                    }
-                    else {
-                        ChatSender.MessageTo(tempPlayer,"UselessClan", "&cYou rank is too low to do that!");
+                if (senderClan == null) {
+                    ChatSender.MessageTo(tempPlayer, "UselessClan", "&cYou haven't Clan!");
+                    return false;
+                }
+                if (!(SenderRole.ordinal() >= senderClan.getSettingsClan().RoleCanAccept.ordinal())) {
+                    ChatSender.MessageTo(tempPlayer, "UselessClan", "&cYou rank is too low to do that!");
+                    return false;
+                }
+                String AcceptedPlayerName = args[1];
+                if (UselessClan.getMainManager().FindClanToPlayer(AcceptedPlayerName) != null) {
+                    ChatSender.MessageTo(tempPlayer, "UselessClan", "&cThis player already in Clan");
+                    return false;
+                }
+                if (!senderClan.HaveRequestFromPlayer(AcceptedPlayerName)) {
+                    ChatSender.MessageTo(tempPlayer, "UselessClan", "&cThis player didn't send request to you Clan");
+                    return false;
+                }
+                senderClan.PlayerJoinToClan(senderClan.getSettingsClan().DefaultJoinRole, AcceptedPlayerName);
+                UselessClan.getMainManager().CalculateClanLevel(senderClan);
+                senderClan.RemoveFromRequest(AcceptedPlayerName);
+                Player AcceptedPlayer = getPlayer(AcceptedPlayerName);
+
+                if (senderClan.getClanRegionId() != null) {
+                    RegionContainer tempRegionContainer = WorldGuard.getInstance().getPlatform().getRegionContainer();
+                    World tempWorld = getServer().getWorld("world");
+                    if (tempWorld == null) {
+                        ChatSender.MessageTo(tempPlayer, "UselessClan", "&cError cant add new player to region! #1");
                         return false;
                     }
+                    RegionManager tempRegionManager = tempRegionContainer.get(BukkitAdapter.adapt(tempWorld));
+                    if (tempRegionManager == null) {
+                        ChatSender.MessageTo(tempPlayer, "UselessClan", "&cError cant add new player to region! #2");
+                        return false;
+                    }
+                    ProtectedRegion tempRegion = tempRegionManager.getRegion(senderClan.getClanRegionId());
+                    if (tempRegion == null) {
+                        ChatSender.MessageTo(tempPlayer, "UselessClan", "&cError cant add new player to region! #3");
+                        return false;
+                    }
+                    tempRegion.getMembers().addPlayer(AcceptedPlayerName);
                 }
-                else {
-                    ChatSender.MessageTo(tempPlayer,"UselessClan", "&cYou havent Clan!");
-                    return false;
+                if (AcceptedPlayer != null) {
+                    UselessClan.getMainManager().RegisterOnlineClanPlayer(senderClan, AcceptedPlayer);
+                    senderClan.SendMessageForOnlinePlayers(String.format(
+                            "Player &a%s&b joined to your clan!", AcceptedPlayerName));
+                } else {
+                    senderClan.SendMessageForOnlinePlayers(String.format(
+                            "Player &a%s&b accepted to your clan!", AcceptedPlayerName));
                 }
             }
             return true;
@@ -537,24 +518,15 @@ public class baseClanCommands {
 
         @Override
         public boolean executeCommand(Player tempPlayer, Clan senderClan, String[] args) {
-            ClanRole SenderRole = null;
             if (senderClan != null) {
-                SenderRole = senderClan.getMemberRole(tempPlayer.getName());
+                ChatSender.MessageTo(tempPlayer,"UselessClan", "&cYou already have Clan!");
+                return false;
             }
 
             if (args.length == 1) {
-                if (senderClan != null) {
-                    ChatSender.MessageTo(tempPlayer,"UselessClan", "&cYou already have Clan!");
-                    return false;
-                }
                 ChatSender.MessageTo(tempPlayer,"UselessClan", "&cYou forgot about clan %name, use &a/Clan join %name&b, %name = name of clan");
-                return true;
             }
             else {
-                if (senderClan != null) {
-                    ChatSender.MessageTo(tempPlayer,"UselessClan", "&cYou cant join clan while you have been in clan!");
-                    return false;
-                }
                 Clan ClanToRequest = UselessClan.getMainManager().getClanByName(args[1]);
                 if (ClanToRequest != null) {
                     if (!ClanToRequest.SendRequestForJoin(tempPlayer.getName())) {
@@ -567,8 +539,8 @@ public class baseClanCommands {
                 }
                 ChatSender.MessageTo(tempPlayer,"UselessClan", "You send request for join to this clan, wait until leader or officer accept this request");
                 ClanToRequest.SendMessageForOnlineOfficers(String.format("Player %s was send request for join to you clan, type &a/clan requests", tempPlayer.getName()));
-                return true;
             }
+            return true;
 
         }
 
@@ -594,47 +566,46 @@ public class baseClanCommands {
                     }
                 }
                 else {
-                    ChatSender.MessageTo(tempPlayer,"UselessClan", "&cYou havent Clan!");
+                    ChatSender.MessageTo(tempPlayer,"UselessClan", "&cYou haven't Clan!");
                 }
             }
             else {
-                if (senderClan != null) {
-                    if (SenderRole.ordinal() >= senderClan.getSettingsClan().RoleCanKick.ordinal()) {
-                        ClanMember tempMember = senderClan.getClanMember(args[1]);
-                        if (tempMember == null) {
-                            ChatSender.MessageTo(tempPlayer,"UselessClan", "&cCant find this player in your clan!");
-                            return false;
-                        }
-                        senderClan.PlayerLeavedFromClan(tempMember.getPlayerName());
-                        UselessClan.getMainManager().CalculateClanLevel(senderClan);
-                        senderClan.SendMessageForOnlinePlayers(String.format(
-                                "&cPlayer %s was kicked from your clan!", tempMember.getPlayerName()));
-                        if (senderClan.getClanRegionId() != null) {
-                            RegionContainer tempRegionContainer = WorldGuard.getInstance().getPlatform().getRegionContainer();
-                            World tempWorld = getServer().getWorld("world");
-                            if (tempWorld == null) {
-                                ChatSender.MessageTo(tempPlayer,"UselessClan", "&cError cant remove player from region! #1");
-                                return false;
-                            }
-                            RegionManager tempRegionManager = tempRegionContainer.get(BukkitAdapter.adapt(tempWorld));
-                            if (tempRegionManager == null) {
-                                ChatSender.MessageTo(tempPlayer,"UselessClan", "&cError cant remove player from region! #2");
-                                return false;
-                            }
-                            ProtectedRegion tempRegion = tempRegionManager.getRegion(senderClan.getClanRegionId());
-                            if (tempRegion == null) {
-                                ChatSender.MessageTo(tempPlayer,"UselessClan", "&cError cant remove player from region! #3");
-                                return false;
-                            }
-                            tempRegion.getMembers().removePlayer(tempMember.getPlayerName());
-                        }
-                    }
-                    else {
-                        ChatSender.MessageTo(tempPlayer,"UselessClan", "&cYou rank is too low to do that!");
-                    }
+                if (senderClan == null) {
+                    ChatSender.MessageTo(tempPlayer, "UselessClan", "&cYou haven't Clan!");
+                    return false;
                 }
-                else {
-                    ChatSender.MessageTo(tempPlayer,"UselessClan", "&cYou havent Clan!");
+                if (!(SenderRole.ordinal() >= senderClan.getSettingsClan().RoleCanKick.ordinal())) {
+                    ChatSender.MessageTo(tempPlayer, "UselessClan", "&cYou rank is too low to do that!");
+                    return false;
+                }
+                ClanMember tempMember = senderClan.getClanMember(args[1]);
+                if (tempMember == null) {
+                    ChatSender.MessageTo(tempPlayer, "UselessClan", "&cCant find this player in your clan!");
+                    return false;
+                }
+                senderClan.PlayerLeavedFromClan(tempMember.getPlayerName());
+                UselessClan.getMainManager().CalculateClanLevel(senderClan);
+                senderClan.SendMessageForOnlinePlayers(String.format(
+                        "&cPlayer %s was kicked from your clan!", tempMember.getPlayerName()));
+
+                if (senderClan.getClanRegionId() != null) {
+                    RegionContainer tempRegionContainer = WorldGuard.getInstance().getPlatform().getRegionContainer();
+                    World tempWorld = getServer().getWorld("world");
+                    if (tempWorld == null) {
+                        ChatSender.MessageTo(tempPlayer, "UselessClan", "&cError cant remove player from region! #1");
+                        return false;
+                    }
+                    RegionManager tempRegionManager = tempRegionContainer.get(BukkitAdapter.adapt(tempWorld));
+                    if (tempRegionManager == null) {
+                        ChatSender.MessageTo(tempPlayer, "UselessClan", "&cError cant remove player from region! #2");
+                        return false;
+                    }
+                    ProtectedRegion tempRegion = tempRegionManager.getRegion(senderClan.getClanRegionId());
+                    if (tempRegion == null) {
+                        ChatSender.MessageTo(tempPlayer, "UselessClan", "&cError cant remove player from region! #3");
+                        return false;
+                    }
+                    tempRegion.getMembers().removePlayer(tempMember.getPlayerName());
                 }
             }
             return true;
@@ -660,12 +631,12 @@ public class baseClanCommands {
                     }
                 }
                 else {
-                    ChatSender.MessageTo(tempPlayer,"UselessClan", "&cYou havent Clan!");
+                    ChatSender.MessageTo(tempPlayer,"UselessClan", "&cYou haven't Clan!");
                 }
             }
             else {
                 if (senderClan == null) {
-                    ChatSender.MessageTo(tempPlayer, "UselessClan", "&cYou havent Clan!");
+                    ChatSender.MessageTo(tempPlayer, "UselessClan", "&cYou haven't Clan!");
                     return false;
                 }
                 if (!(SenderRole == ClanRole.OFFICER || SenderRole == ClanRole.LEADER)) {
@@ -723,7 +694,7 @@ public class baseClanCommands {
 
             if (args.length == 1) {
                 if (senderClan == null) {
-                    ChatSender.MessageTo(tempPlayer, "UselessClan", "&cYou havent Clan!");
+                    ChatSender.MessageTo(tempPlayer, "UselessClan", "&cYou haven't Clan!");
                     return false;
                 }
                 if (SenderRole == ClanRole.LEADER) {
@@ -735,45 +706,40 @@ public class baseClanCommands {
                 }
             }
             else {
-                if (senderClan != null) {
-                    if (SenderRole == ClanRole.OFFICER || SenderRole == ClanRole.LEADER) {
-                        ClanMember tempClanMember = senderClan.getClanMember(args[1]);
-                        if (tempClanMember == null) {
-                            ChatSender.MessageTo(tempPlayer,"UselessClan", "&cThis player not in your clan!");
+                if (senderClan == null) {
+                    ChatSender.MessageTo(tempPlayer, "UselessClan", "&cYou haven't Clan!");
+                    return false;
+                }
+                if (!(SenderRole == ClanRole.OFFICER || SenderRole == ClanRole.LEADER)) {
+                    ChatSender.MessageTo(tempPlayer, "UselessClan", "&cYou rank is too low to do that!");
+                    return false;
+                }
+
+                ClanMember tempClanMember = senderClan.getClanMember(args[1]);
+                if (tempClanMember == null) {
+                    ChatSender.MessageTo(tempPlayer, "UselessClan", "&cThis player not in your clan!");
+                    return false;
+                }
+                if (tempClanMember.getMemberRole() == ClanRole.MEMBER) {
+                    if (!senderClan.ChangeMemberRole(tempClanMember.getPlayerName(), ClanRole.ROOKIE)) {
+                        ChatSender.MessageTo(tempPlayer, "UselessClan", "&cThis Player already have this rank!");
+                        return false;
+                    }
+                    senderClan.SendMessageForOnlinePlayers(String.format(
+                            "&cPlayer %s was demoted to %s", tempClanMember.getPlayerName(), ClanRole.ROOKIE));
+                } else if (tempClanMember.getMemberRole() == ClanRole.OFFICER) {
+                    if (SenderRole == ClanRole.LEADER) {
+                        if (!senderClan.ChangeMemberRole(tempClanMember.getPlayerName(), ClanRole.MEMBER)) {
+                            ChatSender.MessageTo(tempPlayer, "UselessClan", "&cThis Player already have this rank!");
                             return false;
                         }
-                        if (tempClanMember.getMemberRole() == ClanRole.MEMBER) {
-                            if (!senderClan.ChangeMemberRole(tempClanMember.getPlayerName(), ClanRole.ROOKIE)) {
-                                ChatSender.MessageTo(tempPlayer,"UselessClan", "&cThis Player already have this rank!");
-                                return false;
-                            }
-                            senderClan.SendMessageForOnlinePlayers(String.format(
-                                    "&cPlayer %s was demoted to %s", tempClanMember.getPlayerName(), ClanRole.ROOKIE));
-                        }
-                        else if (tempClanMember.getMemberRole() == ClanRole.OFFICER) {
-                            if (SenderRole == ClanRole.LEADER) {
-                                if (!senderClan.ChangeMemberRole(tempClanMember.getPlayerName(), ClanRole.MEMBER)) {
-                                    ChatSender.MessageTo(tempPlayer,"UselessClan", "&cThis Player already have this rank!");
-                                    return false;
-                                }
-                                senderClan.SendMessageForOnlinePlayers(String.format(
-                                        "&cPlayer %s was demoted to %s", tempClanMember.getPlayerName(), ClanRole.MEMBER));
-                            }
-                            else {
-                                ChatSender.MessageTo(tempPlayer,"UselessClan", "&cYou rank is too low to do that!");
-                            }
-                        }
-                        else {
-                            ChatSender.MessageTo(tempPlayer,"UselessClan", "Nothing changed, :(");
-                        }
+                        senderClan.SendMessageForOnlinePlayers(String.format(
+                                "&cPlayer %s was demoted to %s", tempClanMember.getPlayerName(), ClanRole.MEMBER));
+                    } else {
+                        ChatSender.MessageTo(tempPlayer, "UselessClan", "&cYou rank is too low to do that!");
                     }
-                    else {
-                        ChatSender.MessageTo(tempPlayer,"UselessClan", "&cYou rank is too low to do that!");
-                    }
-                }
-                else {
-                    ChatSender.MessageTo(tempPlayer,"UselessClan", "&cYou havent Clan!");
-
+                } else {
+                    ChatSender.MessageTo(tempPlayer, "UselessClan", "Nothing changed, :(");
                 }
             }
             return true;
@@ -787,7 +753,7 @@ public class baseClanCommands {
             // /clan setting HomeChangeMinRank 4
             ClanRole SenderRole = null;
             if (senderClan == null) {
-                ChatSender.MessageTo(tempPlayer, "UselessClan", "&cYou havent Clan!");
+                ChatSender.MessageTo(tempPlayer, "UselessClan", "&cYou haven't Clan!");
                 return false;
             }
             SenderRole = senderClan.getMemberRole(tempPlayer.getName());
@@ -799,7 +765,7 @@ public class baseClanCommands {
 
             if (args.length == 1) {
                 ChatSender.MessageTo(tempPlayer, "UselessClan",
-                        "&cYou forgot about player %name, use &a/Clan promote %name");
+                        "&cYou forgot about args, use &a/Clan setting help");
             }
             else if (args.length == 2) {
                 if (args[1].equalsIgnoreCase("info")) {
@@ -808,7 +774,7 @@ public class baseClanCommands {
                     ChatSender.MessageTo(tempPlayer, "UselessClan",
                             String.format("DefaultJoinRole = %s", senderClan.getSettingsClan().DefaultJoinRole.toString()));
                     ChatSender.MessageTo(tempPlayer, "UselessClan",
-                            String.format("RoleCanSethome = %s", senderClan.getSettingsClan().RoleCanSethome.toString()));
+                            String.format("RoleCanSetHome = %s", senderClan.getSettingsClan().RoleCanSethome.toString()));
                     ChatSender.MessageTo(tempPlayer, "UselessClan",
                             String.format("RoleCanKick = %s", senderClan.getSettingsClan().RoleCanKick.toString()));
                     ChatSender.MessageTo(tempPlayer, "UselessClan",
@@ -816,25 +782,25 @@ public class baseClanCommands {
                     ChatSender.MessageTo(tempPlayer, "UselessClan",
                             String.format("RoleCanAccept = %s", senderClan.getSettingsClan().RoleCanSethome.toString()));
                 }
-                else if (args[1].equalsIgnoreCase("DefalutJoinRole")) {
+                else if (args[1].equalsIgnoreCase("DefaultJoinRole")) {
                     ChatSender.MessageTo(tempPlayer, "UselessClan",
-                            "&cNot enought arguments, try &a/clan setting DefalutJoinRole [1-4] 1 = Rokkie, 4 = Leader");
+                            "&cNot enough arguments, try &a/clan setting DefaultJoinRole [1-4] 1 = Rookie, 4 = Leader");
                 }
-                else if (args[1].equalsIgnoreCase("RoleCanSethome")) {
+                else if (args[1].equalsIgnoreCase("RoleCanSetHome")) {
                     ChatSender.MessageTo(tempPlayer, "UselessClan",
-                            "&cNot enought arguments, try &a/clan setting RoleCanSethome [1-4] 1 = Rokkie, 4 = Leader");
+                            "&cNot enough arguments, try &a/clan setting RoleCanSetHome [1-4] 1 = Rookie, 4 = Leader");
                 }
                 else if (args[1].equalsIgnoreCase("RoleCanKick")) {
                     ChatSender.MessageTo(tempPlayer, "UselessClan",
-                            "&cNot enought arguments, try &a/clan setting DefalutJoinRole [1-4] 1 = Rokkie, 4 = Leader");
+                            "&cNot enough arguments, try &a/clan setting DefaultJoinRole [1-4] 1 = Rookie, 4 = Leader");
                 }
                 else if (args[1].equalsIgnoreCase("RoleCanWithdraw")) {
                     ChatSender.MessageTo(tempPlayer, "UselessClan",
-                            "&cNot enought arguments, try &a/clan setting RoleCanWithdraw [1-4] 1 = Rokkie, 4 = Leader");
+                            "&cNot enough arguments, try &a/clan setting RoleCanWithdraw [1-4] 1 = Rookie, 4 = Leader");
                 }
                 else if (args[1].equalsIgnoreCase("RoleCanAccept")) {
                     ChatSender.MessageTo(tempPlayer, "UselessClan",
-                            "&cNot enought arguments, try &a/clan setting RoleCanAccept [1-4] 1 = Rokkie, 4 = Leader");
+                            "&cNot enough arguments, try &a/clan setting RoleCanAccept [1-4] 1 = Rookie, 4 = Leader");
                 }
                 else if (args[1].equalsIgnoreCase("help")) {
                     ChatSender.MessageTo(tempPlayer, "UselessClan",
@@ -844,76 +810,84 @@ public class baseClanCommands {
                     ChatSender.MessageTo(tempPlayer, "UselessClan",
                             "&a/clan setting RoleCanKick [Role] - set min role which can kick from clan [1-4]");
                     ChatSender.MessageTo(tempPlayer, "UselessClan",
-                            "&a/clan setting DefalutJoinRole [Role] - set default join role [1-4]");
+                            "&a/clan setting DefaultJoinRole [Role] - set default join role [1-4]");
                     ChatSender.MessageTo(tempPlayer, "UselessClan",
                             "&a/clan setting WithdrawMinRole [Role] - set role which can withdraw money from clan [1-4]");
                 }
                 else {
-                    if (args[1].equalsIgnoreCase("DefalutJoinRole")) {
-                        ClanRole tempRole = ClanRole.fromString(args[2]);
-                        if (tempRole == ClanRole.NONE) {
-                            ChatSender.MessageTo(tempPlayer, "UselessClan",
-                                    "&cWrong arguments, example &a/clan setting DefalutJoinRole 2");
-                            return false;
-                        }
-                        if (tempRole == ClanRole.LEADER) {
-                            ChatSender.MessageTo(tempPlayer, "UselessClan",
-                                    "&cDefaultJoinRole cant be LEADER!");
-                            return false;
-                        }
-
-                        senderClan.getSettingsClan().DefaultJoinRole = tempRole;
+                    ChatSender.MessageTo(tempPlayer, "UselessClan",
+                            "&cYou have wrong args! Use &a/Clan setting help");
+                }
+            }
+            else {
+                if (args[1].equalsIgnoreCase("DefaultJoinRole")) {
+                    ClanRole tempRole = ClanRole.fromString(args[2]);
+                    if (tempRole == ClanRole.NONE) {
                         ChatSender.MessageTo(tempPlayer, "UselessClan",
-                                String.format("&aDefalutJoinRole successfully changed to %s!", tempRole.toString()));
+                                "&cWrong arguments, example &a/clan setting DefaultJoinRole 2");
+                        return false;
                     }
-                    else if (args[1].equalsIgnoreCase("RoleCanSethome")) {
-                        ClanRole tempRole = ClanRole.fromString(args[2]);
-                        if (tempRole == ClanRole.NONE) {
-                            ChatSender.MessageTo(tempPlayer, "UselessClan",
-                                    "&cWrong arguments, example &a/clan setting RoleCanSethome 2");
-                            return false;
-                        }
-
-                        senderClan.getSettingsClan().DefaultJoinRole = tempRole;
+                    if (tempRole == ClanRole.LEADER) {
                         ChatSender.MessageTo(tempPlayer, "UselessClan",
-                                String.format("&aRoleCanSethome successfully changed to %s!", tempRole.toString()));
+                                "&cDefaultJoinRole cant be LEADER!");
+                        return false;
                     }
-                    else if (args[1].equalsIgnoreCase("RoleCanKick")) {
-                        ClanRole tempRole = ClanRole.fromString(args[2]);
-                        if (tempRole == ClanRole.NONE) {
-                            ChatSender.MessageTo(tempPlayer, "UselessClan",
-                                    "&cWrong arguments, example &a/clan setting RoleCanKick 3");
-                            return false;
-                        }
 
-                        senderClan.getSettingsClan().DefaultJoinRole = tempRole;
+                    senderClan.getSettingsClan().DefaultJoinRole = tempRole;
+                    ChatSender.MessageTo(tempPlayer, "UselessClan",
+                            String.format("&aDefaultJoinRole successfully changed to %s!", tempRole.toString()));
+                }
+                else if (args[1].equalsIgnoreCase("RoleCanSetHome")) {
+                    ClanRole tempRole = ClanRole.fromString(args[2]);
+                    if (tempRole == ClanRole.NONE) {
                         ChatSender.MessageTo(tempPlayer, "UselessClan",
-                                String.format("&aRoleCanKick successfully changed to %s!", tempRole.toString()));
+                                "&cWrong arguments, example &a/clan setting RoleCanSetHome 2");
+                        return false;
                     }
-                    else if (args[1].equalsIgnoreCase("RoleCanWithdraw")) {
-                        ClanRole tempRole = ClanRole.fromString(args[2]);
-                        if (tempRole == ClanRole.NONE) {
-                            ChatSender.MessageTo(tempPlayer, "UselessClan",
-                                    "&cWrong arguments, example &a/clan setting RoleCanWithdraw 2");
-                            return false;
-                        }
 
-                        senderClan.getSettingsClan().DefaultJoinRole = tempRole;
+                    senderClan.getSettingsClan().DefaultJoinRole = tempRole;
+                    ChatSender.MessageTo(tempPlayer, "UselessClan",
+                            String.format("&aRoleCanSetHome successfully changed to %s!", tempRole.toString()));
+                }
+                else if (args[1].equalsIgnoreCase("RoleCanKick")) {
+                    ClanRole tempRole = ClanRole.fromString(args[2]);
+                    if (tempRole == ClanRole.NONE) {
                         ChatSender.MessageTo(tempPlayer, "UselessClan",
-                                String.format("&aRoleCanWithdraw successfully changed to %s!", tempRole.toString()));
+                                "&cWrong arguments, example &a/clan setting RoleCanKick 3");
+                        return false;
                     }
-                    else if (args[1].equalsIgnoreCase("RoleCanAccept")) {
-                        ClanRole tempRole = ClanRole.fromString(args[2]);
-                        if (tempRole == ClanRole.NONE) {
-                            ChatSender.MessageTo(tempPlayer, "UselessClan",
-                                    "&cWrong arguments, example &a/clan setting RoleCanAccept 3");
-                            return false;
-                        }
 
-                        senderClan.getSettingsClan().DefaultJoinRole = tempRole;
+                    senderClan.getSettingsClan().DefaultJoinRole = tempRole;
+                    ChatSender.MessageTo(tempPlayer, "UselessClan",
+                            String.format("&aRoleCanKick successfully changed to %s!", tempRole.toString()));
+                }
+                else if (args[1].equalsIgnoreCase("RoleCanWithdraw")) {
+                    ClanRole tempRole = ClanRole.fromString(args[2]);
+                    if (tempRole == ClanRole.NONE) {
                         ChatSender.MessageTo(tempPlayer, "UselessClan",
-                                String.format("&aRoleCanAccept successfully changed to %s!", tempRole.toString()));
+                                "&cWrong arguments, example &a/clan setting RoleCanWithdraw 2");
+                        return false;
                     }
+
+                    senderClan.getSettingsClan().DefaultJoinRole = tempRole;
+                    ChatSender.MessageTo(tempPlayer, "UselessClan",
+                            String.format("&aRoleCanWithdraw successfully changed to %s!", tempRole.toString()));
+                }
+                else if (args[1].equalsIgnoreCase("RoleCanAccept")) {
+                    ClanRole tempRole = ClanRole.fromString(args[2]);
+                    if (tempRole == ClanRole.NONE) {
+                        ChatSender.MessageTo(tempPlayer, "UselessClan",
+                                "&cWrong arguments, example &a/clan setting RoleCanAccept 3");
+                        return false;
+                    }
+
+                    senderClan.getSettingsClan().DefaultJoinRole = tempRole;
+                    ChatSender.MessageTo(tempPlayer, "UselessClan",
+                            String.format("&aRoleCanAccept successfully changed to %s!", tempRole.toString()));
+                }
+                else {
+                    ChatSender.MessageTo(tempPlayer, "UselessClan",
+                            "&cYou have wrong args! Use &a/Clan setting help");
                 }
             }
            return true;
