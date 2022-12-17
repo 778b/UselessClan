@@ -98,7 +98,7 @@ public class Clan {
                     tempMember.getPlayerName(), tempMember.getMemberRole().ordinal(), tempMember.getGeneralPlayerDeposit());
             ClanConfig.set(String.format("UselessClan.Members.%d", i), MasterStringMember);
         }
-        
+
         ClanConfig.set("UselessClan.Settings", SettingsClan.getSerializationString());
 
         NeedToSave = false;
@@ -184,38 +184,7 @@ public class Clan {
             getServer().getLogger().log(Level.SEVERE, "Cant read UselessClan.Settings");
             return null;
         }
-        StringBuilder param = new StringBuilder();
-        int Stage = 0;
-        for (char tc: MasterSettingsString.toCharArray()) {
-            if (tc == '/') {
-                ClanRole TempRole = null;
-                switch (Integer.parseInt(param.toString())) {
-                    case 1 -> TempRole = ClanRole.ROOKIE;
-                    case 2 -> TempRole = ClanRole.MEMBER;
-                    case 3 -> TempRole = ClanRole.OFFICER;
-                    case 4 -> TempRole = ClanRole.LEADER;
-                    default -> TempRole = ClanRole.NONE;
-                }
-                if (Stage == 0) {
-                    TempSettings.DefaultJoinRole = TempRole;
-                    ++Stage;
-                }
-                else if (Stage == 1) {
-                    TempSettings.HomeChangerMinRole = TempRole;
-                    ++Stage;
-                }
-                else if (Stage == 2) {
-                    TempSettings.MinRoleForWithdraw = TempRole;
-                    ++Stage;
-                }
-                else if (Stage == 3) {
-                    TempSettings.RoleCanKick = TempRole;
-                    ++Stage;
-                }
-                param = new StringBuilder();
-            }
-            else param.append(tc);
-        }
+        TempSettings.InitializeSettingsFromString(MasterSettingsString);
         // Settings end
 
         if (ClanPrefix != null && ClanName != null && LeaderName != null && DescriptionClan != null) {
