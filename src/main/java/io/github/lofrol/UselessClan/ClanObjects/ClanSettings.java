@@ -5,15 +5,17 @@ import org.jetbrains.annotations.NotNull;
 public class ClanSettings {
     public ClanSettings() {
         DefaultJoinRole = ClanRole.ROOKIE;
-        HomeChangerMinRole = ClanRole.LEADER;
-        MinRoleForWithdraw = ClanRole.MEMBER;
+        RoleCanSethome = ClanRole.LEADER;
+        RoleCanWithdraw = ClanRole.MEMBER;
         RoleCanKick = ClanRole.OFFICER;
+        RoleCanAccept = ClanRole.OFFICER;
     }
 
     public String getSerializationString() {
-        return String.format("%d/%d/%d/%d/",
-                DefaultJoinRole.ordinal(), HomeChangerMinRole.ordinal(),
-                MinRoleForWithdraw.ordinal(), RoleCanKick.ordinal());
+        return String.format("%d/%d/%d/%d/%d/",
+                DefaultJoinRole.ordinal(), RoleCanSethome.ordinal(),
+                RoleCanWithdraw.ordinal(), RoleCanKick.ordinal(),
+                RoleCanAccept.ordinal());
     }
 
     public void InitializeSettingsFromString(@NotNull String settings) {
@@ -34,15 +36,19 @@ public class ClanSettings {
                     ++Stage;
                 }
                 else if (Stage == 1) {
-                    HomeChangerMinRole = TempRole;
+                    RoleCanSethome = TempRole;
                     ++Stage;
                 }
                 else if (Stage == 2) {
-                    MinRoleForWithdraw = TempRole;
+                    RoleCanWithdraw = TempRole;
                     ++Stage;
                 }
                 else if (Stage == 3) {
                     RoleCanKick = TempRole;
+                    ++Stage;
+                }
+                else if (Stage == 4) {
+                    RoleCanAccept = TempRole;
                     ++Stage;
                 }
                 param = new StringBuilder();
@@ -54,9 +60,11 @@ public class ClanSettings {
     public ClanRole DefaultJoinRole;
     public ClanRole RoleCanKick;
 
-    public ClanRole HomeChangerMinRole;
+    public ClanRole RoleCanSethome;
 
-    public ClanRole MinRoleForWithdraw;
+    public ClanRole RoleCanWithdraw;
+
+    public ClanRole RoleCanAccept;
 
 
 

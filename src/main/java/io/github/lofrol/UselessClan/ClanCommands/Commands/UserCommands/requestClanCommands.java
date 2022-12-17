@@ -48,7 +48,7 @@ public class requestClanCommands {
                 ChatSender.MessageTo(tempPlayer,"UselessClan", "&a/Clan promote %name&b - to promote player %name of your clan");
                 ChatSender.MessageTo(tempPlayer,"UselessClan", "&a/Clan demote %name&b - to demote player %name of your clan");
             }
-            if (SenderRole.ordinal() >= senderClan.getSettingsClan().HomeChangerMinRole.ordinal()) {
+            if (SenderRole.ordinal() >= senderClan.getSettingsClan().RoleCanSethome.ordinal()) {
                 ChatSender.MessageTo(tempPlayer,"UselessClan", "&a/Clan sethome&b - to set home location of your clan");
             }
             return true;

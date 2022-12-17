@@ -367,7 +367,7 @@ public class Clan {
         return OnlineMembers;
     }
     public String getPrefixClan() { return PrefixClan; }
-    public Double getMoneyClan() { return MoneyClan; }
+    public double getMoneyClan() { return MoneyClan; }
     public Location getHomeClan() { return HomeClan; }
     public List<String> getRequests() {
         return Requests;

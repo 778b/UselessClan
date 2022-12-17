@@ -306,7 +306,7 @@ public class baseClanCommands {
                     ChatSender.MessageTo(tempPlayer,"UselessClan", "&cYou havent Clan!");
                     return false;
                 }
-                if (SenderRole.ordinal() < senderClan.getSettingsClan().MinRoleForWithdraw.ordinal()) {
+                if (SenderRole.ordinal() < senderClan.getSettingsClan().RoleCanWithdraw.ordinal()) {
                     ChatSender.MessageTo(tempPlayer,"UselessClan", "&cYou rank is too low to do that!");
                     return false;
                 }
@@ -319,7 +319,7 @@ public class baseClanCommands {
                     ChatSender.MessageTo(tempPlayer,"UselessClan", "&cYou havent Clan!");
                     return false;
                 }
-                if (SenderRole.ordinal() < senderClan.getSettingsClan().MinRoleForWithdraw.ordinal()) {
+                if (SenderRole.ordinal() < senderClan.getSettingsClan().RoleCanWithdraw.ordinal()) {
                     ChatSender.MessageTo(tempPlayer,"UselessClan", "&cYou rank is too low to do that!");
                     return false;
                 }
@@ -386,7 +386,7 @@ public class baseClanCommands {
                 return false;
             }
 
-            if (!(SenderRole.ordinal() >= senderClan.getSettingsClan().HomeChangerMinRole.ordinal() || SenderRole == ClanRole.LEADER)) {
+            if (!(SenderRole.ordinal() >= senderClan.getSettingsClan().RoleCanSethome.ordinal() || SenderRole == ClanRole.LEADER)) {
                 ChatSender.MessageTo(tempPlayer,"UselessClan", "&cYou rank is too low to do that!");
                 return false;
             }
@@ -406,7 +406,7 @@ public class baseClanCommands {
     private static class infoUserCommand extends PlayerCommandBase {
 
         @Override
-        public boolean executeCommand(Player tempPlayer,Clan senderClan, String[] args) {
+        public boolean executeCommand(Player tempPlayer, Clan senderClan, String[] args) {
             ClanRole SenderRole = null;
             if (senderClan != null) {
                 SenderRole = senderClan.getMemberRole(tempPlayer.getName());
@@ -422,7 +422,7 @@ public class baseClanCommands {
             ChatSender.MessageTo(tempPlayer,"UselessClan", String.format("# Level: %s", senderClan.getClanLevel()));
             ChatSender.MessageTo(tempPlayer,"UselessClan", String.format("# LeaderName: %s", senderClan.getLeaderName()));
             ChatSender.MessageTo(tempPlayer,"UselessClan", String.format("# Count of Members: %s", senderClan.getMembers().size()));
-            ChatSender.MessageTo(tempPlayer,"UselessClan", String.format("# Money: %s", senderClan.getMoneyClan()));
+            ChatSender.MessageTo(tempPlayer,"UselessClan", String.format("# Money: %d", (int)senderClan.getMoneyClan()));
             ChatSender.MessageTo(tempPlayer,"UselessClan", String.format("# Your rank: %s", SenderRole.toString()));
             return true;
         }
@@ -431,7 +431,7 @@ public class baseClanCommands {
     private static class matesUserCommand extends PlayerCommandBase {
 
         @Override
-        public boolean executeCommand(Player tempPlayer,Clan senderClan, String[] args) {
+        public boolean executeCommand(Player tempPlayer, Clan senderClan, String[] args) {
             ClanRole SenderRole = null;
             if (senderClan != null) {
                 SenderRole = senderClan.getMemberRole(tempPlayer.getName());
@@ -444,7 +444,7 @@ public class baseClanCommands {
             ChatSender.MessageTo(tempPlayer,"UselessClan", "########## CLANMATES ##########");
             for (ClanMember tempMember: senderClan.getMembers()) {
                 ChatSender.MessageTo(tempPlayer,"UselessClan", String.format(
-                        "# %s &a%s", tempMember.getMemberRole().toString(), tempMember.getPlayerName()));
+                        "# %s &a%s %d", tempMember.getMemberRole().toString(), tempMember.getPlayerName(), (int)tempMember.getGeneralPlayerDeposit()));
             }
             return true;
         }
@@ -461,7 +461,7 @@ public class baseClanCommands {
 
             if (args.length == 1) {
                 if (senderClan != null) {
-                    if (SenderRole == ClanRole.LEADER || SenderRole == ClanRole.OFFICER) {
+                    if (SenderRole.ordinal() >= senderClan.getSettingsClan().RoleCanAccept.ordinal()) {
                         ChatSender.MessageTo(tempPlayer,"UselessClan",
                                 "&cYou forgot about player %name, use &a/Clan kick %name&b, %name = name of player, which you want to kick");
                     }
@@ -475,7 +475,7 @@ public class baseClanCommands {
             }
             else {
                 if (senderClan != null) {
-                    if (SenderRole == ClanRole.LEADER || SenderRole == ClanRole.OFFICER) {
+                    if (SenderRole.ordinal() >= senderClan.getSettingsClan().RoleCanAccept.ordinal()) {
                         String AcceptedPlayerName = args[1];
                         if (UselessClan.getMainManager().FindClanToPlayer(AcceptedPlayerName) != null) {
                             ChatSender.MessageTo(tempPlayer,"UselessClan", "&cThis player already in Clan");
@@ -485,7 +485,7 @@ public class baseClanCommands {
                             ChatSender.MessageTo(tempPlayer,"UselessClan", "&cThis player didn't send request to you Clan");
                             return false;
                         }
-                        senderClan.PlayerJoinToClan(ClanRole.ROOKIE, AcceptedPlayerName);
+                        senderClan.PlayerJoinToClan(senderClan.getSettingsClan().DefaultJoinRole, AcceptedPlayerName);
                         UselessClan.getMainManager().CalculateClanLevel(senderClan);
                         senderClan.RemoveFromRequest(AcceptedPlayerName);
                         Player AcceptedPlayer = getPlayer(AcceptedPlayerName);
