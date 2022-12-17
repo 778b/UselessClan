@@ -778,4 +778,107 @@ public class baseClanCommands {
             return true;
         }
     }
+
+    private static class settingsUserCommand extends PlayerCommandBase {
+        @Override
+        public boolean executeCommand(Player tempPlayer, Clan senderClan, String[] args) {
+            // /clan setting info
+            // /clan setting HomeChangeMinRank 4
+            ClanRole SenderRole = null;
+            if (senderClan == null) {
+                ChatSender.MessageTo(tempPlayer, "UselessClan", "&cYou havent Clan!");
+                return false;
+            }
+            SenderRole = senderClan.getMemberRole(tempPlayer.getName());
+
+            if (SenderRole.ordinal() < ClanRole.LEADER.ordinal()) {
+                ChatSender.MessageTo(tempPlayer, "UselessClan", "&cYou rank is too low to do that!");
+                return false;
+            }
+            //senderClan.getSettingsClan()
+            if (args.length == 1) {
+                ChatSender.MessageTo(tempPlayer, "UselessClan",
+                        "&cYou forgot about player %name, use &a/Clan promote %name");
+                return false;
+            }
+            else if (args.length == 2) {
+                if (args[1].equalsIgnoreCase("info")) {
+
+                }
+                else if (args[1].equalsIgnoreCase("HomeChangeMinRank")) {
+
+                }
+                else if (args[1].equalsIgnoreCase("RoleCanKick")) {
+
+                }
+                else if (args[1].equalsIgnoreCase("DefalutJoinRole")) {
+
+                }
+                else if (args[1].equalsIgnoreCase("WithdrawMinRole")) {
+
+                }
+                else if (args[1].equalsIgnoreCase("help")) {
+                    ChatSender.MessageTo(tempPlayer, "UselessClan",
+                            "&a/clan setting info - show info about setting clan");
+                    ChatSender.MessageTo(tempPlayer, "UselessClan",
+                            "&a/clan setting HomeChangeMinRank [Role] - set min role to change home location [1-4]");
+                    ChatSender.MessageTo(tempPlayer, "UselessClan",
+                            "&a/clan setting RoleCanKick [Role] - set min role which can kick from clan [1-4]");
+                    ChatSender.MessageTo(tempPlayer, "UselessClan",
+                            "&a/clan setting DefalutJoinRole [Role] - set default join role [1-4]");
+                    ChatSender.MessageTo(tempPlayer, "UselessClan",
+                            "&a/clan setting WithdrawMinRole [Role] - set role which can withdraw money from clan [1-4]");
+                    return true;
+                }
+                else {
+                    ChatSender.MessageTo(tempPlayer, "UselessClan",
+                            "&cWrong arguments, try /clan setting help");
+                    return false;
+                }
+            }
+            else {
+                if (senderClan != null) {
+                    if (SenderRole == ClanRole.OFFICER || SenderRole == ClanRole.LEADER) {
+                        ClanMember tempClanMember = senderClan.getClanMember(args[1]);
+                        if (tempClanMember == null) {
+                            ChatSender.MessageTo(tempPlayer,"UselessClan", "&cThis player not in your clan!");
+                            return false;
+                        }
+                        if (tempClanMember.getMemberRole() == ClanRole.MEMBER) {
+                            if (!senderClan.ChangeMemberRole(tempClanMember.getPlayerName(), ClanRole.ROOKIE)) {
+                                ChatSender.MessageTo(tempPlayer,"UselessClan", "&cThis Player already have this rank!");
+                                return false;
+                            }
+                            senderClan.SendMessageForOnlinePlayers(String.format(
+                                    "&cPlayer %s was demoted to %s", tempClanMember.getPlayerName(), ClanRole.ROOKIE));
+                        }
+                        else if (tempClanMember.getMemberRole() == ClanRole.OFFICER) {
+                            if (SenderRole == ClanRole.LEADER) {
+                                if (!senderClan.ChangeMemberRole(tempClanMember.getPlayerName(), ClanRole.MEMBER)) {
+                                    ChatSender.MessageTo(tempPlayer,"UselessClan", "&cThis Player already have this rank!");
+                                    return false;
+                                }
+                                senderClan.SendMessageForOnlinePlayers(String.format(
+                                        "&cPlayer %s was demoted to %s", tempClanMember.getPlayerName(), ClanRole.MEMBER));
+                            }
+                            else {
+                                ChatSender.MessageTo(tempPlayer,"UselessClan", "&cYou rank is too low to do that!");
+                            }
+                        }
+                        else {
+                            ChatSender.MessageTo(tempPlayer,"UselessClan", "Nothing changed, :(");
+                        }
+                    }
+                    else {
+                        ChatSender.MessageTo(tempPlayer,"UselessClan", "&cYou rank is too low to do that!");
+                    }
+                }
+                else {
+                    ChatSender.MessageTo(tempPlayer,"UselessClan", "&cYou havent Clan!");
+
+                }
+            }
+            return true;
+        }
+    }
 }
