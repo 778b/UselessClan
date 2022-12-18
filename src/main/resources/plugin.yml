@@ -1,5 +1,5 @@
 name: UselessClan
-version: 0.8a
+version: 0.9
 main: io.github.lofrol.UselessClan.UselessClan
 api-version: 1.19
 softdepend: [ PlaceholderAPI ]
