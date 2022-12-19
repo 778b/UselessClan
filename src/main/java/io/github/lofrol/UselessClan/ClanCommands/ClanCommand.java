@@ -2,7 +2,6 @@ package io.github.lofrol.UselessClan.ClanCommands;
 
 import io.github.lofrol.UselessClan.ClanCommands.Commands.CommandBase;
 import io.github.lofrol.UselessClan.ClanCommands.Commands.UserCommands.BaseClanCommands;
-import io.github.lofrol.UselessClan.ClanManager;
 import io.github.lofrol.UselessClan.Utils.ChatSender;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -19,10 +18,9 @@ import static org.bukkit.Bukkit.*;
 
 public final class ClanCommand extends Command {
     private final Map<String, CommandBase> ClanCommands;
-    public static ClanCommand CreateDefaultInst(ClanManager manager) {
-        ClanCommand tempInst = new ClanCommand("Clan", "Default command for access to the clan system",
+    public static ClanCommand CreateDefaultInst() {
+        return new ClanCommand("Clan", "Default command for access to the clan system",
                 "Use &5/Clan help&r for learning more", Stream.of("clan", "Clan").collect(Collectors.toList()));
-        return tempInst;
     }
 
     public boolean registerCommand() {

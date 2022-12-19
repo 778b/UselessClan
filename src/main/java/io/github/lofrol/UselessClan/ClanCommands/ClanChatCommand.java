@@ -1,7 +1,7 @@
 package io.github.lofrol.UselessClan.ClanCommands;
 
-import io.github.lofrol.UselessClan.ClanManager;
 import io.github.lofrol.UselessClan.ClanObjects.OnlinePlayerClan;
+import io.github.lofrol.UselessClan.UselessClan;
 import io.github.lofrol.UselessClan.Utils.ChatSender;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -16,15 +16,10 @@ import static org.bukkit.Bukkit.getServer;
 
 public final class ClanChatCommand extends Command {
 
-    private ClanManager ManagerPtr;
 
-    public static ClanChatCommand CreateDefaultInst(ClanManager manager) {
-        ClanChatCommand tempInst = new ClanChatCommand("ClanChat", "Default command for clan chat",
+    public static ClanChatCommand CreateDefaultInst() {
+        return new ClanChatCommand("ClanChat", "Default command for clan chat",
                 "Use &5/Clan help&r for learning more", Stream.of("ucc").collect(Collectors.toList()));
-
-        tempInst.ManagerPtr = manager;
-
-        return tempInst;
     }
 
     public boolean registerCommand() {
@@ -42,7 +37,7 @@ public final class ClanChatCommand extends Command {
         int size = args.length;
         if (size == 0) return false;
 
-        OnlinePlayerClan SenderClan = ManagerPtr.getOnlineClanPlayers().get(tempPlayer);
+        OnlinePlayerClan SenderClan = UselessClan.getMainManager().getOnlineClanPlayers().get(tempPlayer);
         if (SenderClan.getPlayerClan().getOnlineMembers().size() < 2) {
             ChatSender.MessageTo(tempPlayer,"UselessClan",
                     "&cOnly you are online from you clan");
