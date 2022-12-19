@@ -264,7 +264,7 @@ public final class ClanManager {
         }
                 , 200);
 
-        OwnerPlugin.getLogger().log(Level.INFO, String.format(  "Clan member %s Join to server, his clan is %s", player.getName(), tempClan.getNameClan()));
+        OwnerPlugin.getLogger().log(Level.INFO, String.format( "Clan member %s Join to server, his clan is %s", player.getName(), tempClan.getNameClan()));
     }
     public void OnPlayerLeave(Player player) {
         OnlinePlayerClan tempOnlinePlayer = OnlineClanPlayers.get(player);
@@ -290,10 +290,7 @@ public final class ClanManager {
             if (todayBackupFile.mkdir()) {
                 OwnerPlugin.getLogger().log(Level.INFO, "Creating folder for backups...");
             }
-            else {
-                OwnerPlugin.getLogger().log(Level.SEVERE, "Cant create backups folder!");
-                return;
-            }
+            return;
         }
         for (Clan tempClan : ServerClans.values()) {
             File tempClanFile = new File(todayBackupFile, String.format("%s.yml", tempClan.getPrefixClan()));
