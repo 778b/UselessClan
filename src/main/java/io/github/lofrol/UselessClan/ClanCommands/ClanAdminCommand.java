@@ -1,6 +1,6 @@
 package io.github.lofrol.UselessClan.ClanCommands;
 
-import io.github.lofrol.UselessClan.ClanCommands.Commands.AdminCommands.AdminClanCommands;
+import io.github.lofrol.UselessClan.ClanCommands.Commands.UserCommands.AdminClanCommands;
 import io.github.lofrol.UselessClan.ClanCommands.Commands.CommandBase;
 import io.github.lofrol.UselessClan.ClanManager;
 import io.github.lofrol.UselessClan.Utils.ChatSender;

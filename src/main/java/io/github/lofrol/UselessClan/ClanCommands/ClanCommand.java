@@ -2,15 +2,11 @@ package io.github.lofrol.UselessClan.ClanCommands;
 
 import io.github.lofrol.UselessClan.ClanCommands.Commands.CommandBase;
 import io.github.lofrol.UselessClan.ClanCommands.Commands.UserCommands.baseClanCommands;
-import io.github.lofrol.UselessClan.ClanCommands.Commands.UserCommands.requestClanCommands;
 import io.github.lofrol.UselessClan.ClanManager;
-import io.github.lofrol.UselessClan.ClanObjects.Clan;
-import io.github.lofrol.UselessClan.ClanObjects.ClanRole;
 import io.github.lofrol.UselessClan.Utils.ChatSender;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.PluginDescriptionFile;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
@@ -39,7 +35,6 @@ public final class ClanCommand extends Command {
         super(name,description,usageMessage,aliases);
         ClanCommands = new HashMap<>();
         baseClanCommands.setupCommands(ClanCommands);
-        requestClanCommands.setupCommands(ClanCommands);
     }
 
     @Override

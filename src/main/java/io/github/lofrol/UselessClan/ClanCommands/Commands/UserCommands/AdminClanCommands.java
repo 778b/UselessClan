@@ -1,4 +1,4 @@
-package io.github.lofrol.UselessClan.ClanCommands.Commands.AdminCommands;
+package io.github.lofrol.UselessClan.ClanCommands.Commands.UserCommands;
 
 import io.github.lofrol.UselessClan.ClanCommands.Commands.CommandBase;
 import io.github.lofrol.UselessClan.ClanCommands.Commands.PlayerCommandBase;
