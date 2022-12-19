@@ -11,18 +11,19 @@ import org.bukkit.entity.Player;
 
 import java.util.Map;
 
-public class AdminClanCommands {
-    public static void setupCommands(Map<String, CommandBase> commands) {
-        commands.put("help",        new helpAdminCommand());
-        commands.put("list",        new listAdminCommand());
-        commands.put("info",        new infoAdminCommand());
-        commands.put("mates",       new matesAdminCommand());
-        commands.put("delete",      new deleteAdminCommand());
-        commands.put("home",        new homeAdminCommand());
-        commands.put("calclvl",     new calclvlAdminCommand());
-        commands.put("level",       new levelAdminCommand());
-    }
+import static java.util.Map.entry;
 
+public class AdminClanCommands {
+    public static final Map<String, CommandBase> ClanCommands = Map.ofEntries(
+            entry("help",        new helpAdminCommand()),
+            entry("list",        new listAdminCommand()),
+            entry("info",        new infoAdminCommand()),
+            entry("mates",       new matesAdminCommand()),
+            entry("delete",      new deleteAdminCommand()),
+            entry("home",        new homeAdminCommand()),
+            entry("calclvl",     new calclvlAdminCommand()),
+            entry("level",       new levelAdminCommand())
+    );
     private static class helpAdminCommand extends PlayerCommandBase {
         @Override
         public boolean executeCommand(Player tempPlayer,Clan senderClan, String[] args) {

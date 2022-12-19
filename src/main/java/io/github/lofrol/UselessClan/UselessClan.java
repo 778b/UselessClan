@@ -54,11 +54,11 @@ public final class UselessClan extends JavaPlugin {
         MainManager = new ClanManager(this, new ClanManagerExtension());
         getServer().getPluginManager().registerEvents(new UselessListeners(), this);
 
-        if (ClanCommand.CreateDefaultInst().registerCommand()) getLogger().log(Level.INFO, "Clan Command Loaded successfully!");
+        if (ClanCommand.CreateDefaultInst()) getLogger().log(Level.INFO, "Clan Command Loaded successfully!");
         else getLogger().log(Level.SEVERE, "Clan Command cant be loaded!");
-        if (ClanAdminCommand.CreateDefaultInts().registerCommand()) getLogger().log(Level.INFO, "Admin Clan Command Loaded successfully!");
+        if (ClanAdminCommand.CreateDefaultInts()) getLogger().log(Level.INFO, "Admin Clan Command Loaded successfully!");
         else getLogger().log(Level.SEVERE, "Admin Clan Command cant be loaded!");
-        if (ClanChatCommand.CreateDefaultInst().registerCommand()) getLogger().log(Level.INFO, "Clan Chat Command Loaded successfully!");
+        if (ClanChatCommand.CreateDefaultInst()) getLogger().log(Level.INFO, "Clan Chat Command Loaded successfully!");
         else getLogger().log(Level.SEVERE, "Clan Chat Command cant be loaded!");
 
         MainManager.LoadClans();

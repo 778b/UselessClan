@@ -27,33 +27,37 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Map;
 
+import static java.util.Map.entry;
 import static org.bukkit.Bukkit.*;
 import static org.bukkit.Bukkit.getServer;
 
 public class BaseClanCommands {
-    public static void setupCommands(Map<String, CommandBase> commands) {
-        commands.put("help",        new helpUserCommand());
-        commands.put("requests",    new requestsUserCommand());
-        commands.put("top",         new topUserCommand());
-        commands.put("claim",       new claimUserCommand());
-        commands.put("create",      new createUserCommand());
-        commands.put("delete",      new deleteUserCommand());
-        commands.put("leave",       new leaveUserCommand());
-        commands.put("deposit",     new depositUserCommand());
-        commands.put("withdraw",    new withdrawUserCommand());
-        commands.put("home",        new homeUserCommand());
-        commands.put("sethome",     new sethomeUserCommand());
-        commands.put("info",        new infoUserCommand());
-        commands.put("mates",       new matesUserCommand());
-        commands.put("accept",      new acceptUserCommand());
-        commands.put("join",        new joinUserCommand());
-        commands.put("kick",        new kickUserCommand());
-        commands.put("promote",     new promoteUserCommand());
-        commands.put("demote",      new demoteUserCommand());
-        commands.put("setting",     new settingsUserCommand());
-    }
+    public static final Map<String, CommandBase> ClanCommands = Map.ofEntries(
+            entry("help",        new helpUserCommand()),
+            entry("requests",    new requestsUserCommand()),
+            entry("top",         new topUserCommand()),
+            entry("claim",       new claimUserCommand()),
+            entry("create",      new createUserCommand()),
+            entry("delete",      new deleteUserCommand()),
+            entry("leave",       new leaveUserCommand()),
+            entry("deposit",     new depositUserCommand()),
+            entry("withdraw",    new withdrawUserCommand()),
+            entry("home",        new homeUserCommand()),
+            entry("sethome",     new sethomeUserCommand()),
+            entry("info",        new infoUserCommand()),
+            entry("mates",       new matesUserCommand()),
+            entry("accept",      new acceptUserCommand()),
+            entry("join",        new joinUserCommand()),
+            entry("kick",        new kickUserCommand()),
+            entry("promote",     new promoteUserCommand()),
+            entry("demote",      new demoteUserCommand()),
+            entry("setting",     new settingsUserCommand())
+    );
+
 
     private static class helpUserCommand extends PlayerCommandBase {
 

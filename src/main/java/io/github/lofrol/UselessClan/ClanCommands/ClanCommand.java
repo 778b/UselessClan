@@ -17,22 +17,17 @@ import java.util.stream.Stream;
 import static org.bukkit.Bukkit.*;
 
 public final class ClanCommand extends Command {
-    private final Map<String, CommandBase> ClanCommands;
-    public static ClanCommand CreateDefaultInst() {
-        return new ClanCommand("Clan", "Default command for access to the clan system",
-                "Use &5/Clan help&r for learning more", Stream.of("clan", "Clan").collect(Collectors.toList()));
-    }
 
-    public boolean registerCommand() {
-        return getServer().getCommandMap().register("[UselessClan]", this);
+    public static boolean CreateDefaultInst() {
+        ClanCommand tempClanCommand =  new ClanCommand("Clan", "Default command for access to the clan system",
+                "Use &5/Clan help&r for learning more", Stream.of("clan", "Clan").collect(Collectors.toList()));
+        return getServer().getCommandMap().register("[UselessClan]", tempClanCommand);
     }
 
     private ClanCommand(@NotNull String name, @NotNull String description,
                           @NotNull String usageMessage,
                           @NotNull List<String> aliases) {
-        super(name,description,usageMessage,aliases);
-        ClanCommands = new HashMap<>();
-        BaseClanCommands.setupCommands(ClanCommands);
+        super(name, description, usageMessage, aliases);
     }
 
     @Override
@@ -44,7 +39,7 @@ public final class ClanCommand extends Command {
             return false;
         }
 
-        CommandBase tempCommand = ClanCommands.get(args[0]);
+        CommandBase tempCommand = BaseClanCommands.ClanCommands.get(args[0]);
 
         if (tempCommand == null) {
             ChatSender.MessageTo(tempPlayer, "UselessClan",
