@@ -48,7 +48,7 @@ public final class ClanManager {
         OwnerPlugin = owner;
     }
 
-    public static String ClanRoleSolver(ClanRole role) {
+    public static String ClanRoleSolver(EClanRole role) {
         return switch (role) {
             case ROOKIE -> "/";
             case MEMBER -> "//";
@@ -71,7 +71,7 @@ public final class ClanManager {
         Clan NewClan = new Clan(ClanName, LeaderPlayer.getName());
         ServerClans.put(ClanName, NewClan);
 
-        NewClan.PlayerJoinToClan(ClanRole.LEADER, LeaderPlayer.getName());
+        NewClan.PlayerJoinToClan(EClanRole.LEADER, LeaderPlayer.getName());
         RegisterOnlineClanPlayer(NewClan, LeaderPlayer);
     }
 
@@ -234,7 +234,7 @@ public final class ClanManager {
     }
 
     public void RegisterOnlineClanPlayer(Clan playerClan, Player player) {
-        ClanRole playerRole = playerClan.getMemberRole(player.getName());
+        EClanRole playerRole = playerClan.getMemberRole(player.getName());
 
         ClanMember tempMember = new ClanMember(playerRole, player.getName());
         playerClan.getOnlineMembers().put(player, tempMember);
@@ -253,11 +253,11 @@ public final class ClanManager {
             OwnerPlugin.getLogger().log(Level.INFO, String.format("%s Not available Clan.", player.getName()));
             return;
         }
-        ClanRole playerRole = tempClan.getMemberRole(player.getName());
+        EClanRole playerRole = tempClan.getMemberRole(player.getName());
 
         RegisterOnlineClanPlayer(tempClan, player);
         getServer().getScheduler().runTaskLater(OwnerPlugin, () -> {
-            if (playerRole == ClanRole.LEADER || playerRole == ClanRole.OFFICER) {
+            if (playerRole == EClanRole.LEADER || playerRole == EClanRole.OFFICER) {
                 ChatSender.MessageTo(player,"UselessClan",
                         String.format("Your clan have %d requests for join! ./clan requests", tempClan.getRequestCount()));
             }

@@ -144,7 +144,7 @@ public class Clan {
             String rawMemberString = ClanConfig.getString(String.format("UselessClan.Members.%d", i));
             if (rawMemberString == null) continue;
             String TempName = null;
-            ClanRole TempRole = null;
+            EClanRole TempRole = null;
             double TempDeposit = 0;
 
             StringBuilder param = new StringBuilder();
@@ -158,11 +158,11 @@ public class Clan {
                     }
                     else if (Stage == 1) {
                         switch (Integer.parseInt(param.toString())) {
-                            case 1 -> TempRole = ClanRole.ROOKIE;
-                            case 2 -> TempRole = ClanRole.MEMBER;
-                            case 3 -> TempRole = ClanRole.OFFICER;
-                            case 4 -> TempRole = ClanRole.LEADER;
-                            default -> TempRole = ClanRole.NONE;
+                            case 1 -> TempRole = EClanRole.ROOKIE;
+                            case 2 -> TempRole = EClanRole.MEMBER;
+                            case 3 -> TempRole = EClanRole.OFFICER;
+                            case 4 -> TempRole = EClanRole.LEADER;
+                            default -> TempRole = EClanRole.NONE;
                         }
                         param = new StringBuilder();
                         ++Stage;
@@ -224,8 +224,8 @@ public class Clan {
     public void SendMessageForOnlineOfficers(String Message) {
         String FormattedPrefix = "&9" + PrefixClan;
         for (Player tempPlayer : OnlineMembers.keySet()) {
-            ClanRole tempRole = OnlineMembers.get(tempPlayer).getMemberRole();
-            if (tempRole == ClanRole.OFFICER || tempRole == ClanRole.LEADER) {
+            EClanRole tempRole = OnlineMembers.get(tempPlayer).getMemberRole();
+            if (tempRole == EClanRole.OFFICER || tempRole == EClanRole.LEADER) {
                 ChatSender.MessageTo(tempPlayer, FormattedPrefix, Message);
             }
         }
@@ -250,15 +250,15 @@ public class Clan {
         }
         return null;
     }
-    public @NotNull ClanRole getMemberRole(String PlayerName) {
-        if (!IsClanMember(PlayerName)) return ClanRole.NONE;
+    public @NotNull EClanRole getMemberRole(String PlayerName) {
+        if (!IsClanMember(PlayerName)) return EClanRole.NONE;
 
         for (ClanMember tempMember : Members) {
             if (tempMember.getPlayerName().equals(PlayerName)) {
                 return tempMember.getMemberRole();
             }
         }
-        return ClanRole.NONE;
+        return EClanRole.NONE;
     }
 
     public boolean SendRequestForJoin(String playerName) {
@@ -281,17 +281,17 @@ public class Clan {
         LeaderName = NewLeaderName;
         for (ClanMember tempMember : Members) {
             if (tempMember.getPlayerName().equals(NewLeaderName)) {
-                tempMember.setMemberRole(ClanRole.LEADER);
+                tempMember.setMemberRole(EClanRole.LEADER);
                 continue;
             }
-            if (tempMember.getMemberRole() == ClanRole.LEADER) {
-                tempMember.setMemberRole(ClanRole.OFFICER);
+            if (tempMember.getMemberRole() == EClanRole.LEADER) {
+                tempMember.setMemberRole(EClanRole.OFFICER);
             }
         }
         NeedToSave = true;
     }
 
-    public boolean ChangeMemberRole(String MemberName, ClanRole newRole) {
+    public boolean ChangeMemberRole(String MemberName, EClanRole newRole) {
         for (ClanMember tempMember : Members) {
             if (tempMember.getPlayerName().equals(MemberName)) {
                 if (tempMember.getMemberRole() == newRole) return false;
@@ -303,7 +303,7 @@ public class Clan {
         return true;
     }
 
-    public void PlayerJoinToClan(ClanRole Role, String PlayerName) {
+    public void PlayerJoinToClan(EClanRole Role, String PlayerName) {
         if (IsClanMember(PlayerName)) {
             return;
         }

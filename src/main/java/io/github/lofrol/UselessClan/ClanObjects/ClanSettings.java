@@ -4,22 +4,22 @@ import org.jetbrains.annotations.NotNull;
 
 public class ClanSettings {
 
-    public ClanRole DefaultJoinRole;
-    public ClanRole RoleCanKick;
+    public EClanRole DefaultJoinRole;
+    public EClanRole RoleCanKick;
 
-    public ClanRole RoleCanSethome;
+    public EClanRole RoleCanSethome;
 
-    public ClanRole RoleCanWithdraw;
+    public EClanRole RoleCanWithdraw;
 
-    public ClanRole RoleCanAccept;
+    public EClanRole RoleCanAccept;
 
 
     public ClanSettings() {
-        DefaultJoinRole = ClanRole.ROOKIE;
-        RoleCanSethome = ClanRole.LEADER;
-        RoleCanWithdraw = ClanRole.MEMBER;
-        RoleCanKick = ClanRole.OFFICER;
-        RoleCanAccept = ClanRole.OFFICER;
+        DefaultJoinRole = EClanRole.ROOKIE;
+        RoleCanSethome = EClanRole.LEADER;
+        RoleCanWithdraw = EClanRole.MEMBER;
+        RoleCanKick = EClanRole.OFFICER;
+        RoleCanAccept = EClanRole.OFFICER;
     }
 
     public String getSerializationString() {
@@ -34,7 +34,7 @@ public class ClanSettings {
         int Stage = 0;
         for (char tc: settings.toCharArray()) {
             if (tc == '/') {
-                ClanRole TempRole = ClanRole.fromString(param.toString());
+                EClanRole TempRole = EClanRole.fromString(param.toString());
                 if (Stage == 0) {
                     DefaultJoinRole = TempRole;
                     ++Stage;
