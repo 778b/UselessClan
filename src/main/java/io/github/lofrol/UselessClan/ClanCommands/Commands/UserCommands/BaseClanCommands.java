@@ -32,7 +32,7 @@ import java.util.Map;
 import static org.bukkit.Bukkit.*;
 import static org.bukkit.Bukkit.getServer;
 
-public class baseClanCommands {
+public class BaseClanCommands {
     public static void setupCommands(Map<String, CommandBase> commands) {
         commands.put("help",        new helpUserCommand());
         commands.put("requests",    new requestsUserCommand());

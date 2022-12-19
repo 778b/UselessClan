@@ -1,7 +1,7 @@
 package io.github.lofrol.UselessClan.ClanCommands;
 
 import io.github.lofrol.UselessClan.ClanCommands.Commands.CommandBase;
-import io.github.lofrol.UselessClan.ClanCommands.Commands.UserCommands.baseClanCommands;
+import io.github.lofrol.UselessClan.ClanCommands.Commands.UserCommands.BaseClanCommands;
 import io.github.lofrol.UselessClan.ClanManager;
 import io.github.lofrol.UselessClan.Utils.ChatSender;
 import org.bukkit.command.Command;
@@ -34,7 +34,7 @@ public final class ClanCommand extends Command {
                           @NotNull List<String> aliases) {
         super(name,description,usageMessage,aliases);
         ClanCommands = new HashMap<>();
-        baseClanCommands.setupCommands(ClanCommands);
+        BaseClanCommands.setupCommands(ClanCommands);
     }
 
     @Override
