@@ -39,7 +39,7 @@ public final class ClanCommand extends Command {
             return false;
         }
 
-        CommandBase tempCommand = BaseClanCommands.ClanCommands.get(args[0]);
+        CommandBase tempCommand = BaseClanCommands.getCommand(args[0]);
 
         if (tempCommand == null) {
             ChatSender.MessageTo(tempPlayer, "UselessClan",

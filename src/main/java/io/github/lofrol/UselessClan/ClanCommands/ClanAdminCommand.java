@@ -39,7 +39,7 @@ public final class ClanAdminCommand extends Command {
             return false;
         }
 
-        CommandBase tempCommand = AdminClanCommands.ClanCommands.get(args[0]);
+        CommandBase tempCommand = AdminClanCommands.getCommand(args[0]);
         if (tempCommand == null) {
             ChatSender.MessageTo(tempPlayer, "&4UselessClan",
                     "&cInvalid command. Use command &a/ClanAdmin help&c, for access to clan system");
