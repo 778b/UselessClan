@@ -66,6 +66,7 @@ public class Clan {
         NeedToSave = true;
     }
 
+    // return null if didn't need to save
     public FileConfiguration SaveClanToConfig() {
         if (!NeedToSave) return null;
 

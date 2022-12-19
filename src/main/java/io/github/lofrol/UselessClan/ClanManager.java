@@ -298,6 +298,7 @@ public final class ClanManager {
         for (Clan tempClan : ServerClans.values()) {
             File tempClanFile = new File(todayBackupFile, String.format("%s.yml", tempClan.getPrefixClan()));
             FileConfiguration tempConfig = tempClan.SaveClanToConfig();
+            if (tempConfig == null) continue;
             try {
                 tempConfig.save(tempClanFile);
             }
