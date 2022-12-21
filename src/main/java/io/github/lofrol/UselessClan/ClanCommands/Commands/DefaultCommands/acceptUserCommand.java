@@ -40,7 +40,7 @@ public class acceptUserCommand extends PlayerCommandBase {
             if (senderClan != null) {
                 if (SenderRole.ordinal() >= senderClan.getSettingsClan().RoleCanAccept.ordinal()) {
                     ChatSender.MessageTo(tempPlayer, "UselessClan",
-                            "&cYou forgot about player %name, use &a/Clan kick %name&b, %name = name of player, which you want to kick");
+                            "&cYou forgot about player %name, use &a/Clan accept %name&b, %name = name of player, which request you want to accept");
                 } else {
                     ChatSender.MessageTo(tempPlayer, "UselessClan", "&cYou rank is too low to do that!");
                 }
@@ -58,6 +58,7 @@ public class acceptUserCommand extends PlayerCommandBase {
             }
             String AcceptedPlayerName = args[1];
             if (UselessClan.getMainManager().FindClanToPlayer(AcceptedPlayerName) != null) {
+                senderClan.RemoveFromRequest(AcceptedPlayerName);
                 ChatSender.MessageTo(tempPlayer, "UselessClan", "&cThis player already in Clan");
                 return false;
             }
@@ -93,7 +94,8 @@ public class acceptUserCommand extends PlayerCommandBase {
                 UselessClan.getMainManager().RegisterOnlineClanPlayer(senderClan, AcceptedPlayer);
                 senderClan.SendMessageForOnlinePlayers(String.format(
                         "Player &a%s&b joined to your clan!", AcceptedPlayerName));
-            } else {
+            }
+            else {
                 senderClan.SendMessageForOnlinePlayers(String.format(
                         "Player &a%s&b accepted to your clan!", AcceptedPlayerName));
             }
