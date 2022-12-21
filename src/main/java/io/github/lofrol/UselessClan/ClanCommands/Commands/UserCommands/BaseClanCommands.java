@@ -23,6 +23,7 @@ import io.github.lofrol.UselessClan.ClanObjects.ClanMember;
 import io.github.lofrol.UselessClan.ClanObjects.EClanRole;
 import io.github.lofrol.UselessClan.UselessClan;
 import io.github.lofrol.UselessClan.Utils.ChatSender;
+import io.github.lofrol.UselessClan.Utils.TopListClan;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -132,7 +133,7 @@ public class BaseClanCommands {
                 }
             }
             //  /Clan help asjd
-            ChatSender.MessageTo(tempPlayer, "UselessClan", "&cThis page of help wasn't found");
+            ChatSender.MessageTo(tempPlayer, "UselessClan", "&cThis page of help isn't found");
             return false;
         }
     }
@@ -191,14 +192,48 @@ public class BaseClanCommands {
 
         @Override
         public boolean executeCommand(Player tempPlayer, Clan senderClan, String[] args) {
-            ChatSender.MessageTo(tempPlayer, "UselessClan", "########## CLAN TOP ##########");
-            ChatSender.MessageTo(tempPlayer, "UselessClan", "# ClanName              Bank #");
-            for (
-                    Clan tempClan : UselessClan.getMainManager().getServerClans().values()) {
-                ChatSender.MessageTo(tempPlayer, "UselessClan",
-                        String.format("# %s          %s ", tempClan.getNameClan(), tempClan.getMoneyClan()));
+            List<TopListClan> tempTopListClans = UselessClan.getMainManager().getTopClans().getSortedClans();
+            final int numClansInOnePage = 10;
+
+            if (args.length == 1) {
+                //  /Clan help
+                int tempRow = 0;
+                ChatSender.MessageTo(tempPlayer, "UselessClan", "&b########## CLAN TOP 1 ##########");
+                for (int i = tempRow; i < tempTopListClans.size(); ++i) {
+                    ChatSender.MessageTo(tempPlayer, "UselessClan", String.format("&b# %s : &e%d : &a%d",
+                                    tempTopListClans.get(i).ClanName, tempTopListClans.get(i).ClanLevel, tempTopListClans.get(i).ClanMoney));
+                    ++tempRow;
+                    if (tempRow == numClansInOnePage) break;
+                }
+                if (tempTopListClans.size() - numClansInOnePage > 0) {
+                    ChatSender.MessageTo(tempPlayer, "UselessClan", "type &a/Clan top 2&b - to show commands in page 2");
+                }
+                return true;
             }
-            return true;
+            else if (args.length > 1) {
+                //  /Clan help (1,2,3...n)
+                int pageNum = Integer.parseInt(args[1]);
+                if (pageNum > 0 && pageNum < tempTopListClans.size() && (pageNum - 1) * numClansInOnePage < tempTopListClans.size()) {
+                    int tempRow = 0;
+                    ChatSender.MessageTo(tempPlayer, "UselessClan",
+                            String.format("&b########## CLAN TOP %d ##########", pageNum));
+                    for (int i = (pageNum - 1) * numClansInOnePage; i < tempTopListClans.size(); ++i) {
+                        ChatSender.MessageTo(tempPlayer, "UselessClan", String.format("&b# %s : &e%d : &a%d",
+                                tempTopListClans.get(i).ClanName, tempTopListClans.get(i).ClanLevel, tempTopListClans.get(i).ClanMoney));
+                        ++tempRow;
+                        if (tempRow == numClansInOnePage) break;
+                    }
+                    if (tempTopListClans.size() - (pageNum * numClansInOnePage) > 0) {
+                        final int pageNumPlus = pageNum + 1;
+                        ChatSender.MessageTo(tempPlayer, "UselessClan",
+                                String.format("type &a/Clan top %d&b - to show commands in page %d", pageNumPlus, pageNumPlus));
+                    }
+                    return true;
+                }
+            }
+            //  /Clan help (not a number or too big)
+            ChatSender.MessageTo(tempPlayer, "UselessClan", "&cThis page of clans top isn't found");
+            return false;
         }
     }
 
@@ -1168,4 +1203,5 @@ public class BaseClanCommands {
             return true;
         }
     }
+
 }

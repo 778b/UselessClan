@@ -90,5 +90,9 @@ public final class UselessClan extends JavaPlugin {
         getServer().getScheduler().runTaskTimerAsynchronously(this, () -> {
             getMainManager().createClansBackups();
         }, 0, 864000);              // Every 12 hours
+
+        getServer().getScheduler().runTaskTimerAsynchronously(this, () -> {
+            getMainManager().getTopClans().CalculateTop();
+        }, 24000, 24000);           // Every 20 min
     }
 }

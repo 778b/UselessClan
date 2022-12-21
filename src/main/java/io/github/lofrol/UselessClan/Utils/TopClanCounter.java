@@ -9,14 +9,13 @@ import java.util.List;
 
 public class TopClanCounter {
     private List<TopListClan> TopClans = new ArrayList<>();
-
     public void CalculateTop() {
         TopClans.clear();
 
         for (Clan tempClan : UselessClan.getMainManager().getServerClans().values()) {
             TopClans.add(new TopListClan(tempClan.getNameClan(), (int)tempClan.getMoneyClan(), tempClan.getClanLevel()));
         }
-        
+
         TopClans.sort(new Comparator<TopListClan>() {
             @Override
             public int compare(TopListClan o1, TopListClan o2) {
@@ -33,4 +32,8 @@ public class TopClanCounter {
             }
         });
     }
+    public List<TopListClan> getSortedClans() {
+        return TopClans;
+    }
+
 }

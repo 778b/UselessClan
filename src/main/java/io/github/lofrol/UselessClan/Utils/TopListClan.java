@@ -7,7 +7,7 @@ public class TopListClan {
     public int ClanMoney;
     public int ClanLevel;
 
-    public TopListClan(@NotNull String name, @NotNull int money, @NotNull int level) {
+    public TopListClan(@NotNull String name, int money, int level) {
         ClanName = name;
         ClanMoney = money;
         ClanLevel = level;

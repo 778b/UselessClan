@@ -3,6 +3,7 @@ package io.github.lofrol.UselessClan;
 import io.github.lofrol.UselessClan.ClanObjects.*;
 import io.github.lofrol.UselessClan.Extensions.ClanManagerExtension;
 import io.github.lofrol.UselessClan.Utils.ChatSender;
+import io.github.lofrol.UselessClan.Utils.TopClanCounter;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -39,10 +40,11 @@ public final class ClanManager {
     public ClanManagerExtension Extension;
     private final Map<Player, OnlinePlayerClan> OnlineClanPlayers;
     private final Map<String, Clan> ServerClans;
-
+    private final TopClanCounter TopClans;
     public ClanManager(UselessClan owner, ClanManagerExtension extension) {
         ServerClans = new HashMap<>();
         OnlineClanPlayers = new HashMap<>();
+        TopClans = new TopClanCounter();
 
         Extension = extension;
         OwnerPlugin = owner;
@@ -218,6 +220,8 @@ public final class ClanManager {
     public Map<Player, OnlinePlayerClan> getOnlineClanPlayers() {
         return OnlineClanPlayers;
     }
+    public TopClanCounter getTopClans() { return TopClans; }
+
     public Clan getClanByName(String nameOfClan) {
         return ServerClans.get(nameOfClan);
     }
