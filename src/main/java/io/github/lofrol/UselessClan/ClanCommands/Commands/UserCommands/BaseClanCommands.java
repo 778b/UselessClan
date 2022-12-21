@@ -200,7 +200,7 @@ public class BaseClanCommands {
                 int tempRow = 0;
                 ChatSender.MessageTo(tempPlayer, "UselessClan", "&b########## CLAN TOP 1 ##########");
                 for (int i = tempRow; i < tempTopListClans.size(); ++i) {
-                    ChatSender.MessageTo(tempPlayer, "UselessClan", String.format("&b# %s : &e%d : &a%d",
+                    ChatSender.MessageTo(tempPlayer, "UselessClan", String.format("&b#%d) %s : &e%d : &a%d", tempRow + 1,
                                     tempTopListClans.get(i).ClanName, tempTopListClans.get(i).ClanLevel, tempTopListClans.get(i).ClanMoney));
                     ++tempRow;
                     if (tempRow == numClansInOnePage) break;
@@ -218,7 +218,7 @@ public class BaseClanCommands {
                     ChatSender.MessageTo(tempPlayer, "UselessClan",
                             String.format("&b########## CLAN TOP %d ##########", pageNum));
                     for (int i = (pageNum - 1) * numClansInOnePage; i < tempTopListClans.size(); ++i) {
-                        ChatSender.MessageTo(tempPlayer, "UselessClan", String.format("&b# %s : &e%d : &a%d",
+                        ChatSender.MessageTo(tempPlayer, "UselessClan", String.format("&b#%d) %s : &e%d : &a%d",(tempRow + 1) * pageNum,
                                 tempTopListClans.get(i).ClanName, tempTopListClans.get(i).ClanLevel, tempTopListClans.get(i).ClanMoney));
                         ++tempRow;
                         if (tempRow == numClansInOnePage) break;
@@ -432,13 +432,13 @@ public class BaseClanCommands {
             }
             EClanRole SenderRole = senderClan.getMemberRole(tempPlayer.getName());
 
-            if (args.length == 1) {
-                if (SenderRole != EClanRole.LEADER) {
-                    ChatSender.MessageTo(tempPlayer, "UselessClan", "&cYou rank is too low to do that!");
-                    return false;
-                }
-                UselessClan.getMainManager().DeleteClan(senderClan);
+            if (SenderRole != EClanRole.LEADER) {
+                ChatSender.MessageTo(tempPlayer, "UselessClan", "&cYou rank is too low to do that!");
+                return false;
             }
+
+            UselessClan.getMainManager().DeleteClan(senderClan);
+            ChatSender.MessageTo(tempPlayer, "UselessClan", "&aYou successfully delete your clan!");
             return true;
         }
     }

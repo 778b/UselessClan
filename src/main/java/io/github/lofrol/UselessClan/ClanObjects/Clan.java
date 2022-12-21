@@ -347,10 +347,10 @@ public class Clan {
             @Override
             public int compare(ClanMember o1, ClanMember o2) {
                 if (o1.getMemberRole().ordinal() > o2.getMemberRole().ordinal()) {
-                    return 1;
+                    return -1;
                 }
                 else if (o1.getMemberRole().ordinal() < o2.getMemberRole().ordinal()) {
-                    return -1;
+                    return 1;
                 }
                 return 0;
             }

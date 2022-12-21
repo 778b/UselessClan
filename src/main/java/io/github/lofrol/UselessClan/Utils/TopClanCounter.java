@@ -20,13 +20,13 @@ public class TopClanCounter {
             @Override
             public int compare(TopListClan o1, TopListClan o2) {
                 if (o1.ClanLevel > o2.ClanLevel) {
-                    return 1;
-                }
-                else if (o1.ClanLevel < o2.ClanLevel) {
                     return -1;
                 }
-                if (o1.ClanMoney > o2.ClanMoney) {
+                else if (o1.ClanLevel < o2.ClanLevel) {
                     return 1;
+                }
+                if (o1.ClanMoney > o2.ClanMoney) {
+                    return -1;
                 }
                 return 0;
             }
