@@ -38,7 +38,7 @@ public class acceptUserCommand extends PlayerCommandBase {
 
         if (args.length == 1) {
             if (senderClan != null) {
-                if (SenderRole.ordinal() >= senderClan.getSettingsClan().RoleCanAccept.ordinal()) {
+                if (havePermission(tempPlayer, senderClan, SenderRole)) {
                     ChatSender.MessageTo(tempPlayer, "UselessClan",
                             "&cYou forgot about player %name, use &a/Clan accept %name&b, %name = name of player, which request you want to accept");
                 } else {
@@ -47,12 +47,13 @@ public class acceptUserCommand extends PlayerCommandBase {
             } else {
                 ChatSender.MessageTo(tempPlayer, "UselessClan", "&cYou haven't Clan!");
             }
-        } else {
+        }
+        else {
             if (senderClan == null) {
                 ChatSender.MessageTo(tempPlayer, "UselessClan", "&cYou haven't Clan!");
                 return false;
             }
-            if (!(SenderRole.ordinal() >= senderClan.getSettingsClan().RoleCanAccept.ordinal())) {
+            if (!havePermission(tempPlayer, senderClan, SenderRole)) {
                 ChatSender.MessageTo(tempPlayer, "UselessClan", "&cYou rank is too low to do that!");
                 return false;
             }
