@@ -62,18 +62,18 @@ public class AdminClanCommands {
                 ChatSender.MessageTo(sender, "&4UselessClan","You forgot about clan %name, use /ClAd info %name, %name = name of clan");
             }
             else {
-                Clan findedClan = UselessClan.getMainManager().getServerClans().get(args[1]);
-                if (findedClan == null) {
+                Clan foundClan = UselessClan.getMainManager().getServerClans().get(args[1]);
+                if (foundClan == null) {
                     ChatSender.MessageTo(sender, "&4UselessClan","&cThis clan didnt exist!");
                     return false;
                 }
-                ChatSender.MessageTo(sender,"UselessClan", String.format("### CLAN %s INFO ###", findedClan.getPrefixClan()));
-                ChatSender.MessageTo(sender,"UselessClan", String.format("# Name: %s", findedClan.getNameClan()));
-                ChatSender.MessageTo(sender,"UselessClan", String.format("# Prefix: %s", findedClan.getPrefixClan()));
-                ChatSender.MessageTo(sender,"UselessClan", String.format("# Level: %s", findedClan.getClanLevel()));
-                ChatSender.MessageTo(sender,"UselessClan", String.format("# LeaderName: %s", findedClan.getLeaderName()));
-                ChatSender.MessageTo(sender,"UselessClan", String.format("# Count of Members: %s", findedClan.getMembers().size()));
-                ChatSender.MessageTo(sender,"UselessClan", String.format("# Money: %s", findedClan.getMoneyClan()));
+                ChatSender.MessageTo(sender,"UselessClan", String.format("### CLAN %s INFO ###", foundClan.getPrefixClan()));
+                ChatSender.MessageTo(sender,"UselessClan", String.format("# Name: %s", foundClan.getNameClan()));
+                ChatSender.MessageTo(sender,"UselessClan", String.format("# Prefix: %s", foundClan.getPrefixClan()));
+                ChatSender.MessageTo(sender,"UselessClan", String.format("# Level: %s", foundClan.getClanLevel()));
+                ChatSender.MessageTo(sender,"UselessClan", String.format("# LeaderName: %s", foundClan.getLeaderName()));
+                ChatSender.MessageTo(sender,"UselessClan", String.format("# Count of Members: %s", foundClan.getMembers().size()));
+                ChatSender.MessageTo(sender,"UselessClan", String.format("# Money: %s", foundClan.getMoneyClan()));
             }
             return true;
         }
@@ -92,7 +92,7 @@ public class AdminClanCommands {
                     return false;
                 }
                 ChatSender.MessageTo(sender,"UselessClan", "########## CLANMATES ##########");
-                for (ClanMember tempMember: findedClan.getMembers()) {
+                for (ClanMember tempMember : findedClan.getMembers()) {
                     ChatSender.MessageTo(sender,"UselessClan", String.format(
                             "# %s &a%s", tempMember.getMemberRole().toString(), tempMember.getPlayerName()));
                 }
