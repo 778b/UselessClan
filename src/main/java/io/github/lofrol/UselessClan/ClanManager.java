@@ -164,7 +164,9 @@ public final class ClanManager {
 
         for (File tempClanFile : Objects.requireNonNull(tempClanDir.listFiles())) {
             if (tempClanFile.getName().equals(String.format("%s.yml", clanToDelete.getPrefixClan()))) {
-                tempClanFile.deleteOnExit();
+                if (tempClanFile.delete()) {
+                    OwnerPlugin.getLogger().log(Level.INFO, String.format("Previous config of %s was delete", clanToDelete.getPrefixClan()));
+                }
                 isDeleted = true;
                 break;
             }
@@ -177,7 +179,7 @@ public final class ClanManager {
         OwnerPlugin.getLogger().log(Level.INFO, String.format("%s is finded!", clanToDelete.getPrefixClan()));
 
 
-        File newClanFile = new File(tempDeleteDir, clanToDelete.getPrefixClan());
+        File newClanFile = new File(tempDeleteDir, String.format("%s.yml", clanToDelete.getPrefixClan()));
         try {
             ClanConfig.save(newClanFile);
         }
