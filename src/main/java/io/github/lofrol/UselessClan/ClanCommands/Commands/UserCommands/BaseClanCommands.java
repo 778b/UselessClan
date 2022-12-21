@@ -691,7 +691,7 @@ public class BaseClanCommands {
 
         @Override
         public @NotNull String commandDescription() {
-            return "&a/Clan mates&b - to execute list of clanmates";
+            return "&a/Clan mates&b - to show list of clanmates";
         }
 
         @Override

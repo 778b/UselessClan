@@ -8,10 +8,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.logging.Level;
 
 import static org.bukkit.Bukkit.getServer;
@@ -289,6 +286,7 @@ public class Clan {
             }
         }
         NeedToSave = true;
+        sortMembers();
     }
 
     public boolean ChangeMemberRole(String MemberName, EClanRole newRole) {
@@ -300,6 +298,7 @@ public class Clan {
             }
         }
         NeedToSave = true;
+        sortMembers();
         return true;
     }
 
@@ -314,6 +313,7 @@ public class Clan {
         }
         Members.add(tempClanMember);
         NeedToSave = true;
+        sortMembers();
     }
     public void PlayerLeavedFromClan(String PlayerName) {
         if (!IsClanMember(PlayerName)) return;
@@ -329,63 +329,60 @@ public class Clan {
                 return;
             }
         }
+        sortMembers();
     }
     public void PlayerLeavedFromClan(Player player) {
         OnlineMembers.remove(player);
         Members.remove(getClanMember(player.getName()));
         NeedToSave = true;
+        sortMembers();
     }
 
     public void RemoveFromRequest(String PlayerName) {
         Requests.remove(PlayerName);
     }
 
-
+    private void sortMembers() {
+        Members.sort(new Comparator<ClanMember>() {
+            @Override
+            public int compare(ClanMember o1, ClanMember o2) {
+                if (o1.getMemberRole().ordinal() > o2.getMemberRole().ordinal()) {
+                    return 1;
+                }
+                else if (o1.getMemberRole().ordinal() < o2.getMemberRole().ordinal()) {
+                    return -1;
+                }
+                return 0;
+            }
+        });
+    }
 
 
 
     /*
      *  Getters Functions
      */
-    public String getNameClan() {
-        return NameClan;
-    }
+    public String getNameClan() { return NameClan; }
 
-    public String getDescriptionClan() {
-        return DescriptionClan;
-    }
+    public String getDescriptionClan() { return DescriptionClan; }
 
-    public String getLeaderName() {
-        return LeaderName;
-    }
+    public String getLeaderName() { return LeaderName; }
 
-    public @NotNull ClanSettings getSettingsClan() {
-        return SettingsClan;
-    }
-    public List<ClanMember> getMembers() {
-        return Members;
-    }
-    public Map<Player, ClanMember> getOnlineMembers() {
-        return OnlineMembers;
-    }
+    public @NotNull ClanSettings getSettingsClan() { return SettingsClan; }
+    public List<ClanMember> getMembers() { return Members; }
+    public Map<Player, ClanMember> getOnlineMembers() { return OnlineMembers; }
     public String getPrefixClan() { return PrefixClan; }
     public double getMoneyClan() { return MoneyClan; }
     public Location getHomeClan() { return HomeClan; }
-    public List<String> getRequests() {
-        return Requests;
-    }
-    public int getRequestCount() {
-        return Requests.size();
-    }
+    public List<String> getRequests() { return Requests; }
+    public int getRequestCount() { return Requests.size(); }
     public String getClanRegionId() { return ClanRegionId; }
 
-    public int getClanLevel() {
-        return ClanLevel;
-    }
+    public int getClanLevel() { return ClanLevel; }
 
 
     /*
-     *  Setters FUnctions
+     *  Setters Functions
      */
     public boolean setClanName(String newNameClan) {
         if (newNameClan.length() >= 5 && newNameClan.length() <=15) {
