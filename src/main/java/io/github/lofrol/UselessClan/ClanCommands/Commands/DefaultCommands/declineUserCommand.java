@@ -38,26 +38,33 @@ public class declineUserCommand extends PlayerCommandBase {
 
         if (args.length == 1) {
             if (senderClan != null) {
-                if (SenderRole.ordinal() >= senderClan.getSettingsClan().RoleCanAccept.ordinal()) {
-                    ChatSender.MessageTo(tempPlayer, "UselessClan",
-                            "&cYou forgot about player %name, use &a/Clan decline %name&b, %name = name of player, which request you want decline");
-                } else {
+                if (!havePermission(tempPlayer, senderClan, SenderRole)) {
                     ChatSender.MessageTo(tempPlayer, "UselessClan", "&cYou rank is too low to do that!");
+                    return false;
                 }
-            } else {
+
+                ChatSender.MessageTo(tempPlayer, "UselessClan",
+                        "&cYou forgot about player %name, use &a/Clan decline %name&b, %name = name of player, which request you want decline");
+
+            }
+            else {
                 ChatSender.MessageTo(tempPlayer, "UselessClan", "&cYou haven't Clan!");
             }
-        } 
+        }
         else {
             if (senderClan == null) {
                 ChatSender.MessageTo(tempPlayer, "UselessClan", "&cYou haven't Clan!");
                 return false;
             }
-            if (!(SenderRole.ordinal() >= senderClan.getSettingsClan().RoleCanAccept.ordinal())) {
+            if (!havePermission(tempPlayer, senderClan, SenderRole)) {
                 ChatSender.MessageTo(tempPlayer, "UselessClan", "&cYou rank is too low to do that!");
                 return false;
             }
             String AcceptedPlayerName = args[1];
+            if (!senderClan.HaveRequestFromPlayer(AcceptedPlayerName)) {
+                ChatSender.MessageTo(tempPlayer, "UselessClan", "&cThis player didn't send request to you Clan");
+                return false;
+            }
             senderClan.RemoveFromRequest(AcceptedPlayerName);
             ChatSender.MessageTo(tempPlayer, "UselessClan",
                     String.format("&aYou successfully decline request from %s", AcceptedPlayerName));
