@@ -21,6 +21,8 @@ public final class UselessClan extends JavaPlugin {
 
     private static ClanManager MainManager;
 
+    private static SerializationManager SerilManager;
+
     @Override
     public void onEnable() {
         if (getServer().getPluginManager().getPlugin("Vault") == null) {
@@ -50,6 +52,7 @@ public final class UselessClan extends JavaPlugin {
             }
             getLogger().log(Level.INFO, "Placeholders:"+ MultiString );
         }
+        SerilManager = new SerializationManager(this);
 
         MainManager = new ClanManager(this, new ClanManagerExtension());
         getServer().getPluginManager().registerEvents(new UselessListeners(), this);
@@ -71,10 +74,18 @@ public final class UselessClan extends JavaPlugin {
     public void onDisable() {
         MainManager.SaveClans();
     }
-    public static ClanManager getMainManager() {
-        return MainManager;
-    }
 
+    /*
+    *   Getters section
+    */
+    public static ClanManager getMainManager() { return MainManager; }
+    public static SerializationManager getSerilManager() { return SerilManager; }
+
+
+
+    /*
+     *   Tasks section
+     */
     private void runServerTasks() {
         getServer().getScheduler().runTaskTimer(this, () -> {
             getMainManager().SaveClans();
