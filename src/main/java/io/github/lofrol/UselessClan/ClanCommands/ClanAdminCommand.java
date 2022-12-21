@@ -1,6 +1,6 @@
 package io.github.lofrol.UselessClan.ClanCommands;
 
-import io.github.lofrol.UselessClan.ClanCommands.Commands.UserCommands.AdminClanCommands;
+import io.github.lofrol.UselessClan.ClanCommands.Commands.CommandsManager.AdminClanCommands;
 import io.github.lofrol.UselessClan.ClanCommands.Commands.CommandBase;
 import io.github.lofrol.UselessClan.Utils.ChatSender;
 import org.bukkit.command.Command;
