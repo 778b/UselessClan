@@ -6,11 +6,9 @@ import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.logging.Level;
 
 import static org.bukkit.Bukkit.getServer;
@@ -65,6 +63,7 @@ public class Clan {
         NeedToSave = true;
     }
 
+    // return null if didn't need to save
     public FileConfiguration SaveClanToConfig() {
         if (!NeedToSave) return null;
 
@@ -98,10 +97,8 @@ public class Clan {
                     tempMember.getPlayerName(), tempMember.getMemberRole().ordinal(), tempMember.getGeneralPlayerDeposit());
             ClanConfig.set(String.format("UselessClan.Members.%d", i), MasterStringMember);
         }
-        String MasterSettingsString = String.format("%d/%d/%d/%d/",
-                SettingsClan.DefaultJoinRole.ordinal(), SettingsClan.HomeChangerMinRole.ordinal(),
-                SettingsClan.MinRoleForWithdraw.ordinal(), SettingsClan.RoleCanKick.ordinal());
-        ClanConfig.set("UselessClan.Settings", MasterSettingsString);
+
+        ClanConfig.set("UselessClan.Settings", SettingsClan.getSerializationString());
 
         NeedToSave = false;
         return ClanConfig;
@@ -144,7 +141,7 @@ public class Clan {
             String rawMemberString = ClanConfig.getString(String.format("UselessClan.Members.%d", i));
             if (rawMemberString == null) continue;
             String TempName = null;
-            ClanRole TempRole = null;
+            EClanRole TempRole = null;
             double TempDeposit = 0;
 
             StringBuilder param = new StringBuilder();
@@ -158,11 +155,11 @@ public class Clan {
                     }
                     else if (Stage == 1) {
                         switch (Integer.parseInt(param.toString())) {
-                            case 1 -> TempRole = ClanRole.ROOKIE;
-                            case 2 -> TempRole = ClanRole.MEMBER;
-                            case 3 -> TempRole = ClanRole.OFFICER;
-                            case 4 -> TempRole = ClanRole.LEADER;
-                            default -> TempRole = ClanRole.NONE;
+                            case 1 -> TempRole = EClanRole.ROOKIE;
+                            case 2 -> TempRole = EClanRole.MEMBER;
+                            case 3 -> TempRole = EClanRole.OFFICER;
+                            case 4 -> TempRole = EClanRole.LEADER;
+                            default -> TempRole = EClanRole.NONE;
                         }
                         param = new StringBuilder();
                         ++Stage;
@@ -186,38 +183,7 @@ public class Clan {
             getServer().getLogger().log(Level.SEVERE, "Cant read UselessClan.Settings");
             return null;
         }
-        StringBuilder param = new StringBuilder();
-        int Stage = 0;
-        for (char tc: MasterSettingsString.toCharArray()) {
-            if (tc == '/') {
-                ClanRole TempRole = null;
-                switch (Integer.parseInt(param.toString())) {
-                    case 1 -> TempRole = ClanRole.ROOKIE;
-                    case 2 -> TempRole = ClanRole.MEMBER;
-                    case 3 -> TempRole = ClanRole.OFFICER;
-                    case 4 -> TempRole = ClanRole.LEADER;
-                    default -> TempRole = ClanRole.NONE;
-                }
-                if (Stage == 0) {
-                    TempSettings.DefaultJoinRole = TempRole;
-                    ++Stage;
-                }
-                else if (Stage == 1) {
-                    TempSettings.HomeChangerMinRole = TempRole;
-                    ++Stage;
-                }
-                else if (Stage == 2) {
-                    TempSettings.MinRoleForWithdraw = TempRole;
-                    ++Stage;
-                }
-                else if (Stage == 3) {
-                    TempSettings.RoleCanKick = TempRole;
-                    ++Stage;
-                }
-                param = new StringBuilder();
-            }
-            else param.append(tc);
-        }
+        TempSettings.InitializeSettingsFromString(MasterSettingsString);
         // Settings end
 
         if (ClanPrefix != null && ClanName != null && LeaderName != null && DescriptionClan != null) {
@@ -255,8 +221,8 @@ public class Clan {
     public void SendMessageForOnlineOfficers(String Message) {
         String FormattedPrefix = "&9" + PrefixClan;
         for (Player tempPlayer : OnlineMembers.keySet()) {
-            ClanRole tempRole = OnlineMembers.get(tempPlayer).getMemberRole();
-            if (tempRole == ClanRole.OFFICER || tempRole == ClanRole.LEADER) {
+            EClanRole tempRole = OnlineMembers.get(tempPlayer).getMemberRole();
+            if (tempRole == EClanRole.OFFICER || tempRole == EClanRole.LEADER) {
                 ChatSender.MessageTo(tempPlayer, FormattedPrefix, Message);
             }
         }
@@ -281,15 +247,15 @@ public class Clan {
         }
         return null;
     }
-    public ClanRole getMemberRole(String PlayerName) {
-        if (!IsClanMember(PlayerName)) return ClanRole.NONE;
+    public @NotNull EClanRole getMemberRole(String PlayerName) {
+        if (!IsClanMember(PlayerName)) return EClanRole.NONE;
 
         for (ClanMember tempMember : Members) {
             if (tempMember.getPlayerName().equals(PlayerName)) {
                 return tempMember.getMemberRole();
             }
         }
-        return ClanRole.NONE;
+        return EClanRole.NONE;
     }
 
     public boolean SendRequestForJoin(String playerName) {
@@ -312,17 +278,18 @@ public class Clan {
         LeaderName = NewLeaderName;
         for (ClanMember tempMember : Members) {
             if (tempMember.getPlayerName().equals(NewLeaderName)) {
-                tempMember.setMemberRole(ClanRole.LEADER);
+                tempMember.setMemberRole(EClanRole.LEADER);
                 continue;
             }
-            if (tempMember.getMemberRole() == ClanRole.LEADER) {
-                tempMember.setMemberRole(ClanRole.OFFICER);
+            if (tempMember.getMemberRole() == EClanRole.LEADER) {
+                tempMember.setMemberRole(EClanRole.OFFICER);
             }
         }
         NeedToSave = true;
+        sortMembers();
     }
 
-    public boolean ChangeMemberRole(String MemberName, ClanRole newRole) {
+    public boolean ChangeMemberRole(String MemberName, EClanRole newRole) {
         for (ClanMember tempMember : Members) {
             if (tempMember.getPlayerName().equals(MemberName)) {
                 if (tempMember.getMemberRole() == newRole) return false;
@@ -331,10 +298,11 @@ public class Clan {
             }
         }
         NeedToSave = true;
+        sortMembers();
         return true;
     }
 
-    public void PlayerJoinToClan(ClanRole Role, String PlayerName) {
+    public void PlayerJoinToClan(EClanRole Role, String PlayerName) {
         if (IsClanMember(PlayerName)) {
             return;
         }
@@ -345,6 +313,7 @@ public class Clan {
         }
         Members.add(tempClanMember);
         NeedToSave = true;
+        sortMembers();
     }
     public void PlayerLeavedFromClan(String PlayerName) {
         if (!IsClanMember(PlayerName)) return;
@@ -360,63 +329,60 @@ public class Clan {
                 return;
             }
         }
+        sortMembers();
     }
     public void PlayerLeavedFromClan(Player player) {
         OnlineMembers.remove(player);
         Members.remove(getClanMember(player.getName()));
         NeedToSave = true;
+        sortMembers();
     }
 
     public void RemoveFromRequest(String PlayerName) {
         Requests.remove(PlayerName);
     }
 
-
+    private void sortMembers() {
+        Members.sort(new Comparator<ClanMember>() {
+            @Override
+            public int compare(ClanMember o1, ClanMember o2) {
+                if (o1.getMemberRole().ordinal() > o2.getMemberRole().ordinal()) {
+                    return -1;
+                }
+                else if (o1.getMemberRole().ordinal() < o2.getMemberRole().ordinal()) {
+                    return 1;
+                }
+                return 0;
+            }
+        });
+    }
 
 
 
     /*
      *  Getters Functions
      */
-    public String getNameClan() {
-        return NameClan;
-    }
+    public String getNameClan() { return NameClan; }
 
-    public String getDescriptionClan() {
-        return DescriptionClan;
-    }
+    public String getDescriptionClan() { return DescriptionClan; }
 
-    public String getLeaderName() {
-        return LeaderName;
-    }
+    public String getLeaderName() { return LeaderName; }
 
-    public ClanSettings getSettingsClan() {
-        return SettingsClan;
-    }
-    public List<ClanMember> getMembers() {
-        return Members;
-    }
-    public Map<Player, ClanMember> getOnlineMembers() {
-        return OnlineMembers;
-    }
+    public @NotNull ClanSettings getSettingsClan() { return SettingsClan; }
+    public List<ClanMember> getMembers() { return Members; }
+    public Map<Player, ClanMember> getOnlineMembers() { return OnlineMembers; }
     public String getPrefixClan() { return PrefixClan; }
-    public Double getMoneyClan() { return MoneyClan; }
+    public double getMoneyClan() { return MoneyClan; }
     public Location getHomeClan() { return HomeClan; }
-    public List<String> getRequests() {
-        return Requests;
-    }
-    public int getRequestCount() {
-        return Requests.size();
-    }
+    public List<String> getRequests() { return Requests; }
+    public int getRequestCount() { return Requests.size(); }
     public String getClanRegionId() { return ClanRegionId; }
 
-    public int getClanLevel() {
-        return ClanLevel;
-    }
+    public int getClanLevel() { return ClanLevel; }
 
 
     /*
-     *  Setters FUnctions
+     *  Setters Functions
      */
     public boolean setClanName(String newNameClan) {
         if (newNameClan.length() >= 5 && newNameClan.length() <=15) {

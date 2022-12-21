@@ -2,23 +2,23 @@ package io.github.lofrol.UselessClan.ClanObjects;
 
 
 public class ClanMember {
-    public ClanMember(ClanRole role, String player) {
+    public ClanMember(EClanRole role, String player) {
         MemberRole = role;
         PlayerName = player;
         GeneralPlayerDeposit = 0.d;
     }
 
-    public ClanMember(ClanRole role, String player, double deposit) {
+    public ClanMember(EClanRole role, String player, double deposit) {
         MemberRole = role;
         PlayerName = player;
         GeneralPlayerDeposit = deposit;
     }
 
-    private ClanRole MemberRole;
+    private EClanRole MemberRole;
     private final String PlayerName;
     private double GeneralPlayerDeposit;
 
-    public ClanRole getMemberRole() {
+    public EClanRole getMemberRole() {
         return MemberRole;
     }
 
@@ -30,7 +30,7 @@ public class ClanMember {
         return GeneralPlayerDeposit;
     }
 
-    public void setMemberRole(ClanRole memberRole) {
+    public void setMemberRole(EClanRole memberRole) {
         MemberRole = memberRole;
     }
 
