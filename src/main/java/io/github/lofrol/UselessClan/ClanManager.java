@@ -254,7 +254,7 @@ public final class ClanManager {
 
         Calendar tempDate = Calendar.getInstance();
 
-        File todayBackupFile = new File(tempDir, String.format("%d-%d-%d_%d:%d_ClansBackup",
+        File todayBackupFile = new File(tempDir, String.format("%d-%d-%d_%d-%d_ClansBackup",
                 tempDate.get(Calendar.DAY_OF_MONTH), tempDate.get(Calendar.MONTH), tempDate.get(Calendar.YEAR),
                 tempDate.get(Calendar.HOUR), tempDate.get(Calendar.MINUTE)));
 
