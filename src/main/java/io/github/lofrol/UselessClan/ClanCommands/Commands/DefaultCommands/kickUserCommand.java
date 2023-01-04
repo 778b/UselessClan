@@ -26,32 +26,31 @@ public class kickUserCommand extends PlayerCommandBase {
 
     @Override
     public boolean havePermission(Player tempPlayer, Clan senderClan, EClanRole senderRole) {
+        if (senderClan == null || senderRole == null) {
+            return false;
+        }
         return (senderRole.ordinal() >= senderClan.getSettingsClan().RoleCanKick.ordinal());
     }
 
     @Override
     public boolean executeCommand(Player tempPlayer, Clan senderClan, String[] args) {
         EClanRole SenderRole = null;
-        if (senderClan != null) {
-            SenderRole = senderClan.getMemberRole(tempPlayer.getName());
+        if (senderClan == null) {
+            ChatSender.MessageTo(tempPlayer, "UselessClan", "&cYou haven't Clan!");
+            return false;
         }
+        SenderRole = senderClan.getMemberRole(tempPlayer.getName());
 
         if (args.length == 1) {
-            if (senderClan != null) {
                 if (SenderRole == senderClan.getSettingsClan().RoleCanKick) {
                     ChatSender.MessageTo(tempPlayer, "UselessClan",
                             "&cYou forgot about player %name, use &a/Clan kick %name&b, %name = name of player, which you want to kick");
-                } else {
+                }
+                else {
                     ChatSender.MessageTo(tempPlayer, "UselessClan", "&cYou rank is too low to do that!");
                 }
-            } else {
-                ChatSender.MessageTo(tempPlayer, "UselessClan", "&cYou haven't Clan!");
-            }
-        } else {
-            if (senderClan == null) {
-                ChatSender.MessageTo(tempPlayer, "UselessClan", "&cYou haven't Clan!");
-                return false;
-            }
+        }
+        else {
             if (!(SenderRole.ordinal() >= senderClan.getSettingsClan().RoleCanKick.ordinal())) {
                 ChatSender.MessageTo(tempPlayer, "UselessClan", "&cYou rank is too low to do that!");
                 return false;
