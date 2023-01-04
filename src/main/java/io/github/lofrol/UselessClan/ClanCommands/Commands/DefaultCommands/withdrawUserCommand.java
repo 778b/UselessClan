@@ -31,8 +31,10 @@ public class withdrawUserCommand extends PlayerCommandBase {
             SenderRole = senderClan.getMemberRole(tempPlayer.getName());
         }
 
+        if (UselessClan.EconomyPtr == null) return false;
+
         if (args.length == 1) {
-            if (UselessClan.EconomyPtr == null) return false;
+
 
             if (senderClan == null) {
                 ChatSender.MessageTo(tempPlayer, "UselessClan", "&cYou haven't Clan!");
@@ -43,8 +45,8 @@ public class withdrawUserCommand extends PlayerCommandBase {
                 return false;
             }
             ChatSender.MessageTo(tempPlayer, "UselessClan", "&cYou forgot about value of withdraw, use &a/clan withdraw %money");
-        } else {
-            if (UselessClan.EconomyPtr == null) return false;
+        }
+        else {
 
             if (senderClan == null) {
                 ChatSender.MessageTo(tempPlayer, "UselessClan", "&cYou haven't Clan!");

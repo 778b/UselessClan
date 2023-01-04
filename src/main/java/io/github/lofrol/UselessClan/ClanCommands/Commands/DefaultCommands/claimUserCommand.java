@@ -23,8 +23,13 @@ import io.github.lofrol.UselessClan.ClanObjects.EClanRole;
 import io.github.lofrol.UselessClan.Utils.ChatSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import static org.bukkit.Bukkit.getServer;
 
 public class claimUserCommand extends PlayerCommandBase {
+
+
     @Override
     public @NotNull String commandDescription() {
         return "&a/Clan claim&b - to claim territory what you selected to clan territory";
@@ -32,11 +37,13 @@ public class claimUserCommand extends PlayerCommandBase {
 
     @Override
     public boolean havePermission(Player tempPlayer, Clan senderClan, EClanRole senderRole) {
-        return (senderRole == EClanRole.OFFICER || senderRole == EClanRole.LEADER);
+        return (WorldGuardPlugin.inst() != null && senderRole.ordinal() >= EClanRole.OFFICER.ordinal());
     }
 
     @Override
     public boolean executeCommand(Player tempPlayer, Clan senderClan, String[] args) {
+        if (WorldGuardPlugin.inst() == null) return false;
+
         EClanRole SenderRole = null;
         if (senderClan != null) {
             SenderRole = senderClan.getMemberRole(tempPlayer.getName());
@@ -86,6 +93,7 @@ public class claimUserCommand extends PlayerCommandBase {
             ChatSender.MessageTo(tempPlayer, "UselessClan", "&cInternal error, RIP #3");
             return false;
         }
+
         {
             double tempDistance = Math.sqrt(Math.pow(tempRegion.getMaximumPoint().getBlockX() - tempRegion.getMinimumPoint().getBlockX(), 2)
                     + Math.pow(tempRegion.getMaximumPoint().getBlockZ() - tempRegion.getMinimumPoint().getBlockZ(), 2));
