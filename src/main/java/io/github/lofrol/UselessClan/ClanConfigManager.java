@@ -106,7 +106,7 @@ public class ClanConfigManager {
         tempConfig.set("DefaultClanSettings.FirstClanMoney", DefaultClanSettingsFirstClanMoneyDefault);
         tempConfig.set("DefaultClanSettings.StartClanLevel", DefaultClanSettingsStartClanLevelDefault);
         tempConfig.set("DefaultClanSettings.ClanLevelsColors", ClanLevelsColorsDefault);
-        
+
         OwnerPlugin.saveConfig();
     }
 
