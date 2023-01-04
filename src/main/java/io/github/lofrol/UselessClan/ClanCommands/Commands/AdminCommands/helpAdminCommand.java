@@ -6,6 +6,11 @@ import org.bukkit.command.CommandSender;
 
 public class helpAdminCommand extends CommandBase {
     @Override
+    public boolean havePermission(CommandSender sender) {
+        return true;
+    }
+
+    @Override
     public boolean executeCommand(CommandSender sender, String[] args) {
         ChatSender.MessageTo(sender, "&4UselessClan","########## CLAN ADMIN HELP ##########");
         ChatSender.MessageTo(sender, "&4UselessClan","/ClAd - to call this menu");

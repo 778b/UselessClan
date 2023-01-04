@@ -9,6 +9,11 @@ import org.bukkit.command.CommandSender;
 
 public class levelAdminCommand extends CommandBase {
     @Override
+    public boolean havePermission(CommandSender sender) {
+        return true;
+    }
+
+    @Override
     public boolean executeCommand(CommandSender sender, String[] args) {
         if (args.length == 1) {
             ChatSender.MessageTo(sender, "&4UselessClan","You forgot about clan %name, use /ClAd level %name, %name = name of clan");
