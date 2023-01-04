@@ -6,6 +6,7 @@ import io.github.lofrol.UselessClan.UselessClan;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public abstract class PlayerCommandBase extends CommandBase {
 
@@ -19,6 +20,6 @@ public abstract class PlayerCommandBase extends CommandBase {
     }
 
     public abstract @NotNull String commandDescription();
-    public abstract boolean havePermission(Player tempPlayer, Clan senderClan, EClanRole senderRole);
-    public abstract boolean executeCommand(Player tempPlayer, Clan senderClan, String[] args);
+    public abstract boolean havePermission(Player tempPlayer, @Nullable Clan senderClan, @Nullable EClanRole senderRole);
+    public abstract boolean executeCommand(Player tempPlayer, @Nullable Clan senderClan, String[] args);
 }
