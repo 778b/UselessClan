@@ -16,6 +16,7 @@ public class requestsUserCommand extends PlayerCommandBase {
 
     @Override
     public boolean havePermission(Player tempPlayer, Clan senderClan, EClanRole senderRole) {
+        if (senderClan == null || senderRole == null) return false;
         return (senderRole.ordinal() >= senderClan.getSettingsClan().RoleCanAccept.ordinal());
     }
 

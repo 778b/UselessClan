@@ -20,6 +20,7 @@ public class depositUserCommand extends PlayerCommandBase {
 
     @Override
     public boolean havePermission(Player tempPlayer, Clan senderClan, EClanRole senderRole) {
+        if (senderClan == null || senderRole == null) return false;
         return (UselessClan.EconomyPtr != null);
     }
 

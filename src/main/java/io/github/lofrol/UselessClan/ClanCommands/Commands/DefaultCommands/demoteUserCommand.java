@@ -16,6 +16,7 @@ public class demoteUserCommand extends PlayerCommandBase {
 
     @Override
     public boolean havePermission(Player tempPlayer, Clan senderClan, EClanRole senderRole) {
+        if (senderClan == null || senderRole == null) return false;
         return (senderRole == EClanRole.OFFICER || senderRole == EClanRole.LEADER);
     }
 
