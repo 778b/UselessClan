@@ -25,33 +25,10 @@ public final class UselessClan extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        if (getServer().getPluginManager().getPlugin("Vault") == null) {
-            getLogger().log(Level.SEVERE, "Cant find Vault, Vault is required!");
-            setEnabled(false);
-            return;
-        }
-        else {
-            RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
-            if (rsp == null) {
-                getLogger().log(Level.SEVERE, "Vault not initialized!");
-                setEnabled(false);
-                return;
-            }
-            else {
-                getLogger().log(Level.INFO, "Loaded Vault depends!");
-                EconomyPtr = rsp.getProvider();
-            }
+        if (!checkHardDepends()) {
+            getPluginLoader().disablePlugin(this);
         }
 
-        if(getServer().getPluginManager().getPlugin("PlaceholderAPI") != null) {
-            PlaceholderExpansion tempPlaceholderClan = new UselessClanPlaceholder();
-            tempPlaceholderClan.register();
-            StringBuilder MultiString = new StringBuilder();
-            for (String placeholder : tempPlaceholderClan.getPlaceholders()) {
-                MultiString.append(" ").append(placeholder);
-            }
-            getLogger().log(Level.INFO, "Placeholders:"+ MultiString );
-        }
         SerilManager = new SerializationManager(this);
 
         MainManager = new ClanManager(this, new ClanManagerExtension());
@@ -86,6 +63,45 @@ public final class UselessClan extends JavaPlugin {
     /*
      *   Tasks section
      */
+    private boolean checkHardDepends() {
+        if (getServer().getPluginManager().getPlugin("Vault") == null) {
+            getLogger().log(Level.SEVERE, "Cant find Vault, Vault is required!");
+            return false;
+        }
+        else {
+            RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
+            if (rsp == null) {
+                getLogger().log(Level.SEVERE, "Vault not initialized!");
+                return false;
+            }
+            else {
+                getLogger().log(Level.INFO, "Loaded Vault depends!");
+                EconomyPtr = rsp.getProvider();
+            }
+        }
+
+        if(getServer().getPluginManager().getPlugin("PlaceholderAPI") == null) {
+            getLogger().log(Level.SEVERE, "Cant find PlaceholderAPI, PlaceholderAPI is required!");
+            return false;
+        }
+        else {
+            PlaceholderExpansion tempPlaceholderClan = new UselessClanPlaceholder();
+            tempPlaceholderClan.register();
+            StringBuilder MultiString = new StringBuilder();
+            for (String placeholder : tempPlaceholderClan.getPlaceholders()) {
+                MultiString.append(" ").append(placeholder);
+            }
+            getLogger().log(Level.INFO, "Placeholders:"+ MultiString );
+        }
+
+        if(getServer().getPluginManager().getPlugin("WorldGuard") == null) {
+            getLogger().log(Level.SEVERE, "Cant find WorldGuard, WorldGuard is required!");
+            return false;
+        }
+
+        return true;
+    }
+
     private void runServerTasks() {
         getServer().getScheduler().runTaskTimer(this, () -> {
             getMainManager().SaveClans();
