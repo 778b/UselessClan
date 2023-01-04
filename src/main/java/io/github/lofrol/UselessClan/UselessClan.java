@@ -21,6 +21,8 @@ public final class UselessClan extends JavaPlugin {
 
     private static ClanManager MainManager;
 
+    private static ClanConfigManager ConfigManager;
+
     private static SerializationManager SerilManager;
 
     @Override
@@ -30,8 +32,9 @@ public final class UselessClan extends JavaPlugin {
         }
 
         SerilManager = new SerializationManager(this);
-
+        ConfigManager = new ClanConfigManager(this);
         MainManager = new ClanManager(this, new ClanManagerExtension());
+
         getServer().getPluginManager().registerEvents(new UselessListeners(), this);
 
         if (ClanCommand.CreateDefaultInst()) getLogger().log(Level.INFO, "Clan Command Loaded successfully!");
@@ -57,7 +60,7 @@ public final class UselessClan extends JavaPlugin {
     */
     public static ClanManager getMainManager() { return MainManager; }
     public static SerializationManager getSerilManager() { return SerilManager; }
-
+    public static ClanConfigManager getConfigManager() { return ConfigManager; }
 
 
     /*
@@ -105,21 +108,23 @@ public final class UselessClan extends JavaPlugin {
     private void runServerTasks() {
         getServer().getScheduler().runTaskTimer(this, () -> {
             getMainManager().SaveClans();
-            getLogger().log(Level.INFO, "Clans was saved by AutoSave");
-        }, 24000, 24000);           // Every 20 min
+            getLogger().log(Level.INFO, "Clans was saved by AutoSave"); },
+                getConfigManager().getClanConfig().getAutoSaveDelay(),
+                getConfigManager().getClanConfig().getAutoSaveDelay());
 
-
-        getServer().getScheduler().runTaskTimerAsynchronously(this, () -> {
-            getMainManager().CalculateAllClansLevels();
-        }, 12000, 12000);           // Every 10 min
-
-
-        getServer().getScheduler().runTaskTimerAsynchronously(this, () -> {
-            getMainManager().createClansBackups();
-        }, 0, 864000);              // Every 12 hours
+        if (getConfigManager().getClanConfig().isNeedCalculateClanLevels()) {
+            getServer().getScheduler().runTaskTimerAsynchronously(this, () -> {
+                getMainManager().CalculateAllClansLevels(); },
+                    getConfigManager().getClanConfig().getCalcClanLvlDelay(),
+                    getConfigManager().getClanConfig().getCalcClanLvlDelay());
+        }
 
         getServer().getScheduler().runTaskTimerAsynchronously(this, () -> {
-            getMainManager().getTopClans().CalculateTop();
-        }, 0, 12000);           // Every 10 min
+            getMainManager().createClansBackups(); },
+                0, getConfigManager().getClanConfig().getBackupDelay());
+
+        getServer().getScheduler().runTaskTimerAsynchronously(this, () -> {
+            getMainManager().getTopClans().CalculateTop(); },
+                0, getConfigManager().getClanConfig().getCalcClanTopDelay());
     }
 }

@@ -8,8 +8,12 @@ public enum EClanRole {
     LEADER;
 
     public static EClanRole fromString(String param) {
+        return fromInt(Integer.parseInt(param));
+    }
+
+    public static EClanRole fromInt(int param) {
         EClanRole TempRole = null;
-        switch (Integer.parseInt(param)) {
+        switch (param) {
             case 1 -> TempRole = EClanRole.ROOKIE;
             case 2 -> TempRole = EClanRole.MEMBER;
             case 3 -> TempRole = EClanRole.OFFICER;

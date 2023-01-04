@@ -1,5 +1,6 @@
 package io.github.lofrol.UselessClan.ClanObjects;
 
+import io.github.lofrol.UselessClan.UselessClan;
 import io.github.lofrol.UselessClan.Utils.ChatSender;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -202,8 +203,8 @@ public class Clan {
         Requests = new ArrayList<>();
         Members = new ArrayList<>();
         OnlineMembers = new HashMap<>();
-        ClanLevel = 0;
-        MoneyClan = 0.d;
+        ClanLevel = UselessClan.getConfigManager().getClanConfig().getStartClanLevel();
+        MoneyClan = UselessClan.getConfigManager().getClanConfig().getFirstClanMoney();
         ClanRegionId = null;
         DescriptionClan = "Description of your clan";
         HomeClan = null;

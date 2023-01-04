@@ -18,19 +18,7 @@ import static io.github.lofrol.UselessClan.SerializationManager.*;
 import static org.bukkit.Bukkit.getServer;
 
 public final class ClanManager {
-    public final static String[] ClanLevelColors = {
-            "&f",       //0 lvl
-            "&a",       //1 lvl
-            "&2",       //2 lvl
-            "&3",       //3 lvl
-            "&9",       //4 lvl
-            "&1",       //5 lvl
-            "&e",       //6 lvl
-            "&6",       //7 lvl
-            "&d",       //8 lvl
-            "&5",       //9 lvl
-            "&0",       //10 lvl
-    };
+    public static List<String> ClanLevelColors;
 
     private final UselessClan OwnerPlugin;
 
@@ -45,6 +33,8 @@ public final class ClanManager {
 
         Extension = extension;
         OwnerPlugin = owner;
+
+        ClanManager.ClanLevelColors = UselessClan.getConfigManager().getClanConfig().getClanLevelsColors();
     }
 
     public static String ClanRoleSolver(EClanRole role) {
