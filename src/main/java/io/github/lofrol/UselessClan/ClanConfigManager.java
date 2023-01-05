@@ -57,13 +57,14 @@ public class ClanConfigManager {
         if (DefaultJoinRole == EClanRole.NONE) return null;
 
         double FirstClanMoney = tempConfig.getDouble("DefaultClanSettings.FirstClanMoney");
+        double MoneyToCreate = tempConfig.getDouble("DefaultClanSettings.MoneyToCreateClan");
         int StartClanLevel = tempConfig.getInt("DefaultClanSettings.StartClanLevel");
         List<String> ClanLevelsColors = tempConfig.getStringList("DefaultClanSettings.ClanLevelsColors");
 
         return new ClanPluginData(LocalizationKey, NeedCalculateClanLevels,
                 backupDelay, autoSaveDelay, calcClanLvlDelay, calcClanTopDelay,
                 MinRoleCanSethome, MinRoleCanWithdraw, MinRoleCanKick, MinRoleCanAccept,
-                DefaultJoinRole, FirstClanMoney, StartClanLevel, ClanLevelsColors);
+                DefaultJoinRole, FirstClanMoney, MoneyToCreate, StartClanLevel, ClanLevelsColors);
     }
 
     private @NotNull ClanPluginData loadDefaultConfig() {
@@ -82,6 +83,7 @@ public class ClanConfigManager {
                 EClanRole.fromInt(ClanSettingsDefaultJoinRoleDefault),
 
                 DefaultClanSettingsFirstClanMoneyDefault,
+                DefaultClanSettingsMoneyToCreateDefault,
                 DefaultClanSettingsStartClanLevelDefault,
                 ClanLevelsColorsDefault);
     }
@@ -104,6 +106,7 @@ public class ClanConfigManager {
         tempConfig.set("ClanSettings.DefaultJoinRole", ClanSettingsDefaultJoinRoleDefault);
 
         tempConfig.set("DefaultClanSettings.FirstClanMoney", DefaultClanSettingsFirstClanMoneyDefault);
+        tempConfig.set("DefaultClanSettings.MoneyToCreateClan", DefaultClanSettingsMoneyToCreateDefault);
         tempConfig.set("DefaultClanSettings.StartClanLevel", DefaultClanSettingsStartClanLevelDefault);
         tempConfig.set("DefaultClanSettings.ClanLevelsColors", ClanLevelsColorsDefault);
 
@@ -138,12 +141,13 @@ public class ClanConfigManager {
         private final EClanRole DefaultJoinRole;
 
         private final double FirstClanMoney;
+        private final double MoneyToCreateClan;
         private final int StartClanLevel;
         private final List<String> ClanLevelsColors;
 
         public ClanPluginData(String loc, boolean needCalc, int backup, int autosave, int calcLvl, int calcTop,
                               EClanRole sethomeRole, EClanRole withdrawRole, EClanRole kickRole, EClanRole acceptRole,
-                              EClanRole defaultRole, double firstMoney, int startLevel, List<String> clanLevelsColors) {
+                              EClanRole defaultRole, double firstMoney, double moneyToCreate, int startLevel, List<String> clanLevelsColors) {
             LocalizationKey = loc;
             NeedCalculateClanLevels = needCalc;
 
@@ -159,8 +163,10 @@ public class ClanConfigManager {
             DefaultJoinRole = defaultRole;
 
             FirstClanMoney = firstMoney;
+            MoneyToCreateClan = moneyToCreate;
             StartClanLevel = startLevel;
             ClanLevelsColors = clanLevelsColors;
+
         }
 
         public String getLocalizationKey() {
@@ -210,7 +216,7 @@ public class ClanConfigManager {
         public double getFirstClanMoney() {
             return FirstClanMoney;
         }
-
+        public double getMoneyToCreateClan() { return MoneyToCreateClan; }
         public int getStartClanLevel() {
             return StartClanLevel;
         }
@@ -233,6 +239,7 @@ public class ClanConfigManager {
     private static final int ClanSettingsMinRoleCanAcceptDefault = 3;
     private static final int ClanSettingsDefaultJoinRoleDefault = 1;
     private static final double DefaultClanSettingsFirstClanMoneyDefault = 0;
+    private static final double DefaultClanSettingsMoneyToCreateDefault = 10000;
     private static final int DefaultClanSettingsStartClanLevelDefault = 0;
     private static final List<String> ClanLevelsColorsDefault =
             List.of("&f", "&a", "&2", "&3", "&9", "&1", "&e", "&6", "&d", "&5", "&0");
@@ -253,6 +260,7 @@ public class ClanConfigManager {
             entry("ClanSettings.DefaultJoinRole", ClanSettingsDefaultJoinRoleDefault),
 
             entry("DefaultClanSettings.FirstClanMoney", DefaultClanSettingsFirstClanMoneyDefault),
+            entry("DefaultClanSettings.MoneyToCreateClan", DefaultClanSettingsMoneyToCreateDefault),
             entry("DefaultClanSettings.StartClanLevel", DefaultClanSettingsStartClanLevelDefault),
             entry("DefaultClanSettings.ClanLevelsColors", ClanLevelsColorsDefault)
     );
