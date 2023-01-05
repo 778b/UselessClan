@@ -339,8 +339,10 @@ public class Clan {
         sortMembers();
     }
 
-    public void RemoveFromRequest(String PlayerName) {
-        Requests.remove(PlayerName);
+
+    // return true if request was remove, false if request didn't exist
+    public boolean RemoveFromRequest(String PlayerName) {
+        return Requests.remove(PlayerName);
     }
 
     private void sortMembers() {

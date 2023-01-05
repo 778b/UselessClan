@@ -21,7 +21,7 @@ public class declineUserCommand extends PlayerCommandBase {
 
     @Override
     public @NotNull String commandDescription() {
-        return "&a/Clan accept %name&b - to accept %name for join to your clan";
+        return "&a/Clan accept %name&b - to decline request for join from player %name";
     }
 
     @Override
@@ -66,7 +66,11 @@ public class declineUserCommand extends PlayerCommandBase {
                 ChatSender.MessageTo(tempPlayer, "UselessClan", "&cThis player didn't send request to you Clan");
                 return false;
             }
-            senderClan.RemoveFromRequest(AcceptedPlayerName);
+            if (!senderClan.RemoveFromRequest(AcceptedPlayerName)) {
+                ChatSender.MessageTo(tempPlayer, "UselessClan",
+                        String.format("&cYou don't have request from player %s!", AcceptedPlayerName));
+                return false;
+            }
             ChatSender.MessageTo(tempPlayer, "UselessClan",
                     String.format("&aYou successfully decline request from %s", AcceptedPlayerName));
         }

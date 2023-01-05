@@ -90,7 +90,9 @@ public class acceptUserCommand extends PlayerCommandBase {
                     ChatSender.MessageTo(tempPlayer, "UselessClan", "&cError cant add new player to region! #3");
                     return false;
                 }
-                tempRegion.getMembers().addPlayer(AcceptedPlayerName);
+                var tempMembers = tempRegion.getMembers();
+                tempMembers.addPlayer(AcceptedPlayerName);
+                tempRegion.setMembers(tempMembers);
             }
             if (AcceptedPlayer != null) {
                 UselessClan.getMainManager().RegisterOnlineClanPlayer(senderClan, AcceptedPlayer);
