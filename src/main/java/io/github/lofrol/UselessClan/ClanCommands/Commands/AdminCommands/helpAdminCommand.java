@@ -16,9 +16,11 @@ public class helpAdminCommand extends CommandBase {
         ChatSender.MessageTo(sender, "&4UselessClan","/ClAd - to call this menu");
         ChatSender.MessageTo(sender, "&4UselessClan","/ClAd list - list of all clans");
         ChatSender.MessageTo(sender, "&4UselessClan","/ClAd info %name - to info any clan");
+        ChatSender.MessageTo(sender, "&4UselessClan","/ClAd debuginfo %name - to debug info any clan");
         ChatSender.MessageTo(sender, "&4UselessClan","/ClAd mates %name - to mates any clan");
         ChatSender.MessageTo(sender, "&4UselessClan","/ClAd delete %name - to info any clan");
         ChatSender.MessageTo(sender, "&4UselessClan","/ClAd level %name %level - to force level any clan");
+        ChatSender.MessageTo(sender, "&4UselessClan","/ClAd join %name - to force join any clan");
         return true;
     }
 }

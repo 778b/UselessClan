@@ -45,6 +45,13 @@ public final class ClanAdminCommand extends Command {
                     "&cInvalid command. Use command &a/ClanAdmin help&c, for access to clan system");
             return false;
         }
+
+        if (!tempCommand.havePermission(sender)) {
+            ChatSender.MessageTo(tempPlayer, "&4UselessClan",
+                    "&cYou cant use that command from this!");
+            return false;
+        }
+
         return tempCommand.executeCommand(sender, args);
     }
 }
