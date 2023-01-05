@@ -48,7 +48,9 @@ public final class ClanManager {
     }
     public void CalculateClanLevel(Clan ClanToLevel) {
         // Overriding by extensions if needed
-        Extension.CalculateClanLevel(ClanToLevel);
+        if (UselessClan.getConfigManager().getClanConfig().isNeedCalculateClanLevels()) {
+            Extension.CalculateClanLevel(ClanToLevel);
+        }
     }
 
     public void CalculateAllClansLevels() {
