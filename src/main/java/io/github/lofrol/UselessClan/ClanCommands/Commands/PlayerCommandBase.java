@@ -14,6 +14,14 @@ public abstract class PlayerCommandBase extends CommandBase {
     public boolean executeCommand(CommandSender sender, String[] args) {
         if (sender instanceof Player tempPlayer) {
             Clan senderClan = UselessClan.getMainManager().FindClanToPlayer(tempPlayer.getName());
+            if (senderClan == null) {
+                if (!havePermission(tempPlayer, null, null)) {
+                    return false;
+                }
+            }
+            else if (!havePermission(tempPlayer, senderClan, senderClan.getMemberRole(tempPlayer.getName()))) {
+                return false;
+            }
             return executeCommand(tempPlayer, senderClan, args);
         }
         return false;
@@ -33,5 +41,5 @@ public abstract class PlayerCommandBase extends CommandBase {
 
     public abstract @NotNull String commandDescription();
     public abstract boolean havePermission(Player tempPlayer, @Nullable Clan senderClan, @Nullable EClanRole senderRole);
-    public abstract boolean executeCommand(Player tempPlayer, @Nullable Clan senderClan, String[] args);
+    public abstract boolean executeCommand(Player tempPlayer, Clan senderClan, String[] args);
 }

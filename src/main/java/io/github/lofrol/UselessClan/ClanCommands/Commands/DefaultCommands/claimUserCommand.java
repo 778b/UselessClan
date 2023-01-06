@@ -20,19 +20,17 @@ import io.github.lofrol.UselessClan.ClanCommands.Commands.PlayerCommandBase;
 import io.github.lofrol.UselessClan.ClanObjects.Clan;
 import io.github.lofrol.UselessClan.ClanObjects.ClanMember;
 import io.github.lofrol.UselessClan.ClanObjects.EClanRole;
+import io.github.lofrol.UselessClan.UselessClan;
 import io.github.lofrol.UselessClan.Utils.ChatSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
-import static org.bukkit.Bukkit.getServer;
 
 public class claimUserCommand extends PlayerCommandBase {
 
 
     @Override
     public @NotNull String commandDescription() {
-        return "&a/Clan claim&b - to claim territory what you selected to clan territory";
+        return "Description.Claim";
     }
 
     @Override
@@ -50,18 +48,17 @@ public class claimUserCommand extends PlayerCommandBase {
         }
 
         if (senderClan == null) {
-            ChatSender.MessageTo(tempPlayer, "UselessClan", "&cYou haven't Clan!");
+            ChatSender.MessageTo(tempPlayer, "UselessClan", "Base.HavntClan");
             return false;
         }
 
         if (SenderRole.ordinal() < EClanRole.OFFICER.ordinal()) {
-            ChatSender.MessageTo(tempPlayer, "UselessClan", "&cYou rank is too low to do that!");
+            ChatSender.MessageTo(tempPlayer, "UselessClan", "Base.WrongRank");
             return false;
         }
 
         if (senderClan.getClanLevel() < 1) {
-            ChatSender.MessageTo(tempPlayer, "UselessClan",
-                    "&c0 level clan cant claim a territory!");
+            ChatSender.MessageTo(tempPlayer, "UselessClan", "WG.ZeroLvlClanClaim");
             return false;
         }
 
@@ -73,7 +70,7 @@ public class claimUserCommand extends PlayerCommandBase {
         LocalSession tempLocalSession = WorldEdit.getInstance().getSessionManager().get(tempLocalPlayer);
 
         if (tempLocalSession == null || tempLocalSession.getSelectionWorld() == null) {
-            ChatSender.MessageTo(tempPlayer, "UselessClan", "&cPlease select an area first.");
+            ChatSender.MessageTo(tempPlayer, "UselessClan", "WG.NoSelectedAreaToClaim");
             return false;
         }
         Region tempRegion;
@@ -81,16 +78,16 @@ public class claimUserCommand extends PlayerCommandBase {
         try {
             tempRegion = tempLocalSession.getRegionSelector(tempLocalSession.getSelectionWorld()).getRegion();
         } catch (IncompleteRegionException e) {
-            ChatSender.MessageTo(tempPlayer, "UselessClan", "&cInternal error, RIP #1");
+            ChatSender.NonTranslateMessageTo(tempPlayer, "UselessClan", "&cInternal error, RIP #1");
             throw new RuntimeException(e);
         }
 
         if (tempRegionManager == null) {
-            ChatSender.MessageTo(tempPlayer, "UselessClan", "&cInternal error, RIP #2");
+            ChatSender.NonTranslateMessageTo(tempPlayer, "UselessClan", "&cInternal error, RIP #2");
             return false;
         }
         if (tempRegion == null) {
-            ChatSender.MessageTo(tempPlayer, "UselessClan", "&cInternal error, RIP #3");
+            ChatSender.NonTranslateMessageTo(tempPlayer, "UselessClan", "&cInternal error, RIP #3");
             return false;
         }
 
@@ -98,8 +95,9 @@ public class claimUserCommand extends PlayerCommandBase {
             double tempDistance = Math.sqrt(Math.pow(tempRegion.getMaximumPoint().getBlockX() - tempRegion.getMinimumPoint().getBlockX(), 2)
                     + Math.pow(tempRegion.getMaximumPoint().getBlockZ() - tempRegion.getMinimumPoint().getBlockZ(), 2));
             if (tempDistance > senderClan.getClanLevel() * 50) {
-                ChatSender.MessageTo(tempPlayer, "UselessClan",
-                        String.format("&cYour clan cant have more than &a%d&a distance between points, but you selected &a%s&a", senderClan.getClanLevel() * 75, tempDistance));
+                ChatSender.NonTranslateMessageTo(tempPlayer, "UselessClan",
+                        String.format(UselessClan.getLocalManager().getLocalizationMessage(
+                                "WG.SelectedAreaIsTooBig"), senderClan.getClanLevel() * 75, tempDistance));
                 return false;
             }
         }
@@ -114,13 +112,12 @@ public class claimUserCommand extends PlayerCommandBase {
             if (tempRegionApp.size() == 1) {
                 ProtectedRegion tempProtected = tempRegionApp.getRegions().iterator().next();
                 if (!tempProtected.getId().equalsIgnoreCase(senderClan.getPrefixClan())) {
-                    ChatSender.MessageTo(tempPlayer, "UselessClan",
-                            "&cSelected territory overlap another region!");
+                    ChatSender.MessageTo(tempPlayer, "UselessClan", "WG.ClaimZoneOverlap");
                     return false;
                 }
-            } else {
-                ChatSender.MessageTo(tempPlayer, "UselessClan",
-                        "&cSelected territory overlap another region!");
+            }
+            else {
+                ChatSender.MessageTo(tempPlayer, "UselessClan", "WG.ClaimZoneOverlap");
                 return false;
             }
         }
@@ -128,8 +125,7 @@ public class claimUserCommand extends PlayerCommandBase {
             ProtectedRegion tempPrevious = tempRegionManager.getRegion(senderClan.getClanRegionId());
             if (tempPrevious != null) {
                 tempRegionManager.removeRegion(senderClan.getPrefixClan(), RemovalStrategy.REMOVE_CHILDREN);
-                ChatSender.MessageTo(tempPlayer, "UselessClan",
-                        "&aYour previous region was deleted ...");
+                ChatSender.MessageTo(tempPlayer, "UselessClan", "WG.ClaimDeletionNotify");
             }
         }
         DefaultDomain tempDomain = new DefaultDomain();
@@ -142,8 +138,7 @@ public class claimUserCommand extends PlayerCommandBase {
 
         tempRegionManager.addRegion(tempProtectedRegion);
         senderClan.setClanRegionId(tempProtectedRegion.getId());
-        ChatSender.MessageTo(tempPlayer, "UselessClan",
-                "&aYou Successfully claim this territory :)");
+        ChatSender.MessageTo(tempPlayer, "UselessClan", "WG.ClaimSuccessfully");
         return true;
     }
 }

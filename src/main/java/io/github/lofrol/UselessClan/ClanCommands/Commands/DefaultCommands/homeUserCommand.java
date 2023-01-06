@@ -12,7 +12,7 @@ public class homeUserCommand extends PlayerCommandBase {
 
     @Override
     public @NotNull String commandDescription() {
-        return "&a/Clan home&b - to teleport to home of your clan";
+        return "Description.Home";
     }
 
     @Override
@@ -23,23 +23,23 @@ public class homeUserCommand extends PlayerCommandBase {
     @Override
     public boolean executeCommand(Player tempPlayer, Clan senderClan, String[] args) {
         if (senderClan == null) {
-            ChatSender.MessageTo(tempPlayer, "UselessClan", "&cYou havent Clan!");
+            ChatSender.MessageTo(tempPlayer, "UselessClan", "Base.HavntClan");
             return false;
         }
 
         Location tempHome = senderClan.getHomeClan();
         if (tempHome == null) {
-            ChatSender.MessageTo(tempPlayer, "UselessClan", "&cYour clan doesnt have home!");
+            ChatSender.MessageTo(tempPlayer, "UselessClan", "Home.NoClanHome");
             return false;
         }
 
         if (!tempPlayer.getWorld().getName().equals("world")) {
-            ChatSender.MessageTo(tempPlayer, "UselessClan", "&cYou cant teleport clan home from this world!");
+            ChatSender.MessageTo(tempPlayer, "UselessClan", "Home.WrongWorldToTeleport");
             return false;
         }
 
         tempPlayer.teleport(tempHome);
-        ChatSender.MessageTo(tempPlayer, "UselessClan", "&aYou teleported to clan home!");
+        ChatSender.MessageTo(tempPlayer, "UselessClan", "Home.HomeTeleportation");
         return true;
     }
 }

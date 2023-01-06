@@ -215,7 +215,7 @@ public class Clan {
 
     public void SendMessageForOnlinePlayers(String Message) {
         for (Player tempPlayer : OnlineMembers.keySet()) {
-            ChatSender.MessageTo(tempPlayer, PrefixClan, Message);
+            ChatSender.NonTranslateMessageTo(tempPlayer, PrefixClan, Message);
         }
     }
 
@@ -224,7 +224,7 @@ public class Clan {
         for (Player tempPlayer : OnlineMembers.keySet()) {
             EClanRole tempRole = OnlineMembers.get(tempPlayer).getMemberRole();
             if (tempRole == EClanRole.OFFICER || tempRole == EClanRole.LEADER) {
-                ChatSender.MessageTo(tempPlayer, FormattedPrefix, Message);
+                ChatSender.NonTranslateMessageTo(tempPlayer, FormattedPrefix, Message);
             }
         }
     }

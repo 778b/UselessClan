@@ -11,29 +11,30 @@ import org.jetbrains.annotations.NotNull;
 public class leaveUserCommand extends PlayerCommandBase {
     @Override
     public @NotNull String commandDescription() {
-        return "&a/Clan leave&b - to leave from your clan";
+        return "Description.Leave";
     }
 
     @Override
     public boolean havePermission(Player tempPlayer, Clan senderClan, EClanRole senderRole) {
-        return true;
+        return senderClan != null;
     }
 
     @Override
     public boolean executeCommand(Player tempPlayer, Clan senderClan, String[] args) {
         if (senderClan == null) {
-            ChatSender.MessageTo(tempPlayer, "UselessClan", "&cYou haven't Clan!");
+            ChatSender.MessageTo(tempPlayer, "UselessClan", "Base.HavntClan");
             return false;
         }
         EClanRole SenderRole = senderClan.getMemberRole(tempPlayer.getName());
 
         UselessClan.getMainManager().CalculateClanLevel(senderClan);
         if (SenderRole == EClanRole.LEADER) {
-            ChatSender.MessageTo(tempPlayer, "UselessClan", "&cYou cant leave from clan, because you are Leader of this clan");
+            ChatSender.MessageTo(tempPlayer, "UselessClan", "Enter.LeaderCantLeave");
             return false;
         }
         senderClan.PlayerLeavedFromClan(tempPlayer);
-        ChatSender.MessageTo(tempPlayer, "UselessClan", String.format("You successfully leaved from &6%s", senderClan.getNameClan()));
+        ChatSender.NonTranslateMessageTo(tempPlayer, "UselessClan", String.format(
+                UselessClan.getLocalManager().getLocalizationMessage("Enter.SuccessLeave"), senderClan.getNameClan()));
         return true;
     }
 }

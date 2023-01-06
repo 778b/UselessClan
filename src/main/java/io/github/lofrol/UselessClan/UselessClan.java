@@ -23,6 +23,8 @@ public final class UselessClan extends JavaPlugin {
 
     private static ClanConfigManager ConfigManager;
 
+    private static LocalizationManager LocalManager;
+
     private static SerializationManager SerilManager;
 
     @Override
@@ -33,6 +35,8 @@ public final class UselessClan extends JavaPlugin {
 
         SerilManager = new SerializationManager(this);
         ConfigManager = new ClanConfigManager(this);
+
+        LocalManager = new LocalizationManager(this);
         MainManager = new ClanManager(this, new ClanManagerExtension());
 
         getServer().getPluginManager().registerEvents(new UselessListeners(), this);
@@ -60,6 +64,7 @@ public final class UselessClan extends JavaPlugin {
     */
     public static ClanManager getMainManager() { return MainManager; }
     public static SerializationManager getSerilManager() { return SerilManager; }
+    public static LocalizationManager getLocalManager() { return LocalManager; }
     public static ClanConfigManager getConfigManager() { return ConfigManager; }
 
 

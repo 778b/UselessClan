@@ -11,7 +11,7 @@ public class requestsUserCommand extends PlayerCommandBase {
 
     @Override
     public @NotNull String commandDescription() {
-        return "&a/Clan requests&b - to see list of all requests to join your clan\"";
+        return "Description.Requests";
     }
 
     @Override
@@ -22,28 +22,21 @@ public class requestsUserCommand extends PlayerCommandBase {
 
     @Override
     public boolean executeCommand(Player tempPlayer, Clan senderClan, String[] args) {
-        EClanRole SenderRole = null;
-        if (senderClan != null) {
-            SenderRole = senderClan.getMemberRole(tempPlayer.getName());
+        if (senderClan == null) {
+            ChatSender.MessageTo(tempPlayer, "UselessClan", "Base.HavntClan");
+            return false;
         }
 
-        if (senderClan == null) {
-            ChatSender.MessageTo(tempPlayer, "UselessClan", "&cYou havent Clan!");
-            return false;
-        }
-        if (SenderRole == EClanRole.LEADER || SenderRole == EClanRole.OFFICER) {
-            if (senderClan.getRequests().size() > 0) {
-                ChatSender.MessageTo(tempPlayer, "UselessClan", "######## CLAN REQUESTS ########");
-                for (String tempMemberName : senderClan.getRequests()) {
-                    ChatSender.MessageTo(tempPlayer, "UselessClan", String.format("# %s", tempMemberName));
-                }
-            } else {
-                ChatSender.MessageTo(tempPlayer, "UselessClan", "0 requests for join to your clan");
+        if (senderClan.getRequests().size() > 0) {
+            ChatSender.MessageTo(tempPlayer, "UselessClan", "Enter.ClanRequestsLabel");
+            for (String tempMemberName : senderClan.getRequests()) {
+                ChatSender.NonTranslateMessageTo(tempPlayer, "UselessClan", String.format("- %s", tempMemberName));
             }
-        } else {
-            ChatSender.MessageTo(tempPlayer, "UselessClan", "&cYou rank is too low to do that!");
-            return false;
         }
+        else {
+            ChatSender.MessageTo(tempPlayer, "UselessClan", "Enter.ZeroRequests");
+        }
+
         return true;
     }
 }

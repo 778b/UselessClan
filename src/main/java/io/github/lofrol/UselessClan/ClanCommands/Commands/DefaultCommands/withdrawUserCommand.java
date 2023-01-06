@@ -15,7 +15,7 @@ public class withdrawUserCommand extends PlayerCommandBase {
 
     @Override
     public @NotNull String commandDescription() {
-        return "&a/Clan withdraw %value&b - to withdraw money from your clan";
+        return "Description.Withdraw";
     }
 
     @Override
@@ -26,52 +26,36 @@ public class withdrawUserCommand extends PlayerCommandBase {
 
     @Override
     public boolean executeCommand(Player tempPlayer, Clan senderClan, String[] args) {
-        EClanRole SenderRole = null;
-        if (senderClan != null) {
-            SenderRole = senderClan.getMemberRole(tempPlayer.getName());
+        if (senderClan == null) {
+            ChatSender.MessageTo(tempPlayer, "UselessClan", "Base.HavntClan");
+            return false;
         }
 
         if (UselessClan.EconomyPtr == null) return false;
 
         if (args.length == 1) {
-
-
-            if (senderClan == null) {
-                ChatSender.MessageTo(tempPlayer, "UselessClan", "&cYou haven't Clan!");
-                return false;
-            }
-            if (SenderRole.ordinal() < senderClan.getSettingsClan().RoleCanWithdraw.ordinal()) {
-                ChatSender.MessageTo(tempPlayer, "UselessClan", "&cYou rank is too low to do that!");
-                return false;
-            }
-            ChatSender.MessageTo(tempPlayer, "UselessClan", "&cYou forgot about value of withdraw, use &a/clan withdraw %money");
+            ChatSender.MessageTo(tempPlayer, "UselessClan", "Economy.WithdrawWithoutArgs");
         }
         else {
 
-            if (senderClan == null) {
-                ChatSender.MessageTo(tempPlayer, "UselessClan", "&cYou haven't Clan!");
-                return false;
-            }
-            if (SenderRole.ordinal() < senderClan.getSettingsClan().RoleCanWithdraw.ordinal()) {
-                ChatSender.MessageTo(tempPlayer, "UselessClan", "&cYou rank is too low to do that!");
-                return false;
-            }
             double moneyToWithdraw = Double.parseDouble(args[1]);
             if (moneyToWithdraw <= 0) {
-                ChatSender.MessageTo(tempPlayer, "UselessClan", "&cWrong money count! Use [0;+inf)");
+                ChatSender.MessageTo(tempPlayer, "UselessClan", "Economy.WrongWithdrawMoney");
                 return false;
             }
 
             double tempValue = senderClan.WithdrawMoneyFromClan(moneyToWithdraw);
             if (tempValue == 0) {
-                ChatSender.MessageTo(tempPlayer, "UselessClan", String.format("&cYou cant withdraw &a%s&c from you clan", moneyToWithdraw));
+                ChatSender.MessageTo(tempPlayer, "UselessClan", String.format(
+                        UselessClan.getLocalManager().getLocalizationMessage("Economy.NotEnoughMoney"), moneyToWithdraw));
                 return false;
             }
 
             ClanMember tempMember = senderClan.getClanMember(tempPlayer.getName());
             tempMember.addGeneralPlayerDeposit(-moneyToWithdraw);
             UselessClan.EconomyPtr.depositPlayer(getOfflinePlayer(tempPlayer.getName()), tempValue);
-            senderClan.SendMessageForOnlinePlayers(String.format("player &a%s&b withdraw &a%s&b from clan balance", tempPlayer.getName(), tempValue));
+            senderClan.SendMessageForOnlinePlayers(String.format(
+                    UselessClan.getLocalManager().getLocalizationMessage("Economy.WithdrawPlayer"), tempPlayer.getName(), tempValue));
         }
         return true;
     }

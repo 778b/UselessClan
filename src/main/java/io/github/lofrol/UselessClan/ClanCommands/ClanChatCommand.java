@@ -34,8 +34,7 @@ public final class ClanChatCommand extends Command {
 
         OnlinePlayerClan SenderClan = UselessClan.getMainManager().getOnlineClanPlayers().get(tempPlayer);
         if (SenderClan.getPlayerClan().getOnlineMembers().size() < 2) {
-            ChatSender.MessageTo(tempPlayer,"UselessClan",
-                    "&cOnly you are online from you clan");
+            ChatSender.MessageTo(tempPlayer,"UselessClan", "Main.ZeroPlayerInClanChat");
             return false;
         }
         // Only $maxLength length of message alloyed

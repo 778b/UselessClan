@@ -132,7 +132,7 @@ public class ClanConfigConfiguration extends YamlConfiguration {
     /*
     *   Section of default values
     * */
-    public static final String LocalizationDefault = "en-US";
+    public static final String LocalizationDefault = "ExampleEnglish";
     public static final boolean NeedCalculateClanLevelsDefault = true;
     public static final int DelayClanBackupDefault = 864000;
     public static final int DelayAutoSaveDefault = 24000;
