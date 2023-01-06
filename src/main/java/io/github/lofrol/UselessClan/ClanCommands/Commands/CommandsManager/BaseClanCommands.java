@@ -31,6 +31,7 @@ public class BaseClanCommands {
             entry("info",       new infoUserCommand()),
             entry("mates",      new matesUserCommand()),
             entry("accept",     new acceptUserCommand()),
+            entry("decline",    new declineUserCommand()),
             entry("join",       new joinUserCommand()),
             entry("kick",       new kickUserCommand()),
             entry("promote",    new promoteUserCommand()),
