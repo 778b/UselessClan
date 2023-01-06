@@ -56,7 +56,7 @@ public class createUserCommand extends PlayerCommandBase {
         }
         // if had Economy extension
         if (UselessClan.EconomyPtr != null) {
-            double moneyToClan = 10000;
+            double moneyToClan = UselessClan.getConfigManager().getClanConfig().getMoneyToCreate();
             if (!UselessClan.EconomyPtr.has(getOfflinePlayer(tempPlayer.getName()), moneyToClan)) {
                 ChatSender.MessageTo(tempPlayer, "UselessClan", String.format("&cFor create your own clan you must have more than %s$", moneyToClan));
                 return false;
