@@ -1,19 +1,23 @@
 package io.github.lofrol.UselessClan;
 
+import org.checkerframework.checker.nullness.qual.Nullable;
+import org.jetbrains.annotations.NotNull;
+
 import java.io.File;
+import java.util.Objects;
 import java.util.logging.Level;
 
 public class SerializationManager {
     private final UselessClan OwnerPlugin;
     public static final String ClanFolderName = "Clans";
     public  static final String DeletedClanFolder = "DeletedClans";
-    public  static final String backupClanFolder = "backups";
+    public  static final String backupClanFolder = "Backups";
 
     public SerializationManager(UselessClan owner) {
         OwnerPlugin = owner;
     }
 
-    public File checkClanFolderOrCreate(String FolderName) {
+    public @NotNull File checkClanFolderOrCreate(String FolderName) {
         if (!checkFolderOrCreate(OwnerPlugin.getDataFolder())) {
             OwnerPlugin.getLogger().log(Level.SEVERE, "Cant create plugin folder!");
         }
@@ -27,6 +31,14 @@ public class SerializationManager {
             OwnerPlugin.getLogger().log(Level.SEVERE, String.format("Cant create %s folder!", FolderName));
         }
         return tempDir;
+    }
+
+    public @Nullable File FindFileInFolder(@NotNull File Folder, String FileName) {
+        for (var tempFile : Objects.requireNonNull(Folder.listFiles())) {
+            if (!tempFile.isFile()) continue;
+            if (tempFile.getName().equals(FileName)) return tempFile;
+        }
+        return null;
     }
 
     public boolean checkFolderOrCreate(File Folder) {
