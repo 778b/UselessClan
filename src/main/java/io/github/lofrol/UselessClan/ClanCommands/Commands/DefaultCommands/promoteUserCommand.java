@@ -58,7 +58,7 @@ public class promoteUserCommand extends PlayerCommandBase {
                     }
                     senderClan.SendMessageForOnlinePlayers(String.format(
                             UselessClan.getLocalManager().getLocalizationMessage(
-                                    "PlayerPromote"), tempClanMember.getPlayerName(), EClanRole.OFFICER));
+                                    "Rank.PlayerPromote"), tempClanMember.getPlayerName(), EClanRole.OFFICER));
                 }
                 else {
                     ChatSender.MessageTo(tempPlayer, "UselessClan", "Base.WrongRank");
@@ -69,7 +69,7 @@ public class promoteUserCommand extends PlayerCommandBase {
                     senderClan.ChangeLeader(tempClanMember.getPlayerName());
                     senderClan.SendMessageForOnlinePlayers(String.format(
                             UselessClan.getLocalManager().getLocalizationMessage(
-                                    "LeaderChanged"), tempClanMember.getPlayerName()));
+                                    "Rank.LeaderChanged"), tempClanMember.getPlayerName()));
                 }
                 else {
                     ChatSender.MessageTo(tempPlayer, "UselessClan", "Base.WrongRank");

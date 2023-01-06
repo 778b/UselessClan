@@ -49,6 +49,12 @@ public class kickUserCommand extends PlayerCommandBase {
                 ChatSender.MessageTo(tempPlayer, "UselessClan", "Enter.VictimWrongClan");
                 return false;
             }
+
+            if (SenderRole.ordinal() <= tempMember.getMemberRole().ordinal()) {
+                ChatSender.MessageTo(tempPlayer, "UselessClan", "Enter.CantKickHigher");
+                return false;
+            }
+
             senderClan.PlayerLeavedFromClan(tempMember.getPlayerName());
             UselessClan.getMainManager().CalculateClanLevel(senderClan);
             senderClan.SendMessageForOnlinePlayers(String.format(

@@ -15,10 +15,12 @@ public class DefaultLocalizationConfiguration extends YamlConfiguration {
                 " ", " ",
                 "               INSTRUCTION" ,
                 "FOR CREATE YOUR OWN TRANSLATION OF PLUGIN",
+                "0) Use UTF-8 files, or copy example",
                 "1) Create new file in Localization folder",
                 "2) Translation working by keywords, dont change them!",
                 "If you change default keywords plugin will miss your translation",
                 "Dont miss any %s or %d or etc, ITS VARIABLES!",
+                "DONT USE TABS! Should use only spaces!",
                 "3) Copy all keywords from this file to your own",
                 "4) Write your translation after symbol-:",
                 "5) Check translation in game and enjoy it",
@@ -56,6 +58,7 @@ public class DefaultLocalizationConfiguration extends YamlConfiguration {
         set("Enter.RequestSent",                    "You send request for join to this clan, wait until leader or officer accept this request");
         set("Enter.RequestOfficerNotify",           "Player %s was send request for join to you clan, type &a/Clan requests");
         set("Enter.KickWithoutArgs",                "&cYou forgot about player %name, use &a/Clan kick %name&b, %name = name of player, which you want to kick");
+        set("Enter.CantKickHigher",                 "&cYou cant kick this member! You have too small rank.");
         set("Enter.VictimWrongClan",                "&cCant find this player in your clan!");
         set("Enter.PlayerKicked",                   "&cPlayer %s was kicked from your clan!");
         set("Enter.LeaderCantLeave",                "&cYou cant leave from clan, because you are Leader of this clan");
@@ -96,12 +99,12 @@ public class DefaultLocalizationConfiguration extends YamlConfiguration {
         set("Economy.WrongDepositMoney",            "&cWrong money count!");
         set("Economy.WrongWithdrawMoney",           "&cWrong money count! Use [0;+inf)");
         set("Economy.NotEnoughMoney",               "&cYou cant withdraw &a%s&c from you clan");
-        set("Economy.DepositPlayer",                "player &a%s&b deposit &a%s&b to your clan!");
+        set("Economy.DepositPlayer",                "Player &a%s&b deposit &a%s&b to your clan!");
         set("Economy.WithdrawPlayer",               "Player &a%s&b withdraw &a%s&b from clan balance");
         setComments("Economy", List.of(" ", " "));
 
         set("Help.Label",                           "------------- CLAN HELP %d -------------");
-        set("Help.ClanPageCommand",                 "type &a/Clan help %d&b - to show commands in page %d");
+        set("Help.ClanPageCommand",                 "Type &a/Clan help %d&b - to show commands in page %d");
         set("Help.WrongPage",                       "&cThis page of help isnt found");
         setComments("Help", List.of(" ", " "));
 
@@ -131,13 +134,17 @@ public class DefaultLocalizationConfiguration extends YamlConfiguration {
         set("Setting.Label",                        "--- CLAN SETTINGS ---");
         set("Setting.SelectedWithoutArgs",          "&cNot enough arguments, try &a/Clan setting %s [1-4] 1 = Rookie, 4 = Leader");
         set("Setting.Info",                         "&a/Clan setting info - show info about setting clan");
-        set("Setting.Help",                         "&a/Clan setting %s [Role] - set min role to change home location [1-4]");
-        set("Setting.UseExample",                   "&cWrong arguments, example &aclan setting %s");
+        set("Setting.UseExample",                   "&cWrong arguments, example &a/Clan setting %s");
         set("Setting.Changed",                      "&a%s successfully changed to %s!");
+        set("Setting.Description.RoleCanSetHome",   "&a/Clan setting RoleCanSetHome [Role] - set min role to change home location [1-4]");
+        set("Setting.Description.RoleCanKick",      "&a/Clan setting RoleCanKick [Role] - set min role, which can kick members [1-4]");
+        set("Settings.Description.DefaultJoinRole", "&a/Clan setting DefaultJoinRole [Role] - set min default join role [1-3]");
+        set("Settings.Description.RoleCanWithdraw", "&a/Clan setting RoleCanWithdraw [Role] - set min role, which can kick withdraw money [1-4]");
+        set("Settings.Description.RoleCanAccept",   "&a/Clan setting RoleCanAccept [Role] - set min role, which can accept/decline players to clan [1-4]");
         setComments("Setting", List.of(" ", " "));
 
         set("Top.Label",                            "&b---------- CLAN TOP %d ----------");
-        set("Top.PageCommand",                      "type &a/Clan top %d&b - to show commands in page %d");
+        set("Top.PageCommand",                      "Type &a/Clan top %d&b - to show commands in page %d");
         set("Top.WrongPage",                        "&cThis page of clans top isnt found");
         setComments("Top", List.of(" ", " "));
 

@@ -70,17 +70,11 @@ public class settingsUserCommand extends PlayerCommandBase {
                                 "Setting.SelectedWithoutArgs"), "RoleCanAccept"));
             }
             else if (args[1].equalsIgnoreCase("help")) {
-                ChatSender.MessageTo(tempPlayer, "UselessClan", "Setting.Info");
-                ChatSender.NonTranslateMessageTo(tempPlayer, "UselessClan", String.format(
-                                UselessClan.getLocalManager().getLocalizationMessage("Setting.Help"), "RoleCanSetHome"));
-                ChatSender.NonTranslateMessageTo(tempPlayer, "UselessClan", String.format(
-                        UselessClan.getLocalManager().getLocalizationMessage("Setting.Help"), "RoleCanKick"));
-                ChatSender.NonTranslateMessageTo(tempPlayer, "UselessClan", String.format(
-                        UselessClan.getLocalManager().getLocalizationMessage("Settings.Help"), "DefaultJoinRole"));
-                ChatSender.NonTranslateMessageTo(tempPlayer, "UselessClan", String.format(
-                        UselessClan.getLocalManager().getLocalizationMessage("Settings.Help"), "RoleCanWithdraw"));
-                ChatSender.NonTranslateMessageTo(tempPlayer, "UselessClan", String.format(
-                        UselessClan.getLocalManager().getLocalizationMessage("Settings.Help"), "RoleCanAccept"));
+                ChatSender.MessageTo(tempPlayer, "UselessClan", "Setting.Description.RoleCanSetHome");
+                ChatSender.MessageTo(tempPlayer, "UselessClan", "Setting.Description.RoleCanKick");
+                ChatSender.MessageTo(tempPlayer, "UselessClan", "Settings.Description.DefaultJoinRole");
+                ChatSender.MessageTo(tempPlayer, "UselessClan", "Settings.Description.RoleCanWithdraw");
+                ChatSender.MessageTo(tempPlayer, "UselessClan", "Settings.Description.RoleCanAccept");
             }
             else {
                 ChatSender.MessageTo(tempPlayer, "UselessClan", "Setting.WithoutArgs");

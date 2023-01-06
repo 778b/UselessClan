@@ -46,8 +46,9 @@ public class ClanConfigManager {
 
         try {
             tempClanConfig.save(newConfigFile);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        }
+        catch (IOException e) {
+            OwnerPlugin.getLogger().log(Level.SEVERE, "Could not save config to " + newConfigFile.getName());
         }
 
         return tempClanConfig;
