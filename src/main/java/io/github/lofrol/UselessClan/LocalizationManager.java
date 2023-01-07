@@ -1,21 +1,18 @@
 package io.github.lofrol.UselessClan;
 
-import io.github.lofrol.UselessClan.Configurations.ClanConfigConfiguration;
 import io.github.lofrol.UselessClan.Configurations.DefaultLocalizationConfiguration;
 import org.bukkit.configuration.InvalidConfigurationException;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Map;
-import java.util.Objects;
 import java.util.logging.Level;
 
 public class LocalizationManager {
     private final UselessClan OwnerPlugin;
 
+    public static final String DefaultLocalization = "ExampleEnglish";
     private final String CurrentLocalization;
     private final boolean isDefaultLocalization;
     private final YamlConfiguration LocalizationTable = new YamlConfiguration();
@@ -24,13 +21,9 @@ public class LocalizationManager {
     //private Map<String, >
     public LocalizationManager(UselessClan owner) {
         OwnerPlugin = owner;
-        final String defaultLocalizationName = ClanConfigConfiguration.LocalizationDefault;
+        final String defaultLocalizationName = DefaultLocalization;
 
-        if (!checkDefaultConfigurationFile()) {
-            OwnerPlugin.getLogger().log(Level.SEVERE,
-                    "Cant find default localization file, created new!");
-        }
-
+        checkDefaultConfigurationFile();
 
         String localizationKey = UselessClan.getConfigManager().getClanConfig().getLocalizationKey();
 
@@ -50,7 +43,7 @@ public class LocalizationManager {
             return;
         }
 
-        OwnerPlugin.getLogger().log(Level.SEVERE,
+        OwnerPlugin.getLogger().log(Level.CONFIG,
                 String.format("Cant load %s localization, loaded default", localizationKey));
         CurrentLocalization = defaultLocalizationName;
         isDefaultLocalization = true;
@@ -69,24 +62,24 @@ public class LocalizationManager {
             LocalizationTable.load(findedLocalization);
         }
         catch (IOException | InvalidConfigurationException e) {
-            throw new RuntimeException(e);
+            OwnerPlugin.getLogger().log(Level.SEVERE, String.format("Cant load file of %s localization!", localizationKey));
         }
         return true;
     }
 
 
-    private boolean checkDefaultConfigurationFile() {
+    private void checkDefaultConfigurationFile() {
         File findedLocalization = new File(
                 UselessClan.getSerilManager().checkClanFolderOrCreate(
-                        "Localization"), String.format(
-                "%s.yml", ClanConfigConfiguration.LocalizationDefault));
-        if (findedLocalization.exists()) return true;
+                        "Localization"), String.format("%s.yml", DefaultLocalization));
+        if (findedLocalization.exists()) return;
+
         try {
             DefaultLocalizationTable.save(findedLocalization);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
         }
-        return false;
+        catch (IOException e) {
+            OwnerPlugin.getLogger().log(Level.SEVERE, "Cant save default localization config!");
+        }
     }
 
     public @NotNull String getLocalizationMessage(String messageKey) {

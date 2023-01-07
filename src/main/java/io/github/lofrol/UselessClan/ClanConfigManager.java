@@ -24,34 +24,29 @@ public class ClanConfigManager {
         OwnerPlugin = owner;
 
         ClanConfig = readConfigValues();
+
+        saveConfig(ClanConfig);
     }
 
     private @NotNull ClanConfigConfiguration readConfigValues() {
-        FileConfiguration tempConfig = OwnerPlugin.getConfig();
-        var tempConfiguration = ClanConfigConfiguration.tryLoadDifferentConfig(tempConfig);
-        if (tempConfiguration == null) {
-            OwnerPlugin.getLogger().log(Level.SEVERE, "Config is corrupted or invalid, initialized new");
-            return setupDefaultConfig();
-        }
+        FileConfiguration tempFileConfig = OwnerPlugin.getConfig();
+        var tempConfiguration = ClanConfigConfiguration.tryLoadDifferentConfig(tempFileConfig);
         OwnerPlugin.getLogger().log(Level.INFO, "Config was load");
         return tempConfiguration;
     }
 
 
-    public @NotNull ClanConfigConfiguration setupDefaultConfig() {
-        var tempClanConfig = new ClanConfigConfiguration();
+    public void saveConfig(FileConfiguration config) {
         File tempFolder = OwnerPlugin.getDataFolder();
         UselessClan.getSerilManager().checkFolderOrCreate(tempFolder);
         File newConfigFile = new File(tempFolder, "config.yml");
 
         try {
-            tempClanConfig.save(newConfigFile);
+            config.save(newConfigFile);
         }
         catch (IOException e) {
             OwnerPlugin.getLogger().log(Level.SEVERE, "Could not save config to " + newConfigFile.getName());
         }
-
-        return tempClanConfig;
     }
 
 
