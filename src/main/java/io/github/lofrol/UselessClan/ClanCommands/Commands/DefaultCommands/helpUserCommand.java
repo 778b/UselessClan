@@ -4,6 +4,7 @@ import io.github.lofrol.UselessClan.ClanCommands.Commands.CommandsManager.BaseCl
 import io.github.lofrol.UselessClan.ClanCommands.Commands.PlayerCommandBase;
 import io.github.lofrol.UselessClan.ClanObjects.Clan;
 import io.github.lofrol.UselessClan.ClanObjects.EClanRole;
+import io.github.lofrol.UselessClan.UselessClan;
 import io.github.lofrol.UselessClan.Utils.ChatSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -13,7 +14,7 @@ import java.util.List;
 public class helpUserCommand extends PlayerCommandBase {
     @Override
     public @NotNull String commandDescription() {
-        return "&a/Clan help&b - to call this menu";
+        return "Description.Help";
     }
 
     @Override
@@ -32,16 +33,17 @@ public class helpUserCommand extends PlayerCommandBase {
         List<PlayerCommandBase> tempCommandArray = BaseClanCommands.getExecutableCommands(tempPlayer, senderClan, senderRole).stream().toList();
 
         if (args.length == 1) {
-            //  /Clan help
             int tempRow = 0;
-            ChatSender.MessageTo(tempPlayer, "UselessClan", "############# CLAN HELP 1 #############");
+            ChatSender.NonTranslateMessageTo(tempPlayer, "UselessClan", String.format(
+                    UselessClan.getLocalManager().getLocalizationMessage("Help.Label"), 1));
             for (int i = tempRow; i < tempCommandArray.size(); ++i) {
                 ChatSender.MessageTo(tempPlayer, "UselessClan", tempCommandArray.get(i).commandDescription());
                 ++tempRow;
                 if (tempRow == numCommandsInOnePage) break;
             }
             if (tempCommandArray.size() - numCommandsInOnePage > 0) {
-                ChatSender.MessageTo(tempPlayer, "UselessClan", "type &a/Clan help 2&b - to show commands in page 2");
+                ChatSender.NonTranslateMessageTo(tempPlayer, "UselessClan", String.format(
+                        UselessClan.getLocalManager().getLocalizationMessage("Help.ClanPageCommand"), 2, 2));
             }
             return true;
         }
@@ -50,8 +52,8 @@ public class helpUserCommand extends PlayerCommandBase {
             int pageNum = Integer.parseInt(args[1]);
             if (pageNum > 0 && pageNum < tempCommandArray.size() && (pageNum - 1) * numCommandsInOnePage < tempCommandArray.size()) {
                 int tempRow = 0;
-                ChatSender.MessageTo(tempPlayer, "UselessClan",
-                        String.format("############# CLAN HELP %d #############", pageNum));
+                ChatSender.NonTranslateMessageTo(tempPlayer, "UselessClan", String.format(
+                        UselessClan.getLocalManager().getLocalizationMessage("Help.Label"), pageNum));
                 for (int i = (pageNum - 1) * numCommandsInOnePage; i < tempCommandArray.size(); ++i) {
                     ChatSender.MessageTo(tempPlayer, "UselessClan", tempCommandArray.get(i).commandDescription());
                     ++tempRow;
@@ -59,14 +61,15 @@ public class helpUserCommand extends PlayerCommandBase {
                 }
                 if (tempCommandArray.size() - (pageNum * numCommandsInOnePage) > 0) {
                     final int pageNumPlus = pageNum + 1;
-                    ChatSender.MessageTo(tempPlayer, "UselessClan",
-                            String.format("type &a/Clan help %d&b - to show commands in page %d", pageNumPlus, pageNumPlus));
+                    ChatSender.NonTranslateMessageTo(tempPlayer, "UselessClan", String.format(
+                            UselessClan.getLocalManager().getLocalizationMessage(
+                                    "Help.ClanPageCommand"), pageNumPlus, pageNumPlus));
                 }
                 return true;
             }
         }
         //  /Clan help asjd
-        ChatSender.MessageTo(tempPlayer, "UselessClan", "&cThis page of help isn't found");
+        ChatSender.MessageTo(tempPlayer, "UselessClan", "Help.WrongPage");
         return false;
     }
 }

@@ -11,29 +11,26 @@ import org.jetbrains.annotations.NotNull;
 public class deleteUserCommand extends PlayerCommandBase {
     @Override
     public @NotNull String commandDescription() {
-        return "&a/Clan delete&b - to delete your clan";
+        return "Description.Delete";
     }
 
     @Override
     public boolean havePermission(Player tempPlayer, Clan senderClan, EClanRole senderRole) {
+        if (senderClan == null) return false;
         return (senderRole == EClanRole.LEADER);
     }
 
     @Override
     public boolean executeCommand(Player tempPlayer, Clan senderClan, String[] args) {
-        if (senderClan == null) {
-            ChatSender.MessageTo(tempPlayer, "UselessClan", "&cYou haven't Clan!");
-            return false;
-        }
         EClanRole SenderRole = senderClan.getMemberRole(tempPlayer.getName());
 
         if (SenderRole != EClanRole.LEADER) {
-            ChatSender.MessageTo(tempPlayer, "UselessClan", "&cYou rank is too low to do that!");
+            ChatSender.MessageTo(tempPlayer, "UselessClan", "Base.WrongRank");
             return false;
         }
 
         UselessClan.getMainManager().DeleteClan(senderClan);
-        ChatSender.MessageTo(tempPlayer, "UselessClan", "&aYou successfully delete your clan!");
+        ChatSender.MessageTo(tempPlayer, "UselessClan", "Create.ClanDeleted");
         return true;
     }
 }

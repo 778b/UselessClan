@@ -9,6 +9,11 @@ import org.bukkit.command.CommandSender;
 
 public class levelAdminCommand extends CommandBase {
     @Override
+    public boolean havePermission(CommandSender sender) {
+        return true;
+    }
+
+    @Override
     public boolean executeCommand(CommandSender sender, String[] args) {
         if (args.length == 1) {
             ChatSender.MessageTo(sender, "&4UselessClan","You forgot about clan %name, use /ClAd level %name, %name = name of clan");
@@ -25,7 +30,7 @@ public class levelAdminCommand extends CommandBase {
                 }
                 int tempLevel = Integer.parseInt(args[2]);
 
-                if (tempLevel < 0 || tempLevel > ClanManager.ClanLevelColors.length) {
+                if (tempLevel < 0 || tempLevel > ClanManager.ClanLevelColors.size()) {
                     ChatSender.MessageTo(sender, "&4UselessClan","&cWrong level number!");
                     return false;
                 }

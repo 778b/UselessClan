@@ -8,6 +8,11 @@ import org.bukkit.command.CommandSender;
 
 public class listAdminCommand extends CommandBase {
     @Override
+    public boolean havePermission(CommandSender sender) {
+        return true;
+    }
+
+    @Override
     public boolean executeCommand(CommandSender sender, String[] args) {
         ChatSender.MessageTo(sender, "&4UselessClan","########## CLAN LIST ##########");
         for (Clan tempClan : UselessClan.getMainManager().getServerClans().values()) {

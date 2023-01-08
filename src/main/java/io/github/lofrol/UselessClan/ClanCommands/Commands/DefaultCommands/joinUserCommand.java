@@ -12,7 +12,7 @@ public class joinUserCommand extends PlayerCommandBase {
 
     @Override
     public @NotNull String commandDescription() {
-        return "&a/Clan join %name&b - to send request for join the clan %name";
+        return "Description.Join";
     }
 
     @Override
@@ -23,24 +23,28 @@ public class joinUserCommand extends PlayerCommandBase {
     @Override
     public boolean executeCommand(Player tempPlayer, Clan senderClan, String[] args) {
         if (senderClan != null) {
-            ChatSender.MessageTo(tempPlayer, "UselessClan", "&cYou already have Clan!");
+            ChatSender.MessageTo(tempPlayer, "UselessClan", "Base.AlreadyInClan");
             return false;
         }
 
         if (args.length == 1) {
-            ChatSender.MessageTo(tempPlayer, "UselessClan", "&cYou forgot about clan %name, use &a/Clan join %name&b, %name = name of clan");
-        } else {
+            ChatSender.MessageTo(tempPlayer, "UselessClan", "Enter.JoinWithoutArgs");
+        }
+        else {
             Clan ClanToRequest = UselessClan.getMainManager().getClanByName(args[1]);
             if (ClanToRequest != null) {
                 if (!ClanToRequest.SendRequestForJoin(tempPlayer.getName())) {
-                    ChatSender.MessageTo(tempPlayer, "UselessClan", "&cYou already sent request for join to this clan!");
+                    ChatSender.MessageTo(tempPlayer, "UselessClan", "Enter.JoinAlreadySent");
                 }
-            } else {
-                ChatSender.MessageTo(tempPlayer, "UselessClan", "&cInvalid clan name!");
+            }
+            else {
+                ChatSender.MessageTo(tempPlayer, "UselessClan", "Enter.InvalidClanName");
                 return false;
             }
-            ChatSender.MessageTo(tempPlayer, "UselessClan", "You send request for join to this clan, wait until leader or officer accept this request");
-            ClanToRequest.SendMessageForOnlineOfficers(String.format("Player %s was send request for join to you clan, type &a/clan requests", tempPlayer.getName()));
+            ChatSender.MessageTo(tempPlayer, "UselessClan", "Enter.RequestSent");
+            ClanToRequest.SendMessageForOnlineOfficers(String.format(
+                    UselessClan.getLocalManager().getLocalizationMessage(
+                            "Enter.RequestOfficerNotify"), tempPlayer.getName()));
         }
         return true;
 

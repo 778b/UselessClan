@@ -1,5 +1,6 @@
 package io.github.lofrol.UselessClan.ClanObjects;
 
+import io.github.lofrol.UselessClan.UselessClan;
 import io.github.lofrol.UselessClan.Utils.ChatSender;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -202,8 +203,8 @@ public class Clan {
         Requests = new ArrayList<>();
         Members = new ArrayList<>();
         OnlineMembers = new HashMap<>();
-        ClanLevel = 0;
-        MoneyClan = 0.d;
+        ClanLevel = UselessClan.getConfigManager().getClanConfig().getStartClanLevel();
+        MoneyClan = UselessClan.getConfigManager().getClanConfig().getFirstClanMoney();
         ClanRegionId = null;
         DescriptionClan = "Description of your clan";
         HomeClan = null;
@@ -214,7 +215,7 @@ public class Clan {
 
     public void SendMessageForOnlinePlayers(String Message) {
         for (Player tempPlayer : OnlineMembers.keySet()) {
-            ChatSender.MessageTo(tempPlayer, PrefixClan, Message);
+            ChatSender.NonTranslateMessageTo(tempPlayer, PrefixClan, Message);
         }
     }
 
@@ -223,7 +224,7 @@ public class Clan {
         for (Player tempPlayer : OnlineMembers.keySet()) {
             EClanRole tempRole = OnlineMembers.get(tempPlayer).getMemberRole();
             if (tempRole == EClanRole.OFFICER || tempRole == EClanRole.LEADER) {
-                ChatSender.MessageTo(tempPlayer, FormattedPrefix, Message);
+                ChatSender.NonTranslateMessageTo(tempPlayer, FormattedPrefix, Message);
             }
         }
     }
@@ -338,8 +339,10 @@ public class Clan {
         sortMembers();
     }
 
-    public void RemoveFromRequest(String PlayerName) {
-        Requests.remove(PlayerName);
+
+    // return true if request was remove, false if request didn't exist
+    public boolean RemoveFromRequest(String PlayerName) {
+        return Requests.remove(PlayerName);
     }
 
     private void sortMembers() {

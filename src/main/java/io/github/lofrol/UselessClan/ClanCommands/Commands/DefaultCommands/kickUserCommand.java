@@ -21,66 +21,60 @@ public class kickUserCommand extends PlayerCommandBase {
 
     @Override
     public @NotNull String commandDescription() {
-        return "&a/Clan kick %name&b - to kick player %name from your clan";
+        return "Description.Kick";
     }
 
     @Override
     public boolean havePermission(Player tempPlayer, Clan senderClan, EClanRole senderRole) {
+        if (senderClan == null || senderRole == null) return false;
         return (senderRole.ordinal() >= senderClan.getSettingsClan().RoleCanKick.ordinal());
     }
 
     @Override
     public boolean executeCommand(Player tempPlayer, Clan senderClan, String[] args) {
-        EClanRole SenderRole = null;
-        if (senderClan != null) {
-            SenderRole = senderClan.getMemberRole(tempPlayer.getName());
+        if (senderClan == null) {
+            ChatSender.MessageTo(tempPlayer, "UselessClan", "Base.HavntClan");
+            return false;
         }
+        EClanRole SenderRole = senderClan.getMemberRole(tempPlayer.getName());
 
         if (args.length == 1) {
-            if (senderClan != null) {
-                if (SenderRole == senderClan.getSettingsClan().RoleCanKick) {
-                    ChatSender.MessageTo(tempPlayer, "UselessClan",
-                            "&cYou forgot about player %name, use &a/Clan kick %name&b, %name = name of player, which you want to kick");
-                } else {
-                    ChatSender.MessageTo(tempPlayer, "UselessClan", "&cYou rank is too low to do that!");
-                }
-            } else {
-                ChatSender.MessageTo(tempPlayer, "UselessClan", "&cYou haven't Clan!");
+            if (SenderRole == senderClan.getSettingsClan().RoleCanKick) {
+                ChatSender.MessageTo(tempPlayer, "UselessClan", "Enter.KickWithoutArgs");
             }
-        } else {
-            if (senderClan == null) {
-                ChatSender.MessageTo(tempPlayer, "UselessClan", "&cYou haven't Clan!");
-                return false;
-            }
-            if (!(SenderRole.ordinal() >= senderClan.getSettingsClan().RoleCanKick.ordinal())) {
-                ChatSender.MessageTo(tempPlayer, "UselessClan", "&cYou rank is too low to do that!");
-                return false;
-            }
+        }
+        else {
             ClanMember tempMember = senderClan.getClanMember(args[1]);
             if (tempMember == null) {
-                ChatSender.MessageTo(tempPlayer, "UselessClan", "&cCant find this player in your clan!");
+                ChatSender.MessageTo(tempPlayer, "UselessClan", "Enter.VictimWrongClan");
                 return false;
             }
+
+            if (SenderRole.ordinal() <= tempMember.getMemberRole().ordinal()) {
+                ChatSender.MessageTo(tempPlayer, "UselessClan", "Enter.CantKickHigher");
+                return false;
+            }
+
             senderClan.PlayerLeavedFromClan(tempMember.getPlayerName());
             UselessClan.getMainManager().CalculateClanLevel(senderClan);
             senderClan.SendMessageForOnlinePlayers(String.format(
-                    "&cPlayer %s was kicked from your clan!", tempMember.getPlayerName()));
+                    UselessClan.getLocalManager().getLocalizationMessage("Enter.PlayerKicked"), tempMember.getPlayerName()));
 
             if (senderClan.getClanRegionId() != null) {
                 RegionContainer tempRegionContainer = WorldGuard.getInstance().getPlatform().getRegionContainer();
                 World tempWorld = getServer().getWorld("world");
                 if (tempWorld == null) {
-                    ChatSender.MessageTo(tempPlayer, "UselessClan", "&cError cant remove player from region! #1");
+                    ChatSender.NonTranslateMessageTo(tempPlayer, "UselessClan", "&cError cant remove player from region! #1");
                     return false;
                 }
                 RegionManager tempRegionManager = tempRegionContainer.get(BukkitAdapter.adapt(tempWorld));
                 if (tempRegionManager == null) {
-                    ChatSender.MessageTo(tempPlayer, "UselessClan", "&cError cant remove player from region! #2");
+                    ChatSender.NonTranslateMessageTo(tempPlayer, "UselessClan", "&cError cant remove player from region! #2");
                     return false;
                 }
                 ProtectedRegion tempRegion = tempRegionManager.getRegion(senderClan.getClanRegionId());
                 if (tempRegion == null) {
-                    ChatSender.MessageTo(tempPlayer, "UselessClan", "&cError cant remove player from region! #3");
+                    ChatSender.NonTranslateMessageTo(tempPlayer, "UselessClan", "&cError cant remove player from region! #3");
                     return false;
                 }
                 tempRegion.getMembers().removePlayer(tempMember.getPlayerName());

@@ -2,6 +2,8 @@ package io.github.lofrol.UselessClan.ClanCommands;
 
 import io.github.lofrol.UselessClan.ClanCommands.Commands.CommandBase;
 import io.github.lofrol.UselessClan.ClanCommands.Commands.CommandsManager.BaseClanCommands;
+import io.github.lofrol.UselessClan.ClanCommands.Commands.PlayerCommandBase;
+import io.github.lofrol.UselessClan.UselessClan;
 import io.github.lofrol.UselessClan.Utils.ChatSender;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -33,15 +35,19 @@ public final class ClanCommand extends Command {
         if (!(sender instanceof Player tempPlayer)) return false;
 
         if (args.length == 0) {
-            ChatSender.MessageTo(tempPlayer,"UselessClan", "Use command &a/Clan help&b, for access to clan system");
+            ChatSender.MessageTo(tempPlayer,"UselessClan",  "Main.ClanCommandWithoutArgs");
             return false;
         }
 
         CommandBase tempCommand = BaseClanCommands.getCommand(args[0]);
 
         if (tempCommand == null) {
-            ChatSender.MessageTo(tempPlayer, "UselessClan",
-                    "&cInvalid command. Use command &a/Clan help&c, for access to clan system");
+            ChatSender.MessageTo(tempPlayer, "UselessClan", "Main.InvalidClanCommand");
+            return false;
+        }
+
+        if (!tempCommand.havePermission(sender)) {
+            ChatSender.MessageTo(tempPlayer, "UselessClan", "Main.InvalidPermissionToCommand");
             return false;
         }
 

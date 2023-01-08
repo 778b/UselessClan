@@ -3,15 +3,18 @@ package io.github.lofrol.UselessClan.ClanCommands.Commands.DefaultCommands;
 import io.github.lofrol.UselessClan.ClanCommands.Commands.PlayerCommandBase;
 import io.github.lofrol.UselessClan.ClanObjects.Clan;
 import io.github.lofrol.UselessClan.ClanObjects.EClanRole;
+import io.github.lofrol.UselessClan.UselessClan;
 import io.github.lofrol.UselessClan.Utils.ChatSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-public class requestsUserCommand extends PlayerCommandBase {
+import static org.bukkit.Bukkit.getPlayer;
+
+public class declineUserCommand extends PlayerCommandBase {
 
     @Override
     public @NotNull String commandDescription() {
-        return "Description.Requests";
+        return "Description.Decline";
     }
 
     @Override
@@ -27,16 +30,22 @@ public class requestsUserCommand extends PlayerCommandBase {
             return false;
         }
 
-        if (senderClan.getRequests().size() > 0) {
-            ChatSender.MessageTo(tempPlayer, "UselessClan", "Enter.ClanRequestsLabel");
-            for (String tempMemberName : senderClan.getRequests()) {
-                ChatSender.NonTranslateMessageTo(tempPlayer, "UselessClan", String.format("- %s", tempMemberName));
-            }
+        if (args.length == 1) {
+            ChatSender.MessageTo(tempPlayer, "UselessClan", "Enter.ClanDeclineWithoutArgs");
+
         }
         else {
-            ChatSender.MessageTo(tempPlayer, "UselessClan", "Enter.ZeroRequests");
-        }
+            String AcceptedPlayerName = args[1];
+            if (!senderClan.HaveRequestFromPlayer(AcceptedPlayerName)) {
+                ChatSender.MessageTo(tempPlayer, "UselessClan", "Enter.CantFindRequest");
+                return false;
+            }
+            senderClan.RemoveFromRequest(AcceptedPlayerName);
 
+            ChatSender.NonTranslateMessageTo(tempPlayer, "UselessClan",
+                    String.format(UselessClan.getLocalManager().getLocalizationMessage(
+                            "Enter.PlayersRequestDeclined"), AcceptedPlayerName));
+        }
         return true;
     }
 }

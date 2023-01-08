@@ -1,5 +1,6 @@
 package io.github.lofrol.UselessClan.ClanObjects;
 
+import io.github.lofrol.UselessClan.UselessClan;
 import org.jetbrains.annotations.NotNull;
 
 public class ClanSettings {
@@ -15,11 +16,11 @@ public class ClanSettings {
 
 
     public ClanSettings() {
-        DefaultJoinRole = EClanRole.ROOKIE;
-        RoleCanSethome = EClanRole.LEADER;
-        RoleCanWithdraw = EClanRole.MEMBER;
-        RoleCanKick = EClanRole.OFFICER;
-        RoleCanAccept = EClanRole.OFFICER;
+        DefaultJoinRole =   UselessClan.getConfigManager().getClanConfig().getDefaultJoinRole();
+        RoleCanSethome =    UselessClan.getConfigManager().getClanConfig().getMinRoleCanSethome();
+        RoleCanWithdraw =   UselessClan.getConfigManager().getClanConfig().getMinRoleCanWithdraw();
+        RoleCanKick =       UselessClan.getConfigManager().getClanConfig().getMinRoleCanKick();
+        RoleCanAccept =     UselessClan.getConfigManager().getClanConfig().getMinRoleCanAccept();
     }
 
     public String getSerializationString() {

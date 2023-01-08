@@ -15,7 +15,7 @@ public class topUserCommand extends PlayerCommandBase {
 
     @Override
     public @NotNull String commandDescription() {
-        return "&a/Clan top&b - top of all clans";
+        return "Description.Top";
     }
 
     @Override
@@ -31,15 +31,17 @@ public class topUserCommand extends PlayerCommandBase {
         if (args.length == 1) {
             //  /Clan help
             int tempRow = 0;
-            ChatSender.MessageTo(tempPlayer, "UselessClan", "&b########## CLAN TOP 1 ##########");
+            ChatSender.NonTranslateMessageTo(tempPlayer, "UselessClan",  String.format(
+                    UselessClan.getLocalManager().getLocalizationMessage("Top.Label"), 1));
             for (int i = tempRow; i < tempTopListClans.size(); ++i) {
-                ChatSender.MessageTo(tempPlayer, "UselessClan", String.format("&b#%d) %s : &e%d : &a%d", tempRow + 1,
+                ChatSender.NonTranslateMessageTo(tempPlayer, "UselessClan", String.format("&b#%d) %s : &e%d : &a%d", tempRow + 1,
                         tempTopListClans.get(i).ClanName, tempTopListClans.get(i).ClanLevel, tempTopListClans.get(i).ClanMoney));
                 ++tempRow;
                 if (tempRow == numClansInOnePage) break;
             }
             if (tempTopListClans.size() - numClansInOnePage > 0) {
-                ChatSender.MessageTo(tempPlayer, "UselessClan", "type &a/Clan top 2&b - to show commands in page 2");
+                ChatSender.NonTranslateMessageTo(tempPlayer, "UselessClan", String.format(
+                        UselessClan.getLocalManager().getLocalizationMessage("Top.PageCommand"), 2, 2));
             }
             return true;
         }
@@ -48,24 +50,24 @@ public class topUserCommand extends PlayerCommandBase {
             int pageNum = Integer.parseInt(args[1]);
             if (pageNum > 0 && pageNum < tempTopListClans.size() && (pageNum - 1) * numClansInOnePage < tempTopListClans.size()) {
                 int tempRow = 0;
-                ChatSender.MessageTo(tempPlayer, "UselessClan",
-                        String.format("&b########## CLAN TOP %d ##########", pageNum));
+                ChatSender.NonTranslateMessageTo(tempPlayer, "UselessClan", String.format(
+                        UselessClan.getLocalManager().getLocalizationMessage("Top.Label"), pageNum));
                 for (int i = (pageNum - 1) * numClansInOnePage; i < tempTopListClans.size(); ++i) {
-                    ChatSender.MessageTo(tempPlayer, "UselessClan", String.format("&b#%d) %s : &e%d : &a%d",(tempRow + 1) * pageNum,
+                    ChatSender.NonTranslateMessageTo(tempPlayer, "UselessClan", String.format("&b#%d) %s : &e%d : &a%d",(tempRow + 1) * pageNum,
                             tempTopListClans.get(i).ClanName, tempTopListClans.get(i).ClanLevel, tempTopListClans.get(i).ClanMoney));
                     ++tempRow;
                     if (tempRow == numClansInOnePage) break;
                 }
                 if (tempTopListClans.size() - (pageNum * numClansInOnePage) > 0) {
                     final int pageNumPlus = pageNum + 1;
-                    ChatSender.MessageTo(tempPlayer, "UselessClan",
-                            String.format("type &a/Clan top %d&b - to show commands in page %d", pageNumPlus, pageNumPlus));
+                    ChatSender.NonTranslateMessageTo(tempPlayer, "UselessClan", String.format(
+                            UselessClan.getLocalManager().getLocalizationMessage("Top.PageCommand"), pageNumPlus, pageNumPlus));
                 }
                 return true;
             }
         }
         //  /Clan help (not a number or too big)
-        ChatSender.MessageTo(tempPlayer, "UselessClan", "&cThis page of clans top isn't found");
+        ChatSender.MessageTo(tempPlayer, "UselessClan", "Top.WrongPage");
         return false;
     }
 }

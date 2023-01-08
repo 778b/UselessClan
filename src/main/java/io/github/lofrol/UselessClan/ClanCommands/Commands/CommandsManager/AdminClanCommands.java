@@ -16,14 +16,17 @@ import static java.util.Map.entry;
 
 public class AdminClanCommands {
     private static final Map<String, CommandBase> ClanCommands = Map.ofEntries(
-            entry("help",        new helpAdminCommand()),
-            entry("list",        new listAdminCommand()),
-            entry("info",        new infoAdminCommand()),
-            entry("mates",       new matesAdminCommand()),
-            entry("delete",      new deleteAdminCommand()),
-            entry("home",        new homeAdminCommand()),
-            entry("calclvl",     new calclvlAdminCommand()),
-            entry("level",       new levelAdminCommand())
+            entry("help",       new helpAdminCommand()),
+            entry("list",       new listAdminCommand()),
+            entry("info",       new infoAdminCommand()),
+            entry("mates",      new matesAdminCommand()),
+            entry("requests",   new requestsAdminCommand()),
+            entry("delete",     new deleteAdminCommand()),
+            entry("home",       new homeAdminCommand()),
+            entry("calclvl",    new calclvlAdminCommand()),
+            entry("level",      new levelAdminCommand()),
+            entry("debuginfo",  new debugInfoAdminCommand()),
+            entry("forcejoin",  new forceJoinAdminCommand())
     );
 
     public static CommandBase getCommand(String key) {

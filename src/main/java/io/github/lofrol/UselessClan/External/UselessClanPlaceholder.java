@@ -49,7 +49,7 @@ public final class UselessClanPlaceholder extends PlaceholderExpansion {
         if(params.equalsIgnoreCase("prefix")) {
             Clan tempClan = UselessClan.getMainManager().FindClanToPlayer(player.getName());
             if (tempClan == null) return "";
-            return String.format("&r[%s%s&r]", ClanManager.ClanLevelColors[tempClan.getClanLevel()], tempClan.getPrefixClan());
+            return String.format("&r[%s%s&r]", ClanManager.ClanLevelColors.get(tempClan.getClanLevel()), tempClan.getPrefixClan());
         }
         else if (params.equalsIgnoreCase("role")) {
             Clan tempClan = UselessClan.getMainManager().FindClanToPlayer(player.getName());

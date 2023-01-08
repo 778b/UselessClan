@@ -14,26 +14,11 @@ import java.io.IOException;
 import java.util.*;
 import java.util.logging.Level;
 
+import static io.github.lofrol.UselessClan.SerializationManager.*;
 import static org.bukkit.Bukkit.getServer;
 
 public final class ClanManager {
-    public final static String[] ClanLevelColors = {
-            "&f",       //0 lvl
-            "&a",       //1 lvl
-            "&2",       //2 lvl
-            "&3",       //3 lvl
-            "&9",       //4 lvl
-            "&1",       //5 lvl
-            "&e",       //6 lvl
-            "&6",       //7 lvl
-            "&d",       //8 lvl
-            "&5",       //9 lvl
-            "&0",       //10 lvl
-    };
-
-    private static final String ClanFolderName = "Clans";
-    private static final String DeletedClanFolder = "DeletedClans";
-    private static final String backupClanFolder = "backups";
+    public static List<String> ClanLevelColors;
 
     private final UselessClan OwnerPlugin;
 
@@ -48,6 +33,8 @@ public final class ClanManager {
 
         Extension = extension;
         OwnerPlugin = owner;
+
+        ClanManager.ClanLevelColors = UselessClan.getConfigManager().getClanConfig().getClanLevelsColors();
     }
 
     public static String ClanRoleSolver(EClanRole role) {
@@ -61,7 +48,9 @@ public final class ClanManager {
     }
     public void CalculateClanLevel(Clan ClanToLevel) {
         // Overriding by extensions if needed
-        Extension.CalculateClanLevel(ClanToLevel);
+        if (UselessClan.getConfigManager().getClanConfig().isNeedCalculateClanLevels()) {
+            Extension.CalculateClanLevel(ClanToLevel);
+        }
     }
 
     public void CalculateAllClansLevels() {
@@ -96,7 +85,7 @@ public final class ClanManager {
      */
     public void LoadClans() {
 
-        File tempDir = checkClanFolderOrCreate(ClanFolderName);
+        File tempDir = UselessClan.getSerilManager().checkClanFolderOrCreate(ClanFolderName);
 
         for (File tempClanFile : Objects.requireNonNull(tempDir.listFiles())) {
             FileConfiguration ClanConfig = new YamlConfiguration();
@@ -118,7 +107,7 @@ public final class ClanManager {
 
     public void SaveClans() {
 
-        File tempDir = checkClanFolderOrCreate(ClanFolderName);
+        File tempDir = UselessClan.getSerilManager().checkClanFolderOrCreate(ClanFolderName);
 
         OwnerPlugin.getLogger().log(Level.INFO, "Starting save clans to plugin folder...");
         for (Clan TempClan : ServerClans.values()) {
@@ -134,15 +123,6 @@ public final class ClanManager {
     private void SaveClan(Clan clanToSave, File clanFolder) throws IOException {
         File tempClanFile = new File(clanFolder, String.format("%s.yml", clanToSave.getPrefixClan()));
 
-        /* todo Check after update any clan config
-        if (tempClanFile.exists()) {
-            if (tempClanFile.delete()) {
-                OwnerPlugin.getLogger().log(Level.FINE, String.format("%s delete previous config", clanToSave.getNameClan()));
-            }
-            OwnerPlugin.getLogger().log(Level.FINE, String.format("%s didnt find previous config", clanToSave.getNameClan()));
-        }
-        */
-
         FileConfiguration ClanConfig = clanToSave.SaveClanToConfig();
         if (ClanConfig == null) {
             OwnerPlugin.getLogger().log(Level.FINE, String.format("%s was skipped save", clanToSave.getNameClan()));
@@ -155,8 +135,8 @@ public final class ClanManager {
     }
 
     private void RemoveClanToDeletedClanFolder(Clan clanToDelete) {
-        File tempDeleteDir = checkClanFolderOrCreate(DeletedClanFolder);
-        File tempClanDir = checkClanFolderOrCreate(ClanFolderName);
+        File tempDeleteDir = UselessClan.getSerilManager().checkClanFolderOrCreate(DeletedClanFolder);
+        File tempClanDir = UselessClan.getSerilManager().checkClanFolderOrCreate(ClanFolderName);
 
         FileConfiguration ClanConfig = clanToDelete.SaveClanToConfig();
         boolean isDeleted = false;
@@ -190,27 +170,6 @@ public final class ClanManager {
         OwnerPlugin.getLogger().log(Level.FINE, String.format("%s was deleted successfully", clanToDelete.getPrefixClan()));
     }
 
-
-    // Return Clans folder
-    private File checkClanFolderOrCreate(String FolderName) {
-        if (!checkFolderOrCreate(OwnerPlugin.getDataFolder())) {
-            OwnerPlugin.getLogger().log(Level.SEVERE, "Cant create plugin folder!");
-        }
-
-        File tempDir = new File(OwnerPlugin.getDataFolder(), FolderName);
-
-        if (checkFolderOrCreate(tempDir)) {
-            OwnerPlugin.getLogger().log(Level.INFO, String.format("Checked %s folder for exist", FolderName));
-        }
-        else {
-            OwnerPlugin.getLogger().log(Level.SEVERE, String.format("Cant create %s folder!", FolderName));
-        }
-        return tempDir;
-    }
-
-    private boolean checkFolderOrCreate(File Folder) {
-        return (Folder.exists() || Folder.mkdir());
-    }
 
 
     /*
@@ -264,13 +223,14 @@ public final class ClanManager {
         RegisterOnlineClanPlayer(tempClan, player);
         getServer().getScheduler().runTaskLater(OwnerPlugin, () -> {
             if (playerRole == EClanRole.LEADER || playerRole == EClanRole.OFFICER) {
-                ChatSender.MessageTo(player,"UselessClan",
-                        String.format("Your clan have %d requests for join! ./clan requests", tempClan.getRequestCount()));
+                ChatSender.NonTranslateMessageTo(player,"UselessClan", String.format(
+                        UselessClan.getLocalManager().getLocalizationMessage(
+                                "Enter.HaveRequestsOnJoin"), tempClan.getRequestCount()));
             }
-        }
-                , 200);
+        }, 200);
 
-        OwnerPlugin.getLogger().log(Level.INFO, String.format( "Clan member %s Join to server, his clan is %s", player.getName(), tempClan.getNameClan()));
+        OwnerPlugin.getLogger().log(Level.INFO, String.format(
+                "Clan member %s Join to server, his clan is %s", player.getName(), tempClan.getNameClan()));
     }
     public void OnPlayerLeave(Player player) {
         OnlinePlayerClan tempOnlinePlayer = OnlineClanPlayers.get(player);
@@ -284,20 +244,16 @@ public final class ClanManager {
 
     public void createClansBackups() {
         OwnerPlugin.getLogger().log(Level.INFO, "Starting backup of server clans...");
-        File tempDir = checkClanFolderOrCreate(backupClanFolder);
+        File tempDir = UselessClan.getSerilManager().checkClanFolderOrCreate(backupClanFolder);
 
         Calendar tempDate = Calendar.getInstance();
 
-        File todayBackupFile = new File(tempDir, String.format("%d-%d-%d_%d:%d_ClansBackup",
+        File todayBackupFile = new File(tempDir, String.format("%d-%d-%d_%d-%d_ClansBackup",
                 tempDate.get(Calendar.DAY_OF_MONTH), tempDate.get(Calendar.MONTH), tempDate.get(Calendar.YEAR),
                 tempDate.get(Calendar.HOUR), tempDate.get(Calendar.MINUTE)));
 
-        if (!todayBackupFile.exists()) {
-            if (todayBackupFile.mkdir()) {
-                OwnerPlugin.getLogger().log(Level.INFO, "Creating folder for backups...");
-            }
-            return;
-        }
+        UselessClan.getSerilManager().checkFolderOrCreate(todayBackupFile);
+
         for (Clan tempClan : ServerClans.values()) {
             File tempClanFile = new File(todayBackupFile, String.format("%s.yml", tempClan.getPrefixClan()));
             FileConfiguration tempConfig = tempClan.SaveClanToConfig();
