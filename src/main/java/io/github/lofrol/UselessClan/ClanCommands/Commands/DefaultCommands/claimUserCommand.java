@@ -35,7 +35,8 @@ public class claimUserCommand extends PlayerCommandBase {
 
     @Override
     public boolean havePermission(Player tempPlayer, Clan senderClan, EClanRole senderRole) {
-        return (WorldGuardPlugin.inst() != null && senderRole.ordinal() >= EClanRole.OFFICER.ordinal());
+        if (WorldGuardPlugin.inst() == null || senderClan == null) return false;
+        return (senderRole.ordinal() >= EClanRole.OFFICER.ordinal());
     }
 
     @Override
