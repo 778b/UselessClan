@@ -7,12 +7,19 @@ import io.github.lofrol.UselessClan.UselessClan;
 import io.github.lofrol.UselessClan.Utils.ChatSender;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 public class forceJoinAdminCommand extends CommandBase {
     @Override
     public boolean havePermission(CommandSender sender) {
         return sender instanceof Player;
     }
+
+    @Override
+    public @NotNull String commandDescription() {
+        return "Description.Admin.forceJoin";
+    }
+
 
     @Override
     public boolean executeCommand(CommandSender sender, String[] args) {

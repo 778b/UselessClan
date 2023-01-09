@@ -3,12 +3,19 @@ package io.github.lofrol.UselessClan.ClanCommands.Commands.AdminCommands;
 import io.github.lofrol.UselessClan.ClanCommands.Commands.CommandBase;
 import io.github.lofrol.UselessClan.Utils.ChatSender;
 import org.bukkit.command.CommandSender;
+import org.jetbrains.annotations.NotNull;
 
 public class helpAdminCommand extends CommandBase {
     @Override
     public boolean havePermission(CommandSender sender) {
         return true;
     }
+
+    @Override
+    public @NotNull String commandDescription() {
+        return "Description.Admin.help";
+    }
+
 
     @Override
     public boolean executeCommand(CommandSender sender, String[] args) {

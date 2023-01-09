@@ -6,12 +6,19 @@ import io.github.lofrol.UselessClan.ClanObjects.ClanMember;
 import io.github.lofrol.UselessClan.UselessClan;
 import io.github.lofrol.UselessClan.Utils.ChatSender;
 import org.bukkit.command.CommandSender;
+import org.jetbrains.annotations.NotNull;
 
 public class requestsAdminCommand extends CommandBase {
     @Override
     public boolean havePermission(CommandSender sender) {
         return true;
     }
+
+    @Override
+    public @NotNull String commandDescription() {
+        return "Description.Admin.requests";
+    }
+
 
     @Override
     public boolean executeCommand(CommandSender sender, String[] args) {

@@ -6,12 +6,19 @@ import io.github.lofrol.UselessClan.UselessClan;
 import io.github.lofrol.UselessClan.Utils.ChatSender;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 public class homeAdminCommand extends CommandBase {
     @Override
     public boolean havePermission(CommandSender sender) {
         return true;
     }
+
+    @Override
+    public @NotNull String commandDescription() {
+        return "Description.Admin.home";
+    }
+
 
     @Override
     public boolean executeCommand(CommandSender sender, String[] args) {

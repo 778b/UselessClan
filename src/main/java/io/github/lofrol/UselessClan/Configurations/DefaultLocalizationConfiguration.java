@@ -168,6 +168,20 @@ public class DefaultLocalizationConfiguration extends YamlConfiguration {
         set("Description.Settings",                 "&a/Clan settings help&b - to show help about settings of your clan");
         set("Description.Top",                      "&a/Clan top&b - top of all clans");
         set("Description.Withdraw",                 "&a/Clan withdraw %value&b - to withdraw money from your clan");
+
+        set("Description.Admin.calclvl",            "&a/ClAd calclvl %name&b - force recalculate %name clan level");
+        set("Description.Admin.debugInfo",          "&a/ClAd debuginfo %name&b - show debug info about clan %name");
+        set("Description.Admin.delete",             "&a/ClAd calclvl %name&b - force delete clan %name");
+        set("Description.Admin.forceJoin",          "&a/ClAd forcejoin %name&b - force join to clan %name");
+        set("Description.Admin.help",               "&a/ClAd help - to show this menu");
+        set("Description.Admin.home",               "&a/ClAd home %name&b - teleport to home of clan %name");
+        set("Description.Admin.info",               "&a/ClAd info %name&b - show info about clan %name");
+        set("Description.Admin.level",              "&a/ClAd level %name&b %level - to set %level for clan %name");
+        set("Description.Admin.list",               "&a/ClAd list - to show all server clans");
+        set("Description.Admin.mates",              "&a/ClAd mates %name&b - to show all mates in clan %name");
+        set("Description.Admin.requests",           "&a/ClAd requests %name&b - to show all requests in clan %name");
+
+        set("Description.General.version",          "&a/UselessClan version - to show plugin version");
         setComments("Description", List.of(" ", " "));
     }
 }

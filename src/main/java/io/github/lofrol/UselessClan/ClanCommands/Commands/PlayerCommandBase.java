@@ -39,7 +39,6 @@ public abstract class PlayerCommandBase extends CommandBase {
         return havePermission(tempPlayer, senderClan, senderRole);
     }
 
-    public abstract @NotNull String commandDescription();
     public abstract boolean havePermission(Player tempPlayer, @Nullable Clan senderClan, @Nullable EClanRole senderRole);
     public abstract boolean executeCommand(Player tempPlayer, Clan senderClan, String[] args);
 }
