@@ -23,18 +23,24 @@
 #### /Clan claim                 - to claim clan region
 #### /Clan sethome               - to set clan home
 #### /Clan requests              - to see list of all requests to join your clan
+#### /Clan settings              - to access to clan settings
 #### /Clan accept [playername]   - to accept [playername] for join to your clan
+#### /Clan decline [playername]  - to decline [playername] for join to your clan
 #### /Clan kick [playername]     - to kick player [playername] from your clan
 #### /Clan promote [playername]  - to promote player [playername] of your clan
 #### /Clan demote [playername]   - to demote player [playername] of your clan
 #### /Clan delete                - to delete clan(remove clan and save last config to DeletedCLan folder)
 #
 ## Admin's commands
+#### /ClAd calclvl %name         - to force calculate clan level
 #### /ClAd list                  - list of all clans
-#### /ClAd info %name            - to info any clan
-#### /ClAd mates %name           - to mates any clan
-#### /ClAd delete %name          - to info any clan
-#### /ClAd level %name %level    - to force level any clan
+#### /ClAd info %name            - to show info of any clan
+#### /ClAd forcejoin %name       - to join of any clan
+#### /ClAd debuginfo %name       - to show debug info of any clan
+#### /ClAd requests %name        - to show requests of any clan
+#### /ClAd mates %name           - to show mates of any clan
+#### /ClAd delete %name          - to delete 0f any clan
+#### /ClAd level %name %level    - to force level 0f any clan
 
 
 ## IN ACTIVE DEVELOPMENT
