@@ -59,6 +59,10 @@ public final class UselessClan extends JavaPlugin {
         MainManager.SaveClans();
     }
 
+
+    public static void reloadPlugin() {
+
+    }
     /*
     *   Getters section
     */

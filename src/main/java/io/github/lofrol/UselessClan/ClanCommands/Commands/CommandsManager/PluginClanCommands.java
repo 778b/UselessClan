@@ -3,6 +3,7 @@ package io.github.lofrol.UselessClan.ClanCommands.Commands.CommandsManager;
 import io.github.lofrol.UselessClan.ClanCommands.Commands.CommandBase;
 import io.github.lofrol.UselessClan.ClanCommands.Commands.DefaultCommands.*;
 import io.github.lofrol.UselessClan.ClanCommands.Commands.PlayerCommandBase;
+import io.github.lofrol.UselessClan.ClanCommands.Commands.PluginCommands.reloadGeneralCommand;
 import io.github.lofrol.UselessClan.ClanCommands.Commands.PluginCommands.versionUserCommand;
 import io.github.lofrol.UselessClan.ClanObjects.Clan;
 import io.github.lofrol.UselessClan.ClanObjects.EClanRole;
@@ -17,7 +18,8 @@ import static java.util.Map.entry;
 
 public class PluginClanCommands {
     private static final Map<String, CommandBase> ClanCommands = Map.ofEntries(
-            entry("version",       new versionUserCommand())
+            entry("version",       new versionUserCommand()),
+            entry("reload",        new reloadGeneralCommand())       
     );
 
     public static CommandBase getCommand(String key) {
