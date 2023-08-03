@@ -28,6 +28,7 @@ public class BaseClanCommands {
             entry("withdraw",   new withdrawUserCommand()),
             entry("home",       new homeUserCommand()),
             entry("sethome",    new sethomeUserCommand()),
+            entry("settreasure",new settreasureUserCommand()),
             entry("info",       new infoUserCommand()),
             entry("mates",      new matesUserCommand()),
             entry("accept",     new acceptUserCommand()),
