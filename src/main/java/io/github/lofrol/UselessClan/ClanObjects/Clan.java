@@ -35,6 +35,8 @@ public class Clan {
 
     private Location HomeClan;
 
+    private Location TreasureClan;
+
     private final ClanSettings SettingsClan;
 
     private double MoneyClan;
@@ -45,7 +47,7 @@ public class Clan {
 
     // Creating by file loader
     private Clan(String ClanPrefix, String ClanName, String LeaderName,
-                Double MoneyClan, Location HomeClan, List<String> Requests,
+                Double MoneyClan, Location HomeClan, Location TreasureClan, List<String> Requests,
                 List<ClanMember> Members, String DescriptionClan, ClanSettings SettingsClan,
                 int level, String RegionName)  {
         this.PrefixClan = ClanPrefix;
@@ -56,6 +58,7 @@ public class Clan {
         this.MoneyClan = MoneyClan;
         this.DescriptionClan = DescriptionClan;
         this.HomeClan = HomeClan;
+        this.TreasureClan = TreasureClan;
         this.SettingsClan = SettingsClan;
         this.ClanLevel = level;
         this.ClanRegionId = RegionName;
@@ -91,6 +94,13 @@ public class Clan {
             ClanConfig.set("UselessClan.Home.Z",HomeClan.getBlockZ());
         }
 
+        ClanConfig.set("UselessClan.Treasure.exists", (TreasureClan != null));
+        if (TreasureClan != null) {
+            ClanConfig.set("UselessClan.Treasure.X",TreasureClan.getBlockX());
+            ClanConfig.set("UselessClan.Treasure.Y",TreasureClan.getBlockY());
+            ClanConfig.set("UselessClan.Treasure.Z",TreasureClan.getBlockZ());
+        }
+
         ClanConfig.set("UselessClan.Members.size", Members.size());
         for (int i = 0; i< Members.size(); ++i) {
             ClanMember tempMember = Members.get(i);
@@ -124,6 +134,17 @@ public class Clan {
             HomeClan = new Location(tempWorld, tempX,tempY,tempZ);
         }
         // Home end
+
+        // Treasure start
+        Location TreasureClan = null;
+        if (ClanConfig.getBoolean("UselessClan.Treasure.exists")) {
+            int tempX = ClanConfig.getInt("UselessClan.Treasure.X");
+            int tempY = ClanConfig.getInt("UselessClan.Treasure.Y");
+            int tempZ = ClanConfig.getInt("UselessClan.Treasure.Z");
+            World tempWorld = getServer().getWorld("world");
+            TreasureClan = new Location(tempWorld, tempX,tempY,tempZ);
+        }
+        // Treasure end
 
         // Requests start
         List<String> TempRequest = new ArrayList<>();
@@ -189,7 +210,7 @@ public class Clan {
 
         if (ClanPrefix != null && ClanName != null && LeaderName != null && DescriptionClan != null) {
             return new Clan(ClanPrefix, ClanName, LeaderName, MoneyClan,
-                    HomeClan, TempRequest, TempMembers, DescriptionClan,
+                    HomeClan, TreasureClan, TempRequest, TempMembers, DescriptionClan,
                     TempSettings, ClanLevel, ClanRegion);
         }
         return null;
@@ -208,6 +229,7 @@ public class Clan {
         ClanRegionId = null;
         DescriptionClan = "Description of your clan";
         HomeClan = null;
+        TreasureClan = null;
         SettingsClan = new ClanSettings();
 
         NeedToSave = true;
@@ -377,6 +399,8 @@ public class Clan {
     public String getPrefixClan() { return PrefixClan; }
     public double getMoneyClan() { return MoneyClan; }
     public Location getHomeClan() { return HomeClan; }
+    public Location getTreasureClan() { return TreasureClan; }
+
     public List<String> getRequests() { return Requests; }
     public int getRequestCount() { return Requests.size(); }
     public String getClanRegionId() { return ClanRegionId; }
@@ -409,6 +433,12 @@ public class Clan {
         HomeClan = newHomeLocation;
         NeedToSave = true;
     }
+
+    public void setTreasureClan(Location newTreasureClan) {
+        TreasureClan = newTreasureClan;
+        NeedToSave = true;
+    }
+
 
     public void DepositMoneyToClan(double moneyClan) {
         MoneyClan += moneyClan;
