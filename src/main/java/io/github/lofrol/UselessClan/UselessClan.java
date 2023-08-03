@@ -123,7 +123,9 @@ public final class UselessClan extends JavaPlugin {
 
         if (getConfigManager().getClanConfig().isNeedCalculateClanLevels()) {
             getServer().getScheduler().runTaskTimerAsynchronously(this, () -> {
-                getMainManager().CalculateAllClansLevels(); },
+                    getMainManager().CalculateAllClansLevels(
+                            getConfigManager().getClanConfig().isUseExtendCalculateClanLevels());
+                },
                     getConfigManager().getClanConfig().getCalcClanLvlDelay(),
                     getConfigManager().getClanConfig().getCalcClanLvlDelay());
         }

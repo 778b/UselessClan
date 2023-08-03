@@ -46,16 +46,25 @@ public final class ClanManager {
             default -> "";
         };
     }
-    public void CalculateClanLevel(Clan ClanToLevel) {
+    public void CalculateClanLevelExtension(Clan ClanToLevel) {
         // Overriding by extensions if needed
-        if (UselessClan.getConfigManager().getClanConfig().isNeedCalculateClanLevels()) {
-            Extension.CalculateClanLevel(ClanToLevel);
-        }
+        Extension.CalculateClanLevel(ClanToLevel);
     }
 
-    public void CalculateAllClansLevels() {
-        for (Clan tempClan : ServerClans.values()) {
-            CalculateClanLevel(tempClan);
+    public void CalculateClanLevelDefault(Clan ClanToLevel) {
+        
+    }
+
+    public void CalculateAllClansLevels(boolean isDefault) {
+        if (isDefault) {
+            for (Clan tempClan : ServerClans.values()) {
+                CalculateClanLevelDefault(tempClan);
+            }
+        }
+        else {
+            for (Clan tempClan : ServerClans.values()) {
+                CalculateClanLevelExtension(tempClan);
+            }
         }
     }
     public void CreateClan(String ClanName, Player LeaderPlayer) {

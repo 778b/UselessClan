@@ -19,7 +19,7 @@ import static java.util.Map.entry;
 public class PluginClanCommands {
     private static final Map<String, CommandBase> ClanCommands = Map.ofEntries(
             entry("version",       new versionUserCommand()),
-            entry("reload",        new reloadGeneralCommand())       
+            entry("reload",        new reloadGeneralCommand())
     );
 
     public static CommandBase getCommand(String key) {
