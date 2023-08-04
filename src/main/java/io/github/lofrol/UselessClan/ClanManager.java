@@ -4,10 +4,14 @@ import io.github.lofrol.UselessClan.ClanObjects.*;
 import io.github.lofrol.UselessClan.Extensions.ClanManagerExtension;
 import io.github.lofrol.UselessClan.Utils.ChatSender;
 import io.github.lofrol.UselessClan.Utils.TopClanCounter;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.IOException;
@@ -46,13 +50,45 @@ public final class ClanManager {
             default -> "";
         };
     }
-    public void CalculateClanLevelExtension(Clan ClanToLevel) {
+    public void CalculateClanLevelExtension(@NotNull Clan ClanToLevel) {
         // Overriding by extensions if needed
         Extension.CalculateClanLevel(ClanToLevel);
     }
 
-    public void CalculateClanLevelDefault(Clan ClanToLevel) {
+    public void CalculateClanLevelDefault(@NotNull Clan ClanToLevel) {
+        Location tempTreasure = ClanToLevel.getTreasureClan();
+        if (tempTreasure == null) {
+            ClanToLevel.setClanLevel(0);
+            return;
+        }
+        float tempX = tempTreasure.getBlockX() + 4 ;
+        float tempY = tempTreasure.getBlockY() + 3;
+        float tempZ = tempTreasure.getBlockZ() + 4;
+        int GoldBlockCount = 0;
+        int DiamondBlockCount = 0;
+        int EmeraldBlockCount = 0;
         
+        for (int i = tempTreasure.getBlockX() - 4; i < tempX; ++i) {
+            for (int j = tempTreasure.getBlockY(); j < tempY; ++j) {
+                for (int k = tempTreasure.getBlockZ(); k < tempZ; ++ k) {
+                    Block tempBlock = tempTreasure.getWorld().getBlockAt(i,j,k);
+                    if (tempBlock.getType() == Material.GOLD_BLOCK) {
+                        GoldBlockCount++;
+                    }
+                    else if (tempBlock.getType() == Material.DIAMOND_BLOCK) {
+                        DiamondBlockCount++;
+                    }
+                    else if (tempBlock.getType() == Material.EMERALD_BLOCK) {
+                        EmeraldBlockCount++;
+                    }
+                }
+            }
+        }
+        int MaxRating = 972;
+        int Rating = GoldBlockCount + (DiamondBlockCount * 2) + (EmeraldBlockCount * 3);
+        float level = (float)Rating / (float)MaxRating * 10.f;
+
+        ClanToLevel.setClanLevel((int)level);
     }
 
     public void CalculateAllClansLevels(boolean isDefault) {

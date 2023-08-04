@@ -58,10 +58,10 @@ public class claimUserCommand extends PlayerCommandBase {
             return false;
         }
 
-        if (senderClan.getClanLevel() < 1) {
-            ChatSender.MessageTo(tempPlayer, "UselessClan", "WG.ZeroLvlClanClaim");
-            return false;
-        }
+        //if (senderClan.getClanLevel() < 1) {
+        //    ChatSender.MessageTo(tempPlayer, "UselessClan", "WG.ZeroLvlClanClaim");
+        //    return false;
+        //}
 
         RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
         RegionManager tempRegionManager = container.get(BukkitAdapter.adapt(tempPlayer.getWorld()));
@@ -95,10 +95,10 @@ public class claimUserCommand extends PlayerCommandBase {
         {
             double tempDistance = Math.sqrt(Math.pow(tempRegion.getMaximumPoint().getBlockX() - tempRegion.getMinimumPoint().getBlockX(), 2)
                     + Math.pow(tempRegion.getMaximumPoint().getBlockZ() - tempRegion.getMinimumPoint().getBlockZ(), 2));
-            if (tempDistance > senderClan.getClanLevel() * 50) {
+            if (tempDistance > (senderClan.getClanLevel() + 1) * 50) {
                 ChatSender.NonTranslateMessageTo(tempPlayer, "UselessClan",
                         String.format(UselessClan.getLocalManager().getLocalizationMessage(
-                                "WG.SelectedAreaIsTooBig"), senderClan.getClanLevel() * 75, tempDistance));
+                                "WG.SelectedAreaIsTooBig"), (senderClan.getClanLevel() + 1) * 75, tempDistance));
                 return false;
             }
         }
