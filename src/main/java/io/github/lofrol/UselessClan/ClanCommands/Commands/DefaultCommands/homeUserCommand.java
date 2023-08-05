@@ -17,7 +17,7 @@ public class homeUserCommand extends PlayerCommandBase {
 
     @Override
     public boolean havePermission(Player tempPlayer, Clan senderClan, EClanRole senderRole) {
-        return true;
+        return senderClan != null;
     }
 
     @Override

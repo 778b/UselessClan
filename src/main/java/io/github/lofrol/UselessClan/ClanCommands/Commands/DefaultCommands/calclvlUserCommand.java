@@ -39,7 +39,7 @@ public class calclvlUserCommand extends PlayerCommandBase {
         }
 
         UselessClan.getMainManager().CalculateClanLevel(senderClan);
-        ChatSender.MessageTo(tempPlayer, "&4UselessClan", "Level.SuccessfullyCalculation");
+        ChatSender.MessageTo(tempPlayer, "&4UselessClan", "Treasure.SuccessfullyCalculation");
         return true;
     }
 }

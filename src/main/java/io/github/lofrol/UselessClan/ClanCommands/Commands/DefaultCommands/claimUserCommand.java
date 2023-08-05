@@ -95,10 +95,11 @@ public class claimUserCommand extends PlayerCommandBase {
         {
             double tempDistance = Math.sqrt(Math.pow(tempRegion.getMaximumPoint().getBlockX() - tempRegion.getMinimumPoint().getBlockX(), 2)
                     + Math.pow(tempRegion.getMaximumPoint().getBlockZ() - tempRegion.getMinimumPoint().getBlockZ(), 2));
-            if (tempDistance > (senderClan.getClanLevel() + 1) * 50) {
+            // @todo distance from config
+            if (tempDistance > (senderClan.getClanLevel() + 1) * 75) {
                 ChatSender.NonTranslateMessageTo(tempPlayer, "UselessClan",
                         String.format(UselessClan.getLocalManager().getLocalizationMessage(
-                                "WG.SelectedAreaIsTooBig"), (senderClan.getClanLevel() + 1) * 50, (int)tempDistance));
+                                "WG.SelectedAreaIsTooBig"), (senderClan.getClanLevel() + 1) * 75, (int)tempDistance));
                 return false;
             }
         }
