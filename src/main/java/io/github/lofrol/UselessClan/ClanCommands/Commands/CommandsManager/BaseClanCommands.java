@@ -21,6 +21,7 @@ public class BaseClanCommands {
             entry("requests",   new requestsUserCommand()),
             entry("top",        new topUserCommand()),
             entry("claim",      new claimUserCommand()),
+            entry("calclvl",    new calclvlUserCommand()),
             entry("create",     new createUserCommand()),
             entry("delete",     new deleteUserCommand()),
             entry("leave",      new leaveUserCommand()),

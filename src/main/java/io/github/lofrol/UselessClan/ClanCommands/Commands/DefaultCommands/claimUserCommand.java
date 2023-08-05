@@ -98,7 +98,7 @@ public class claimUserCommand extends PlayerCommandBase {
             if (tempDistance > (senderClan.getClanLevel() + 1) * 50) {
                 ChatSender.NonTranslateMessageTo(tempPlayer, "UselessClan",
                         String.format(UselessClan.getLocalManager().getLocalizationMessage(
-                                "WG.SelectedAreaIsTooBig"), (senderClan.getClanLevel() + 1) * 75, tempDistance));
+                                "WG.SelectedAreaIsTooBig"), (senderClan.getClanLevel() + 1) * 50, (int)tempDistance));
                 return false;
             }
         }

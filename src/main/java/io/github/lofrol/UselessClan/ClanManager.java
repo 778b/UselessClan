@@ -50,6 +50,15 @@ public final class ClanManager {
             default -> "";
         };
     }
+    public void CalculateClanLevel(@NotNull Clan ClanToLevel) {
+        if (UselessClan.getConfigManager().getClanConfig().isUseExtendCalculateClanLevels()) {
+            CalculateClanLevelExtension(ClanToLevel);
+        }
+        else {
+            CalculateClanLevelDefault(ClanToLevel);
+        }
+    }
+
     public void CalculateClanLevelExtension(@NotNull Clan ClanToLevel) {
         // Overriding by extensions if needed
         Extension.CalculateClanLevel(ClanToLevel);
@@ -61,16 +70,17 @@ public final class ClanManager {
             ClanToLevel.setClanLevel(0);
             return;
         }
-        float tempX = tempTreasure.getBlockX() + 4 ;
-        float tempY = tempTreasure.getBlockY() + 3;
-        float tempZ = tempTreasure.getBlockZ() + 4;
+        float radius = 5;
+        float tempX = tempTreasure.getBlockX() + radius + 1;
+        float tempY = tempTreasure.getBlockY() + 5;
+        float tempZ = tempTreasure.getBlockZ() + radius + 1;
         int GoldBlockCount = 0;
         int DiamondBlockCount = 0;
         int EmeraldBlockCount = 0;
         
-        for (int i = tempTreasure.getBlockX() - 4; i < tempX; ++i) {
+        for (int i = tempTreasure.getBlockX() - (int)radius; i < tempX; ++i) {
             for (int j = tempTreasure.getBlockY(); j < tempY; ++j) {
-                for (int k = tempTreasure.getBlockZ(); k < tempZ; ++ k) {
+                for (int k = tempTreasure.getBlockZ() - (int)radius; k < tempZ; ++ k) {
                     Block tempBlock = tempTreasure.getWorld().getBlockAt(i,j,k);
                     if (tempBlock.getType() == Material.GOLD_BLOCK) {
                         GoldBlockCount++;
@@ -84,10 +94,13 @@ public final class ClanManager {
                 }
             }
         }
-        int MaxRating = 972;
+        int MaxRating = 1452;
         int Rating = GoldBlockCount + (DiamondBlockCount * 2) + (EmeraldBlockCount * 3);
         float level = (float)Rating / (float)MaxRating * 10.f;
 
+        getServer().getLogger().log(Level.INFO,
+                String.format("[UselessClan] Calculated level of clan %s, Points = %d, Max Points = %d",
+                        ClanToLevel.getPrefixClan(), Rating, MaxRating));
         ClanToLevel.setClanLevel((int)level);
     }
 
@@ -168,7 +181,7 @@ public final class ClanManager {
     private void SaveClan(Clan clanToSave, File clanFolder) throws IOException {
         File tempClanFile = new File(clanFolder, String.format("%s.yml", clanToSave.getPrefixClan()));
 
-        FileConfiguration ClanConfig = clanToSave.SaveClanToConfig();
+        FileConfiguration ClanConfig = clanToSave.SaveClanToConfig(false);
         if (ClanConfig == null) {
             OwnerPlugin.getLogger().log(Level.FINE, String.format("%s was skipped save", clanToSave.getNameClan()));
             return;
@@ -183,7 +196,7 @@ public final class ClanManager {
         File tempDeleteDir = UselessClan.getSerilManager().checkClanFolderOrCreate(DeletedClanFolder);
         File tempClanDir = UselessClan.getSerilManager().checkClanFolderOrCreate(ClanFolderName);
 
-        FileConfiguration ClanConfig = clanToDelete.SaveClanToConfig();
+        FileConfiguration ClanConfig = clanToDelete.SaveClanToConfig(true);
         boolean isDeleted = false;
 
 
@@ -301,7 +314,7 @@ public final class ClanManager {
 
         for (Clan tempClan : ServerClans.values()) {
             File tempClanFile = new File(todayBackupFile, String.format("%s.yml", tempClan.getPrefixClan()));
-            FileConfiguration tempConfig = tempClan.SaveClanToConfig();
+            FileConfiguration tempConfig = tempClan.SaveClanToConfig(false);
             if (tempConfig == null) continue;
             try {
                 tempConfig.save(tempClanFile);
