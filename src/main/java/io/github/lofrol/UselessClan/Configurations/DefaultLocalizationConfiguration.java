@@ -101,9 +101,11 @@ public class DefaultLocalizationConfiguration extends YamlConfiguration {
         set("Economy.NotEnoughMoney",               "&cYou cant withdraw &a%s&c from you clan");
         set("Economy.DepositPlayer",                "Player &a%s&b deposit &a%s&b to your clan!");
         set("Economy.WithdrawPlayer",               "Player &a%s&b withdraw &a%s&b from clan balance");
+        // @todo 1000$ must be in plugin config
+        set("Economy.NotEnoughMoneyForCalculate",   "&cYou need 1000$ for force calculate clan level!");
         setComments("Economy", List.of(" ", " "));
 
-        set("Help.Label",                           "------------- CLAN HELP %d -------------");
+        set("Help.Label",                           "--------- CLAN HELP %d ---------");
         set("Help.ClanPageCommand",                 "Type &a/Clan help %d&b - to show commands in page %d");
         set("Help.WrongPage",                       "&cThis page of help isnt found");
         setComments("Help", List.of(" ", " "));
@@ -115,7 +117,12 @@ public class DefaultLocalizationConfiguration extends YamlConfiguration {
         set("Home.HomeTeleportation",               "&aYou teleported to clan home!");
         setComments("Home", List.of(" ", " "));
 
-        set("Info.Label",                           "---------- CLAN INFO ----------");
+        set("Treasure.TreasureSuccessSet",          "&aClan treasure set successfully!");
+        set("Treasure.WrongWorldToSet",             "&cYou cant set clan treasure in this world!");
+        set("Treasure.SuccessfullyCalculation",     "&aClan level successfully calculated!");
+        setComments("Treasure", List.of(" ", " "));
+
+        set("Info.Label",                           "--------- CLAN INFO ---------");
         set("Info.ClanName",                        "- Name: %s");
         set("Info.ClanPrefix",                      "- Prefix: %s");
         set("Info.ClanLevel",                       "- Level: %s");
@@ -143,7 +150,7 @@ public class DefaultLocalizationConfiguration extends YamlConfiguration {
         set("Settings.Description.RoleCanAccept",   "&a/Clan setting RoleCanAccept [Role] - set min role, which can accept/decline players to clan [1-4]");
         setComments("Setting", List.of(" ", " "));
 
-        set("Top.Label",                            "&b---------- CLAN TOP %d ----------");
+        set("Top.Label",                            "&b--------- CLAN TOP %d ---------");
         set("Top.PageCommand",                      "Type &a/Clan top %d&b - to show commands in page %d");
         set("Top.WrongPage",                        "&cThis page of clans top isnt found");
         setComments("Top", List.of(" ", " "));
@@ -165,7 +172,10 @@ public class DefaultLocalizationConfiguration extends YamlConfiguration {
         set("Description.Promote",                  "&a/Clan promote %name&b - to promote player %name of your clan");
         set("Description.Requests",                 "&a/Clan requests&b - to see list of all requests to join your clan");
         set("Description.Sethome",                  "&a/Clan sethome&b - to set home location of your clan");
-        set("Description.Settings",                 "&a/Clan settings help&b - to show help about settings of your clan");
+        set("Description.Settreasure",              "&a/Clan settreasure&b - to set treasure location of your clan");
+        // @todo add 1000$ for PluginConfig
+        set("Description.CalculateLevel",           "&a/Clan calclvl&b - to force recalculate clan level for 1000$");
+        set("Description.Settings",                 "&a/Clan setting help&b - to show help about settings of your clan");
         set("Description.Top",                      "&a/Clan top&b - top of all clans");
         set("Description.Withdraw",                 "&a/Clan withdraw %value&b - to withdraw money from your clan");
 

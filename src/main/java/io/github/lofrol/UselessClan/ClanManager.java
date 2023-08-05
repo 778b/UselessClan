@@ -1,5 +1,10 @@
 package io.github.lofrol.UselessClan;
 
+import com.sk89q.worldedit.bukkit.BukkitAdapter;
+import com.sk89q.worldguard.WorldGuard;
+import com.sk89q.worldguard.protection.managers.RegionManager;
+import com.sk89q.worldguard.protection.managers.RemovalStrategy;
+import com.sk89q.worldguard.protection.regions.RegionContainer;
 import io.github.lofrol.UselessClan.ClanObjects.*;
 import io.github.lofrol.UselessClan.Extensions.ClanManagerExtension;
 import io.github.lofrol.UselessClan.Utils.ChatSender;
@@ -94,13 +99,13 @@ public final class ClanManager {
                 }
             }
         }
-        int MaxRating = 1452;
-        int Rating = GoldBlockCount + (DiamondBlockCount * 2) + (EmeraldBlockCount * 3);
-        float level = (float)Rating / (float)MaxRating * 10.f;
+        int MaxRating = 1200;
+        float Rating = (GoldBlockCount + (DiamondBlockCount * 2) + (EmeraldBlockCount * 3)) * 1.5f;
+        float level = Rating / MaxRating * 10.f;
 
         getServer().getLogger().log(Level.INFO,
                 String.format("[UselessClan] Calculated level of clan %s, Points = %d, Max Points = %d",
-                        ClanToLevel.getPrefixClan(), Rating, MaxRating));
+                        ClanToLevel.getPrefixClan(), (int)Rating, MaxRating));
         ClanToLevel.setClanLevel((int)level);
     }
 
@@ -127,6 +132,13 @@ public final class ClanManager {
     public void DeleteClan(Clan clanToDelete) {
         Clan ClanToDelete = ServerClans.get(clanToDelete.getPrefixClan());
         if (ClanToDelete == null) return;
+        if (OnlineClanPlayers.entrySet().toArray()[0] instanceof Player tempPlayer) {
+            RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
+            RegionManager tempRegionManager = container.get(BukkitAdapter.adapt(tempPlayer.getWorld()));
+            if (tempRegionManager != null) {
+                tempRegionManager.removeRegion(clanToDelete.getClanRegionId(),RemovalStrategy.REMOVE_CHILDREN);
+            }
+        }
 
         ServerClans.remove(clanToDelete.getPrefixClan());
         for (Map.Entry<Player, OnlinePlayerClan> tempEntry : OnlineClanPlayers.entrySet()) {
