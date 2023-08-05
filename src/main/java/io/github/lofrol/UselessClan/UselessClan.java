@@ -62,6 +62,7 @@ public final class UselessClan extends JavaPlugin {
 
     public void reloadPlugin() {
         onDisable();
+        // @todo online players, che tam s top clan
         onEnable();
     }
     /*
