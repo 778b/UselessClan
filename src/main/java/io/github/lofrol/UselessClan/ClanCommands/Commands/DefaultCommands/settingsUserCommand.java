@@ -70,6 +70,7 @@ public class settingsUserCommand extends PlayerCommandBase {
                                 "Setting.SelectedWithoutArgs"), "RoleCanAccept"));
             }
             else if (args[1].equalsIgnoreCase("help")) {
+                ChatSender.MessageTo(tempPlayer, "UselessClan", "Setting.Description.Info");
                 ChatSender.MessageTo(tempPlayer, "UselessClan", "Setting.Description.RoleCanSetHome");
                 ChatSender.MessageTo(tempPlayer, "UselessClan", "Setting.Description.RoleCanKick");
                 ChatSender.MessageTo(tempPlayer, "UselessClan", "Settings.Description.DefaultJoinRole");

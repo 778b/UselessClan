@@ -143,11 +143,13 @@ public class DefaultLocalizationConfiguration extends YamlConfiguration {
         set("Setting.Info",                         "&a/Clan setting info - show info about setting clan");
         set("Setting.UseExample",                   "&cWrong arguments, example &a/Clan setting %s");
         set("Setting.Changed",                      "&a%s successfully changed to %s!");
+
+        set("Setting.Description.Info",             "&a/Clan setting info - To see clan settings");
         set("Setting.Description.RoleCanSetHome",   "&a/Clan setting RoleCanSetHome [Role] - set min role to change home location [1-4]");
         set("Setting.Description.RoleCanKick",      "&a/Clan setting RoleCanKick [Role] - set min role, which can kick members [1-4]");
-        set("Settings.Description.DefaultJoinRole", "&a/Clan setting DefaultJoinRole [Role] - set min default join role [1-3]");
-        set("Settings.Description.RoleCanWithdraw", "&a/Clan setting RoleCanWithdraw [Role] - set min role, which can kick withdraw money [1-4]");
-        set("Settings.Description.RoleCanAccept",   "&a/Clan setting RoleCanAccept [Role] - set min role, which can accept/decline players to clan [1-4]");
+        set("Setting.Description.DefaultJoinRole",  "&a/Clan setting DefaultJoinRole [Role] - set min default join role [1-3]");
+        set("Setting.Description.RoleCanWithdraw",  "&a/Clan setting RoleCanWithdraw [Role] - set min role, which can kick withdraw money [1-4]");
+        set("Setting.Description.RoleCanAccept",    "&a/Clan setting RoleCanAccept [Role] - set min role, which can accept/decline players to clan [1-4]");
         setComments("Setting", List.of(" ", " "));
 
         set("Top.Label",                            "&b--------- CLAN TOP %d ---------");
