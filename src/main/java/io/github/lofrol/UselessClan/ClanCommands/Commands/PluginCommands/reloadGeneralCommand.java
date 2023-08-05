@@ -19,7 +19,7 @@ public class reloadGeneralCommand extends CommandBase {
 
     @Override
     public boolean executeCommand(CommandSender sender, String[] args) {
-        UselessClan.reloadPlugin();
+        UselessClan.getPlugin(UselessClan.class).reloadPlugin();
         return true;
     }
 }

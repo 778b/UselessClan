@@ -60,8 +60,9 @@ public final class UselessClan extends JavaPlugin {
     }
 
 
-    public static void reloadPlugin() {
-
+    public void reloadPlugin() {
+        onDisable();
+        onEnable();
     }
     /*
     *   Getters section
