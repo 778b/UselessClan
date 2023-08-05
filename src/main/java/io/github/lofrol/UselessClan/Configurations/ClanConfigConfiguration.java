@@ -37,7 +37,7 @@ public class ClanConfigConfiguration extends YamlConfiguration {
             tempThis.initUseExtendCalculateClanLevelsDefault();
         }
         else {
-            tempThis.UseExtendCalculateClanLevels = Boolean.parseBoolean(tempNeedCalculateClanLevels);
+            tempThis.UseExtendCalculateClanLevels = Boolean.parseBoolean(tempUseExtendCalculateClanLevels);
             tempThis.set("UseExtendCalculateClanLevels", tempThis.UseExtendCalculateClanLevels);
         }
 

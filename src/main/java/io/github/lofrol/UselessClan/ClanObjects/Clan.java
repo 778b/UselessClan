@@ -68,8 +68,8 @@ public class Clan {
     }
 
     // return null if didn't need to save
-    public FileConfiguration SaveClanToConfig() {
-        if (!NeedToSave) return null;
+    public FileConfiguration SaveClanToConfig(boolean forceSave) {
+        if (!NeedToSave && !forceSave) return null;
 
         FileConfiguration ClanConfig = new YamlConfiguration();
 
