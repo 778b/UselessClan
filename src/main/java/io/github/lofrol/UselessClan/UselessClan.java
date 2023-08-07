@@ -30,7 +30,7 @@ public final class UselessClan extends JavaPlugin {
     @Override
     public void onEnable() {
         if (!checkHardDepends()) {
-            getPluginLoader().disablePlugin(this);
+             getPluginLoader().disablePlugin(this);
         }
 
         SerilManager = new SerializationManager(this);

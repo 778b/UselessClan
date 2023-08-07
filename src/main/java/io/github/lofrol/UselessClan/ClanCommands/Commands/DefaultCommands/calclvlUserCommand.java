@@ -29,12 +29,12 @@ public class calclvlUserCommand extends PlayerCommandBase {
     @Override
     public boolean executeCommand(Player tempPlayer, Clan senderClan, String[] args) {
         if (UselessClan.EconomyPtr != null)  {
-            if (!UselessClan.EconomyPtr.has(getOfflinePlayer(tempPlayer.getName()), 2000)) {
+            if (!UselessClan.EconomyPtr.has(getOfflinePlayer(tempPlayer.getName()), 1000)) {
                 ChatSender.MessageTo(tempPlayer, "UselessClan", "Economy.NotEnoughMoneyForCalculate");
                 return false;
             }
             else {
-                UselessClan.EconomyPtr.depositPlayer(getOfflinePlayer(tempPlayer.getName()), 2000);
+                UselessClan.EconomyPtr.withdrawPlayer(getOfflinePlayer(tempPlayer.getName()), 1000);
             }
         }
 
