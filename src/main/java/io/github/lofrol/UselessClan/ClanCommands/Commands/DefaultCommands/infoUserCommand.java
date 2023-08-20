@@ -32,6 +32,8 @@ public class infoUserCommand extends PlayerCommandBase {
         ChatSender.NonTranslateMessageTo(tempPlayer, "UselessClan", String.format(
                 UselessClan.getLocalManager().getLocalizationMessage("Info.ClanName"), senderClan.getNameClan()));
         ChatSender.NonTranslateMessageTo(tempPlayer, "UselessClan", String.format(
+                UselessClan.getLocalManager().getLocalizationMessage("Info.ClanDescription"), senderClan.getDescriptionClan()));
+        ChatSender.NonTranslateMessageTo(tempPlayer, "UselessClan", String.format(
                 UselessClan.getLocalManager().getLocalizationMessage("Info.ClanPrefix"), senderClan.getPrefixClan()));
         ChatSender.NonTranslateMessageTo(tempPlayer, "UselessClan", String.format(
                 UselessClan.getLocalManager().getLocalizationMessage("Info.ClanLevel"), senderClan.getClanLevel()));

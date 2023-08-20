@@ -36,6 +36,7 @@ public class renameUserCommand extends PlayerCommandBase {
         StringBuilder tempBuilder = new StringBuilder();
         for (int i = 1; i < args.length; ++i) {
             tempBuilder.append(args[i]);
+            tempBuilder.append(" ");
         }
         String tempStringName = tempBuilder.toString();
 
@@ -46,6 +47,7 @@ public class renameUserCommand extends PlayerCommandBase {
 
         if (!senderClan.setClanName(tempStringName)) {
             ChatSender.MessageTo(tempPlayer, "UselessClan", "Rename.ClanRenameIncorrectSymbols");
+            return false;
         }
 
         ChatSender.MessageTo(tempPlayer, "UselessClan", "Rename.ClanRenameSuccessful");

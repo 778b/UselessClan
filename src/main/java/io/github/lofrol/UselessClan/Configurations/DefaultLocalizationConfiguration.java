@@ -126,6 +126,7 @@ public class DefaultLocalizationConfiguration extends YamlConfiguration {
 
         set("Info.Label",                           "--------- CLAN INFO ---------");
         set("Info.ClanName",                        "- Name: %s");
+        set("Info.ClanDescription",                 "- Description: %s");
         set("Info.ClanPrefix",                      "- Prefix: %s");
         set("Info.ClanLevel",                       "- Level: %s");
         set("Info.LeaderName",                      "- LeaderName: %s");

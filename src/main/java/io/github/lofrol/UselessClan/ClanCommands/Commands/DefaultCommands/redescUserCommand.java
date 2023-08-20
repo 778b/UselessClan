@@ -35,6 +35,7 @@ public class redescUserCommand extends PlayerCommandBase {
         StringBuilder tempBuilder = new StringBuilder();
         for (int i = 1; i < args.length; ++i) {
             tempBuilder.append(args[i]);
+            tempBuilder.append(" ");
         }
         String tempStringName = tempBuilder.toString();
 
@@ -45,6 +46,7 @@ public class redescUserCommand extends PlayerCommandBase {
 
         if (!senderClan.setClanDescription(tempStringName)) {
             ChatSender.MessageTo(tempPlayer, "UselessClan", "Rename.ClanRedescIncorrectSymbols");
+            return false;
         }
 
         ChatSender.MessageTo(tempPlayer, "UselessClan", "Rename.ClanRedescSuccessful");
