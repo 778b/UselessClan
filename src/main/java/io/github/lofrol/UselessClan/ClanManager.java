@@ -1,13 +1,22 @@
 package io.github.lofrol.UselessClan;
 
+import com.sk89q.worldedit.bukkit.BukkitAdapter;
+import com.sk89q.worldguard.WorldGuard;
+import com.sk89q.worldguard.protection.managers.RegionManager;
+import com.sk89q.worldguard.protection.managers.RemovalStrategy;
+import com.sk89q.worldguard.protection.regions.RegionContainer;
 import io.github.lofrol.UselessClan.ClanObjects.*;
 import io.github.lofrol.UselessClan.Extensions.ClanManagerExtension;
 import io.github.lofrol.UselessClan.Utils.ChatSender;
 import io.github.lofrol.UselessClan.Utils.TopClanCounter;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.IOException;
@@ -46,16 +55,70 @@ public final class ClanManager {
             default -> "";
         };
     }
-    public void CalculateClanLevel(Clan ClanToLevel) {
-        // Overriding by extensions if needed
-        if (UselessClan.getConfigManager().getClanConfig().isNeedCalculateClanLevels()) {
-            Extension.CalculateClanLevel(ClanToLevel);
+    public void CalculateClanLevel(@NotNull Clan ClanToLevel) {
+        if (UselessClan.getConfigManager().getClanConfig().isUseExtendCalculateClanLevels()) {
+            CalculateClanLevelExtension(ClanToLevel);
+        }
+        else {
+            CalculateClanLevelDefault(ClanToLevel);
         }
     }
 
-    public void CalculateAllClansLevels() {
-        for (Clan tempClan : ServerClans.values()) {
-            CalculateClanLevel(tempClan);
+    public void CalculateClanLevelExtension(@NotNull Clan ClanToLevel) {
+        // Overriding by extensions if needed
+        Extension.CalculateClanLevel(ClanToLevel);
+    }
+
+    public void CalculateClanLevelDefault(@NotNull Clan ClanToLevel) {
+        Location tempTreasure = ClanToLevel.getTreasureClan();
+        if (tempTreasure == null) {
+            ClanToLevel.setClanLevel(0);
+            return;
+        }
+        float radius = 5;
+        float tempX = tempTreasure.getBlockX() + radius + 1;
+        float tempY = tempTreasure.getBlockY() + 5;
+        float tempZ = tempTreasure.getBlockZ() + radius + 1;
+        int GoldBlockCount = 0;
+        int DiamondBlockCount = 0;
+        int EmeraldBlockCount = 0;
+        
+        for (int i = tempTreasure.getBlockX() - (int)radius; i < tempX; ++i) {
+            for (int j = tempTreasure.getBlockY(); j < tempY; ++j) {
+                for (int k = tempTreasure.getBlockZ() - (int)radius; k < tempZ; ++ k) {
+                    Block tempBlock = tempTreasure.getWorld().getBlockAt(i,j,k);
+                    if (tempBlock.getType() == Material.GOLD_BLOCK) {
+                        GoldBlockCount++;
+                    }
+                    else if (tempBlock.getType() == Material.DIAMOND_BLOCK) {
+                        DiamondBlockCount++;
+                    }
+                    else if (tempBlock.getType() == Material.EMERALD_BLOCK) {
+                        EmeraldBlockCount++;
+                    }
+                }
+            }
+        }
+        int MaxRating = 1200;
+        float Rating = (GoldBlockCount + (DiamondBlockCount * 2) + (EmeraldBlockCount * 3)) * 1.5f;
+        float level = Rating / MaxRating * 10.f;
+
+        getServer().getLogger().log(Level.INFO,
+                String.format("[UselessClan] Calculated level of clan %s, Points = %d, Max Points = %d",
+                        ClanToLevel.getPrefixClan(), (int)Rating, MaxRating));
+        ClanToLevel.setClanLevel((int)level);
+    }
+
+    public void CalculateAllClansLevels(boolean isDefault) {
+        if (isDefault) {
+            for (Clan tempClan : ServerClans.values()) {
+                CalculateClanLevelDefault(tempClan);
+            }
+        }
+        else {
+            for (Clan tempClan : ServerClans.values()) {
+                CalculateClanLevelExtension(tempClan);
+            }
         }
     }
     public void CreateClan(String ClanName, Player LeaderPlayer) {
@@ -69,6 +132,13 @@ public final class ClanManager {
     public void DeleteClan(Clan clanToDelete) {
         Clan ClanToDelete = ServerClans.get(clanToDelete.getPrefixClan());
         if (ClanToDelete == null) return;
+        if (OnlineClanPlayers.entrySet().toArray()[0] instanceof Player tempPlayer) {
+            RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
+            RegionManager tempRegionManager = container.get(BukkitAdapter.adapt(tempPlayer.getWorld()));
+            if (tempRegionManager != null) {
+                tempRegionManager.removeRegion(clanToDelete.getClanRegionId(),RemovalStrategy.REMOVE_CHILDREN);
+            }
+        }
 
         ServerClans.remove(clanToDelete.getPrefixClan());
         for (Map.Entry<Player, OnlinePlayerClan> tempEntry : OnlineClanPlayers.entrySet()) {
@@ -123,7 +193,7 @@ public final class ClanManager {
     private void SaveClan(Clan clanToSave, File clanFolder) throws IOException {
         File tempClanFile = new File(clanFolder, String.format("%s.yml", clanToSave.getPrefixClan()));
 
-        FileConfiguration ClanConfig = clanToSave.SaveClanToConfig();
+        FileConfiguration ClanConfig = clanToSave.SaveClanToConfig(false);
         if (ClanConfig == null) {
             OwnerPlugin.getLogger().log(Level.FINE, String.format("%s was skipped save", clanToSave.getNameClan()));
             return;
@@ -138,7 +208,7 @@ public final class ClanManager {
         File tempDeleteDir = UselessClan.getSerilManager().checkClanFolderOrCreate(DeletedClanFolder);
         File tempClanDir = UselessClan.getSerilManager().checkClanFolderOrCreate(ClanFolderName);
 
-        FileConfiguration ClanConfig = clanToDelete.SaveClanToConfig();
+        FileConfiguration ClanConfig = clanToDelete.SaveClanToConfig(true);
         boolean isDeleted = false;
 
 
@@ -223,9 +293,11 @@ public final class ClanManager {
         RegisterOnlineClanPlayer(tempClan, player);
         getServer().getScheduler().runTaskLater(OwnerPlugin, () -> {
             if (playerRole == EClanRole.LEADER || playerRole == EClanRole.OFFICER) {
-                ChatSender.NonTranslateMessageTo(player,"UselessClan", String.format(
-                        UselessClan.getLocalManager().getLocalizationMessage(
-                                "Enter.HaveRequestsOnJoin"), tempClan.getRequestCount()));
+                if (tempClan.getRequestCount() > 0) {
+                    ChatSender.NonTranslateMessageTo(player,"UselessClan", String.format(
+                            UselessClan.getLocalManager().getLocalizationMessage(
+                                    "Enter.HaveRequestsOnJoin"), tempClan.getRequestCount()));
+                }
             }
         }, 200);
 
@@ -256,7 +328,7 @@ public final class ClanManager {
 
         for (Clan tempClan : ServerClans.values()) {
             File tempClanFile = new File(todayBackupFile, String.format("%s.yml", tempClan.getPrefixClan()));
-            FileConfiguration tempConfig = tempClan.SaveClanToConfig();
+            FileConfiguration tempConfig = tempClan.SaveClanToConfig(false);
             if (tempConfig == null) continue;
             try {
                 tempConfig.save(tempClanFile);

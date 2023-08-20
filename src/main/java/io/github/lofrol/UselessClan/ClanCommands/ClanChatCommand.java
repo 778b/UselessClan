@@ -15,10 +15,9 @@ import java.util.stream.Stream;
 import static org.bukkit.Bukkit.getServer;
 
 public final class ClanChatCommand extends Command {
-    public static boolean CreateDefaultInst() {
-        ClanChatCommand tempClanChatCommand = new ClanChatCommand("ClanChat", "Default command for clan chat",
+    public static ClanChatCommand CreateDefaultInst() {
+        return new ClanChatCommand("ClanChat", "Default command for clan chat",
                 "Use &5/Clan help&r for learning more", Stream.of("ucc").collect(Collectors.toList()));
-        return getServer().getCommandMap().register("[UselessClan]", tempClanChatCommand);
     }
 
     private ClanChatCommand(@NotNull String name, @NotNull String description, @NotNull String usageMessage, @NotNull List<String> aliases) {

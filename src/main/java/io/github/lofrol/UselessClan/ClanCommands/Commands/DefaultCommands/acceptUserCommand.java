@@ -55,7 +55,6 @@ public class acceptUserCommand extends PlayerCommandBase {
                 return false;
             }
             senderClan.PlayerJoinToClan(senderClan.getSettingsClan().DefaultJoinRole, AcceptedPlayerName);
-            UselessClan.getMainManager().CalculateClanLevel(senderClan);
             senderClan.RemoveFromRequest(AcceptedPlayerName);
             Player AcceptedPlayer = getPlayer(AcceptedPlayerName);
 

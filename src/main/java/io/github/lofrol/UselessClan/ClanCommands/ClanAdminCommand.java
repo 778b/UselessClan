@@ -17,10 +17,9 @@ import static org.bukkit.Bukkit.getServer;
 public final class ClanAdminCommand extends Command {
 
 
-    public static boolean CreateDefaultInts() {
-        ClanAdminCommand tempClanAdminCommand = new ClanAdminCommand("ClanAdmin", "Default command for access to the clan system",
+    public static ClanAdminCommand CreateDefaultInts() {
+        return new ClanAdminCommand("ClanAdmin", "Default command for access to the clan system",
                 "Use &5/Clan help&r for learning more", Stream.of("clanadmin", "ClanAdmin", "clad", "ClAd").collect(Collectors.toList()));
-        return getServer().getCommandMap().register("[UselessClan]", tempClanAdminCommand);
     }
 
 

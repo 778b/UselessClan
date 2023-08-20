@@ -32,6 +32,14 @@ public class ClanConfigConfiguration extends YamlConfiguration {
             tempThis.set("NeedCalculateClanLevels", tempThis.NeedCalculateClanLevels);
         }
 
+        String tempUseExtendCalculateClanLevels = tempConfig.getString("UseExtendCalculateClanLevels");
+        if (tempUseExtendCalculateClanLevels == null) {
+            tempThis.initUseExtendCalculateClanLevelsDefault();
+        }
+        else {
+            tempThis.UseExtendCalculateClanLevels = Boolean.parseBoolean(tempUseExtendCalculateClanLevels);
+            tempThis.set("UseExtendCalculateClanLevels", tempThis.UseExtendCalculateClanLevels);
+        }
 
         String tempBackupDelay = tempConfig.getString("Delay.ClanBackup");
         if (tempBackupDelay == null) {
@@ -148,7 +156,9 @@ public class ClanConfigConfiguration extends YamlConfiguration {
         return tempThis;
     }
 
+
     private boolean NeedCalculateClanLevels;
+    private boolean UseExtendCalculateClanLevels;
     private String LocalizationKey;
     private int backupDelay;
     private int autoSaveDelay;
@@ -170,6 +180,7 @@ public class ClanConfigConfiguration extends YamlConfiguration {
     * */
     public String getLocalizationKey() { return LocalizationKey; }
     public boolean isNeedCalculateClanLevels() { return NeedCalculateClanLevels; }
+    public boolean isUseExtendCalculateClanLevels() { return UseExtendCalculateClanLevels; }
     public int getBackupDelay() { return backupDelay; }
     public int getAutoSaveDelay() { return autoSaveDelay; }
     public int getCalcClanLvlDelay() { return calcClanLvlDelay; }
@@ -196,6 +207,12 @@ public class ClanConfigConfiguration extends YamlConfiguration {
         set("NeedCalculateClanLevels", tempDefault);
         NeedCalculateClanLevels = tempDefault;
     }
+    private void initUseExtendCalculateClanLevelsDefault() {
+        var tempDefault = true;
+        set("UseExtendCalculateClanLevels", tempDefault);
+        UseExtendCalculateClanLevels = tempDefault;
+    }
+
     private void initDelayClanBackupDefault() {
         var tempDefault = 864000;
         set("Delay.ClanBackup", tempDefault);

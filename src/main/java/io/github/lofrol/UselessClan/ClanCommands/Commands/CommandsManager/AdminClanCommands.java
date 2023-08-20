@@ -23,6 +23,7 @@ public class AdminClanCommands {
             entry("requests",   new requestsAdminCommand()),
             entry("delete",     new deleteAdminCommand()),
             entry("home",       new homeAdminCommand()),
+            entry("treasure",   new treasureAdminCommand()),
             entry("calclvl",    new calclvlAdminCommand()),
             entry("level",      new levelAdminCommand()),
             entry("debuginfo",  new debugInfoAdminCommand()),

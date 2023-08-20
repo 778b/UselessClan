@@ -2,8 +2,7 @@ package io.github.lofrol.UselessClan.ClanCommands;
 
 import io.github.lofrol.UselessClan.ClanCommands.Commands.CommandBase;
 import io.github.lofrol.UselessClan.ClanCommands.Commands.CommandsManager.BaseClanCommands;
-import io.github.lofrol.UselessClan.ClanCommands.Commands.PlayerCommandBase;
-import io.github.lofrol.UselessClan.UselessClan;
+import io.github.lofrol.UselessClan.ClanCommands.Commands.CommandsManager.PluginClanCommands;
 import io.github.lofrol.UselessClan.Utils.ChatSender;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -14,19 +13,17 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static org.bukkit.Bukkit.*;
+import static org.bukkit.Bukkit.getServer;
 
-public final class ClanCommand extends Command {
-
-    @NotNull
-    public static ClanCommand CreateDefaultInst() {
-        return new ClanCommand("Clan", "Default command for access to the clan system",
-                "Use &5/Clan help&r for learning more", Stream.of("clan", "Clan").collect(Collectors.toList()));
+public class PluginCommand extends Command {
+    public static PluginCommand CreateDefaultInst() {
+        return new PluginCommand("UselessClan", "Default command for access to the clan system",
+                "Use &5/UselessClan help&r for learning more", Stream.of("UselessClan", "uselessclan", "UsCl", "UC").collect(Collectors.toList()));
     }
 
-    private ClanCommand(@NotNull String name, @NotNull String description,
-                          @NotNull String usageMessage,
-                          @NotNull List<String> aliases) {
+    private PluginCommand(@NotNull String name, @NotNull String description,
+                        @NotNull String usageMessage,
+                        @NotNull List<String> aliases) {
         super(name, description, usageMessage, aliases);
     }
 
@@ -39,7 +36,7 @@ public final class ClanCommand extends Command {
             return false;
         }
 
-        CommandBase tempCommand = BaseClanCommands.getCommand(args[0]);
+        CommandBase tempCommand = PluginClanCommands.getCommand(args[0]);
 
         if (tempCommand == null) {
             ChatSender.MessageTo(tempPlayer, "UselessClan", "Main.InvalidClanCommand");

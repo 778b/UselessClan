@@ -25,6 +25,9 @@ import io.github.lofrol.UselessClan.Utils.ChatSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
+import static com.sk89q.worldguard.protection.flags.Flags.GREET_MESSAGE;
+import static com.sk89q.worldguard.protection.flags.Flags.NOTIFY_ENTER;
+
 public class claimUserCommand extends PlayerCommandBase {
 
 
@@ -58,10 +61,10 @@ public class claimUserCommand extends PlayerCommandBase {
             return false;
         }
 
-        if (senderClan.getClanLevel() < 1) {
-            ChatSender.MessageTo(tempPlayer, "UselessClan", "WG.ZeroLvlClanClaim");
-            return false;
-        }
+        //if (senderClan.getClanLevel() < 1) {
+        //    ChatSender.MessageTo(tempPlayer, "UselessClan", "WG.ZeroLvlClanClaim");
+        //    return false;
+        //}
 
         RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
         RegionManager tempRegionManager = container.get(BukkitAdapter.adapt(tempPlayer.getWorld()));
@@ -95,10 +98,11 @@ public class claimUserCommand extends PlayerCommandBase {
         {
             double tempDistance = Math.sqrt(Math.pow(tempRegion.getMaximumPoint().getBlockX() - tempRegion.getMinimumPoint().getBlockX(), 2)
                     + Math.pow(tempRegion.getMaximumPoint().getBlockZ() - tempRegion.getMinimumPoint().getBlockZ(), 2));
-            if (tempDistance > senderClan.getClanLevel() * 50) {
+            // @todo distance from config
+            if (tempDistance > (senderClan.getClanLevel() + 1) * 75) {
                 ChatSender.NonTranslateMessageTo(tempPlayer, "UselessClan",
                         String.format(UselessClan.getLocalManager().getLocalizationMessage(
-                                "WG.SelectedAreaIsTooBig"), senderClan.getClanLevel() * 75, tempDistance));
+                                "WG.SelectedAreaIsTooBig"), (senderClan.getClanLevel() + 1) * 75, (int)tempDistance));
                 return false;
             }
         }
