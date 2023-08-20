@@ -1,5 +1,6 @@
 package io.github.lofrol.UselessClan;
 
+import io.github.lofrol.UselessClan.ClanCommands.PluginCommand;
 import io.github.lofrol.UselessClan.Extensions.ClanManagerExtension;
 import io.github.lofrol.UselessClan.External.UselessClanPlaceholder;
 import io.github.lofrol.UselessClan.ClanCommands.ClanAdminCommand;
@@ -8,11 +9,17 @@ import io.github.lofrol.UselessClan.ClanCommands.ClanCommand;
 import io.github.lofrol.UselessClan.Listeners.UselessListeners;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import net.milkbowl.vault.economy.Economy;
+import org.bukkit.command.Command;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.HashSet;
+import java.util.Set;
 import java.util.logging.Level;
+
+import static org.bukkit.Bukkit.getServer;
 
 
 public final class UselessClan extends JavaPlugin {
@@ -26,6 +33,10 @@ public final class UselessClan extends JavaPlugin {
     private static LocalizationManager LocalManager;
 
     private static SerializationManager SerilManager;
+
+    private static Set<BukkitTask> ActiveTasks;
+
+    private static Set<Command> RegisteredCommands;
 
     @Override
     public void onEnable() {
@@ -41,12 +52,7 @@ public final class UselessClan extends JavaPlugin {
 
         getServer().getPluginManager().registerEvents(new UselessListeners(), this);
 
-        if (ClanCommand.CreateDefaultInst()) getLogger().log(Level.INFO, "Clan Command Loaded successfully!");
-        else getLogger().log(Level.SEVERE, "Clan Command cant be loaded!");
-        if (ClanAdminCommand.CreateDefaultInts()) getLogger().log(Level.INFO, "Admin Clan Command Loaded successfully!");
-        else getLogger().log(Level.SEVERE, "Admin Clan Command cant be loaded!");
-        if (ClanChatCommand.CreateDefaultInst()) getLogger().log(Level.INFO, "Clan Chat Command Loaded successfully!");
-        else getLogger().log(Level.SEVERE, "Clan Chat Command cant be loaded!");
+        if (RegisteredCommands == null) registerAllCommands();
 
         MainManager.LoadClans();
         runServerTasks();
@@ -59,11 +65,23 @@ public final class UselessClan extends JavaPlugin {
         MainManager.SaveClans();
     }
 
-
     public void reloadPlugin() {
         onDisable();
-        // @todo online players, che tam s top clan
+        for (var tempPlayer : getServer().getOnlinePlayers()) {
+            MainManager.OnPlayerLeave(tempPlayer);
+        }
+        MainManager.getServerClans().clear();
+        MainManager.getOnlineClanPlayers().clear();
+        for (var tempTask : ActiveTasks) {
+            tempTask.cancel();
+        }
+        ActiveTasks.clear();
+        reloadConfig();
+
         onEnable();
+        for (var tempPlayer : getServer().getOnlinePlayers()) {
+            MainManager.OnPlayerJoin(tempPlayer);
+        }
     }
     /*
     *   Getters section
@@ -116,28 +134,60 @@ public final class UselessClan extends JavaPlugin {
         return true;
     }
 
+    private void registerAllCommands() {
+        RegisteredCommands = new HashSet<>();
+        Command tempClanCommand = ClanCommand.CreateDefaultInst();
+        if (getServer().getCommandMap().register("[UselessClan]", tempClanCommand)) {
+            getLogger().log(Level.INFO, "Clan Command Loaded successfully!");
+            RegisteredCommands.add(tempClanCommand);
+        }
+        else getLogger().log(Level.SEVERE, "Clan Command cant be loaded!");
+
+        Command tempClanAdminCommand = ClanAdminCommand.CreateDefaultInts();
+        if (getServer().getCommandMap().register("[UselessClan]", tempClanAdminCommand)) {
+            getLogger().log(Level.INFO, "Admin Clan Command Loaded successfully!");
+            RegisteredCommands.add(tempClanAdminCommand);
+        }
+        else getLogger().log(Level.SEVERE, "Admin Clan Command cant be loaded!");
+
+        Command tempClanChatCommand = ClanChatCommand.CreateDefaultInst();
+        if (getServer().getCommandMap().register("[UselessClan]", tempClanChatCommand)) {
+            getLogger().log(Level.INFO, "Clan Chat Command Loaded successfully!");
+            RegisteredCommands.add(tempClanChatCommand);
+        }
+        else getLogger().log(Level.SEVERE, "Clan Chat Command cant be loaded!");
+
+        Command tempPluginCommand = PluginCommand.CreateDefaultInst();
+        if (getServer().getCommandMap().register("[UselessClan]", tempPluginCommand)) {
+            getLogger().log(Level.INFO, "Clan Plugin Command Loaded successfully!");
+            RegisteredCommands.add(tempPluginCommand);
+        }
+        else getLogger().log(Level.SEVERE, "Clan Plugin Command cant be loaded!");
+    }
+
     private void runServerTasks() {
-        getServer().getScheduler().runTaskTimer(this, () -> {
+        ActiveTasks = new HashSet<>();
+        ActiveTasks.add(getServer().getScheduler().runTaskTimer(this, () -> {
             getMainManager().SaveClans();
             getLogger().log(Level.INFO, "Clans was saved by AutoSave"); },
                 getConfigManager().getClanConfig().getAutoSaveDelay(),
-                getConfigManager().getClanConfig().getAutoSaveDelay());
+                getConfigManager().getClanConfig().getAutoSaveDelay()));
 
         if (getConfigManager().getClanConfig().isNeedCalculateClanLevels()) {
-            getServer().getScheduler().runTaskTimerAsynchronously(this, () -> {
+            ActiveTasks.add(getServer().getScheduler().runTaskTimerAsynchronously(this, () -> {
                     getMainManager().CalculateAllClansLevels(
                             getConfigManager().getClanConfig().isUseExtendCalculateClanLevels());
                 },
                     getConfigManager().getClanConfig().getCalcClanLvlDelay(),
-                    getConfigManager().getClanConfig().getCalcClanLvlDelay());
+                    getConfigManager().getClanConfig().getCalcClanLvlDelay()));
         }
 
-        getServer().getScheduler().runTaskTimerAsynchronously(this, () -> {
+        ActiveTasks.add(getServer().getScheduler().runTaskTimerAsynchronously(this, () -> {
             getMainManager().createClansBackups(); },
-                0, getConfigManager().getClanConfig().getBackupDelay());
+                0, getConfigManager().getClanConfig().getBackupDelay()));
 
-        getServer().getScheduler().runTaskTimerAsynchronously(this, () -> {
+        ActiveTasks.add(getServer().getScheduler().runTaskTimerAsynchronously(this, () -> {
             getMainManager().getTopClans().CalculateTop(); },
-                0, getConfigManager().getClanConfig().getCalcClanTopDelay());
+                0, getConfigManager().getClanConfig().getCalcClanTopDelay()));
     }
 }

@@ -16,10 +16,9 @@ import java.util.stream.Stream;
 import static org.bukkit.Bukkit.getServer;
 
 public class PluginCommand extends Command {
-    public static boolean CreateDefaultInst() {
-        PluginCommand tempClanCommand =  new PluginCommand("Clan", "Default command for access to the clan system",
+    public static PluginCommand CreateDefaultInst() {
+        return new PluginCommand("UselessClan", "Default command for access to the clan system",
                 "Use &5/UselessClan help&r for learning more", Stream.of("UselessClan", "uselessclan", "UsCl", "UC").collect(Collectors.toList()));
-        return getServer().getCommandMap().register("[UselessClan]", tempClanCommand);
     }
 
     private PluginCommand(@NotNull String name, @NotNull String description,
