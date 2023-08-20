@@ -293,9 +293,11 @@ public final class ClanManager {
         RegisterOnlineClanPlayer(tempClan, player);
         getServer().getScheduler().runTaskLater(OwnerPlugin, () -> {
             if (playerRole == EClanRole.LEADER || playerRole == EClanRole.OFFICER) {
-                ChatSender.NonTranslateMessageTo(player,"UselessClan", String.format(
-                        UselessClan.getLocalManager().getLocalizationMessage(
-                                "Enter.HaveRequestsOnJoin"), tempClan.getRequestCount()));
+                if (tempClan.getRequestCount() > 0) {
+                    ChatSender.NonTranslateMessageTo(player,"UselessClan", String.format(
+                            UselessClan.getLocalManager().getLocalizationMessage(
+                                    "Enter.HaveRequestsOnJoin"), tempClan.getRequestCount()));
+                }
             }
         }, 200);
 
