@@ -188,6 +188,7 @@ public class DefaultLocalizationConfiguration extends YamlConfiguration {
         set("Description.Admin.delete",             "&a/ClAd calclvl %name&b - force delete clan %name");
         set("Description.Admin.forceJoin",          "&a/ClAd forcejoin %name&b - force join to clan %name");
         set("Description.Admin.help",               "&a/ClAd help - to show this menu");
+        set("Description.Admin.treasure",           "&a/ClAd home %name&b - teleport to treasure of clan %name");
         set("Description.Admin.home",               "&a/ClAd home %name&b - teleport to home of clan %name");
         set("Description.Admin.info",               "&a/ClAd info %name&b - show info about clan %name");
         set("Description.Admin.level",              "&a/ClAd level %name&b %level - to set %level for clan %name");
