@@ -1,5 +1,11 @@
 package io.github.lofrol.UselessClan.ClanCommands.Commands.DefaultCommands;
 
+import com.sk89q.worldedit.bukkit.BukkitAdapter;
+import com.sk89q.worldedit.math.BlockVector3;
+import com.sk89q.worldguard.WorldGuard;
+import com.sk89q.worldguard.protection.ApplicableRegionSet;
+import com.sk89q.worldguard.protection.managers.RegionManager;
+import com.sk89q.worldguard.protection.regions.RegionContainer;
 import io.github.lofrol.UselessClan.ClanCommands.Commands.PlayerCommandBase;
 import io.github.lofrol.UselessClan.ClanObjects.Clan;
 import io.github.lofrol.UselessClan.ClanObjects.EClanRole;
@@ -34,6 +40,30 @@ public class settreasureUserCommand extends PlayerCommandBase {
         }
 
         Location tempLoc = tempPlayer.getLocation();
+
+        RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
+        RegionManager tempRegionManager = container.get(BukkitAdapter.adapt(tempPlayer.getWorld()));
+
+        if (tempRegionManager == null) {
+            return false;
+        }
+
+        ApplicableRegionSet tempRegion = tempRegionManager.getApplicableRegions(BlockVector3.at(tempLoc.getX(),tempLoc.getY(),tempLoc.getZ()));
+
+        {
+            boolean isClanTerritory = false;
+            for (var tempReg : tempRegion.getRegions()) {
+                if (tempReg.getId().equals(senderClan.getClanRegionId())) {
+                    isClanTerritory = true;
+                }
+            }
+
+            if (!isClanTerritory) {
+                ChatSender.MessageTo(tempPlayer, "UselessClan", "Treasure.WrongRegionToSet");
+                return false;
+            }
+        }
+
         senderClan.setTreasureClan(tempLoc);
         ChatSender.MessageTo(tempPlayer, "UselessClan", "Treasure.TreasureSuccessSet");
         return true;
