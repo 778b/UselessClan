@@ -3,24 +3,21 @@ package io.github.lofrol.UselessClan.ClanCommands.Commands.DefaultCommands;
 import io.github.lofrol.UselessClan.ClanCommands.Commands.PlayerCommandBase;
 import io.github.lofrol.UselessClan.ClanObjects.Clan;
 import io.github.lofrol.UselessClan.ClanObjects.EClanRole;
-import io.github.lofrol.UselessClan.UselessClan;
 import io.github.lofrol.UselessClan.Utils.ChatSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-import static org.bukkit.Bukkit.getPlayer;
-
-public class declineUserCommand extends PlayerCommandBase {
+public class redescUserCommand extends PlayerCommandBase {
 
     @Override
     public @NotNull String commandDescription() {
-        return "Description.Decline";
+        return "Description.Redescription";
     }
 
     @Override
     public boolean havePermission(Player tempPlayer, Clan senderClan, EClanRole senderRole) {
         if (senderClan == null || senderRole == null) return false;
-        return (senderRole.ordinal() >= senderClan.getSettingsClan().RoleCanAccept.ordinal());
+        return (senderRole.ordinal() == EClanRole.LEADER.ordinal());
     }
 
     @Override
@@ -31,20 +28,26 @@ public class declineUserCommand extends PlayerCommandBase {
         }
 
         if (args.length == 1) {
-            ChatSender.MessageTo(tempPlayer, "UselessClan", "Enter.ClanDeclineWithoutArgs");
+            ChatSender.MessageTo(tempPlayer, "UselessClan", "Rename.ClanRedescWithoutArgs");
             return false;
         }
 
-        String AcceptedPlayerName = args[1];
-        if (!senderClan.HaveRequestFromPlayer(AcceptedPlayerName)) {
-            ChatSender.MessageTo(tempPlayer, "UselessClan", "Enter.CantFindRequest");
+        StringBuilder tempBuilder = new StringBuilder();
+        for (int i = 1; i < args.length; ++i) {
+            tempBuilder.append(args[i]);
+        }
+        String tempStringName = tempBuilder.toString();
+
+        if (tempStringName.length() < 5 || tempStringName.length() > 220) {
+            ChatSender.MessageTo(tempPlayer, "UselessClan", "Rename.ClanRedescIncorrectLength");
             return false;
         }
-        senderClan.RemoveFromRequest(AcceptedPlayerName);
 
-        ChatSender.NonTranslateMessageTo(tempPlayer, "UselessClan",
-                String.format(UselessClan.getLocalManager().getLocalizationMessage(
-                        "Enter.PlayersRequestDeclined"), AcceptedPlayerName));
+        if (!senderClan.setClanDescription(tempStringName)) {
+            ChatSender.MessageTo(tempPlayer, "UselessClan", "Rename.ClanRedescIncorrectSymbols");
+        }
+
+        ChatSender.MessageTo(tempPlayer, "UselessClan", "Rename.ClanRedescSuccessful");
         return true;
     }
 }

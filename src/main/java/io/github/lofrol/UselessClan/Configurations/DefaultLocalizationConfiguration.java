@@ -134,6 +134,16 @@ public class DefaultLocalizationConfiguration extends YamlConfiguration {
         set("Info.Rank",                            "- Your rank: %s");
         setComments("Info", List.of(" ", " "));
 
+        set("Rename.ClanRenameWithoutArgs",             "&cYou forgot about new clan %name, use &a/Clan rename %name&b, %name = new clan name");
+        set("Rename.ClanRenameIncorrectLength",         "&cYour clan name had incorrect length!");
+        set("Rename.ClanRenameIncorrectSymbols",        "&cYour clan name had incorrect symbols!");
+        set("Rename.ClanRenameSuccessful",              "&aClan name successfully changed!");
+        set("Rename.ClanRedescWithoutArgs",             "&cYou forgot about new clan %description, use &a/Clan redesc %description&b, %%description = new clan description");
+        set("Rename.ClanRedescIncorrectLength",         "&cYour clan description had incorrect length!");
+        set("Rename.ClanRedescIncorrectSymbols",        "&cYour clan description had incorrect symbols!");
+        set("Rename.ClanRedescSuccessful",              "&aClan description successfully changed!");
+        setComments("Rename", List.of(" ", " "));
+
         set("Mates.Label",                          "------- CLANMATES -------");
         setComments("Mates", List.of(" ", " "));
 
@@ -164,6 +174,8 @@ public class DefaultLocalizationConfiguration extends YamlConfiguration {
         set("Description.Create",                   "&a/Clan create %name&b - to create your own clan with name %name");
         set("Description.Decline",                  "&a/Clan decline %name&b - to decline request for join from player %name");
         set("Description.Delete",                   "&a/Clan delete&b - to delete your clan");
+        set("Description.Rename",                   "&a/Clan rename %name&b - to change name of your clan (Prefix wont change)");
+        set("Description.Redescription",            "&a/Clan redesc %description&b - to change description of your clan");
         set("Description.Demote",                   "&a/Clan demote %name&b - to demote player %name of your clan");
         set("Description.Deposit",                  "&a/Clan deposit %value&b - to deposit money to your clan");
         set("Description.Help",                     "&a/Clan help&b - to call this menu");

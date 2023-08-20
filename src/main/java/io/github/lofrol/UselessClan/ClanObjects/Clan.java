@@ -21,28 +21,18 @@ public class Clan {
      *  Variables
      */
     private final String PrefixClan;
-
     private String NameClan;
-    private final String DescriptionClan;
-
+    private String DescriptionClan;
     private final List<ClanMember> Members;
-
     private final List<String> Requests;
-
     private final transient Map<Player, ClanMember> OnlineMembers;
-
     private String LeaderName;
-
     private Location HomeClan;
-
     private Location TreasureClan;
-
     private final ClanSettings SettingsClan;
-
     private double MoneyClan;
     private int ClanLevel;
     private String ClanRegionId;
-
     private boolean NeedToSave;
 
     // Creating by file loader
@@ -80,7 +70,6 @@ public class Clan {
         ClanConfig.set("UselessClan.Description", DescriptionClan);
         ClanConfig.set("UselessClan.ClanLevel", ClanLevel);
         ClanConfig.set("UselessClan.ClanRegionName", ClanRegionId);
-
 
         ClanConfig.set("UselessClan.Requests.size", Requests.size());
         for (int i = 0; i< Requests.size(); ++i) {
@@ -412,7 +401,7 @@ public class Clan {
      *  Setters Functions
      */
     public boolean setClanName(String newNameClan) {
-        if (newNameClan.length() >= 5 && newNameClan.length() <=15) {
+        if (newNameClan.length() >= 5 && newNameClan.length() <= 22) {
             for (char tempChar : newNameClan.toCharArray()) {
                 // check for 0-9 or A-Z or a-z or space or _
                 if (!((tempChar >= 48 && tempChar <= 57) ||
@@ -423,6 +412,24 @@ public class Clan {
                 }
             }
             NameClan = newNameClan;
+            NeedToSave = true;
+            return true;
+        }
+        return false;
+    }
+
+    public boolean setClanDescription(String newDescriptionClan) {
+        if (newDescriptionClan.length() >= 5 && newDescriptionClan.length() <= 220) {
+            for (char tempChar : newDescriptionClan.toCharArray()) {
+                // check for 0-9 or A-Z or a-z or space or _
+                if (!((tempChar >= 48 && tempChar <= 57) ||
+                        (tempChar >= 65 && tempChar <= 90) ||
+                        (tempChar >= 97 && tempChar <= 122) ||
+                        tempChar == ' ' || tempChar == '_')) {
+                    return false;
+                }
+            }
+            DescriptionClan = newDescriptionClan;
             NeedToSave = true;
             return true;
         }
