@@ -32,7 +32,10 @@ public class AdminClanCommands {
         ClanCommands.put("level", new levelAdminCommand());
         ClanCommands.put("debuginfo", new debugInfoAdminCommand());
         ClanCommands.put("forcejoin", new forceJoinAdminCommand());
-
+        if (UselessClan.EconomyPtr != null) {
+            ClanCommands.put("deposit", new depositAdminCommand());
+            ClanCommands.put("withdraw", new withdrawAdminCommand());
+        }
     }
 
     public CommandBase getCommand(String key) {

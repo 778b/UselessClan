@@ -103,6 +103,7 @@ public class DefaultLocalizationConfiguration extends YamlConfiguration {
         set("Economy.WithdrawPlayer",               "Player &a%s&b withdraw &a%s&b from clan balance");
         // @todo 1000$ must be in plugin config
         set("Economy.NotEnoughMoneyForCalculate",   "&cYou need 1000$ for force calculate clan level!");
+        set("Economy.Admin.DepositWithoutArgs",     "&cNot enough args, use /ClAd deposit %name %money!");
         setComments("Economy", List.of(" ", " "));
 
         set("Help.Label",                           "--------- CLAN HELP %d ---------");
@@ -198,18 +199,20 @@ public class DefaultLocalizationConfiguration extends YamlConfiguration {
         set("Description.Top",                      "&a/Clan top&b - top of all clans");
         set("Description.Withdraw",                 "&a/Clan withdraw %value&b - to withdraw money from your clan");
 
-        set("Description.Admin.calclvl",            "&a/ClAd calclvl %name&b - force recalculate %name clan level");
-        set("Description.Admin.debugInfo",          "&a/ClAd debuginfo %name&b - show debug info about clan %name");
-        set("Description.Admin.delete",             "&a/ClAd calclvl %name&b - force delete clan %name");
-        set("Description.Admin.forceJoin",          "&a/ClAd forcejoin %name&b - force join to clan %name");
+        set("Description.Admin.calclvl",            "&a/ClAd calclvl %clan&b - force recalculate %name clan level");
+        set("Description.Admin.debugInfo",          "&a/ClAd debuginfo %clan&b - show debug info about clan %name");
+        set("Description.Admin.delete",             "&a/ClAd calclvl %clan&b - force delete clan %name");
+        set("Description.Admin.forceJoin",          "&a/ClAd forcejoin %clan&b - force join to clan %name");
         set("Description.Admin.help",               "&a/ClAd help - to show this menu");
-        set("Description.Admin.treasure",           "&a/ClAd home %name&b - teleport to treasure of clan %name");
-        set("Description.Admin.home",               "&a/ClAd home %name&b - teleport to home of clan %name");
-        set("Description.Admin.info",               "&a/ClAd info %name&b - show info about clan %name");
-        set("Description.Admin.level",              "&a/ClAd level %name&b %level - to set %level for clan %name");
+        set("Description.Admin.treasure",           "&a/ClAd treasure %clan&b - teleport to treasure of clan %name");
+        set("Description.Admin.home",               "&a/ClAd home %clan&b - teleport to home of clan %name");
+        set("Description.Admin.info",               "&a/ClAd info %clan&b - show info about clan %name");
+        set("Description.Admin.level",              "&a/ClAd level %clan&b %level - to set %level for clan %name");
         set("Description.Admin.list",               "&a/ClAd list - to show all server clans");
-        set("Description.Admin.mates",              "&a/ClAd mates %name&b - to show all mates in clan %name");
-        set("Description.Admin.requests",           "&a/ClAd requests %name&b - to show all requests in clan %name");
+        set("Description.Admin.mates",              "&a/ClAd mates %clan&b - to show all mates in clan %name");
+        set("Description.Admin.requests",           "&a/ClAd requests %clan&b - to show all requests in clan %name");
+        set("Description.Admin.Withdraw",           "&a/ClAd withdraw %clan %value&b - to withdraw money from your clan");
+        set("Description.Admin.Deposit",            "&a/ClAd deposit %clan %value&b - to deposit money to your clan");
 
         set("Description.General.version",          "&a/UselessClan version - to show plugin version");
         setComments("Description", List.of(" ", " "));
