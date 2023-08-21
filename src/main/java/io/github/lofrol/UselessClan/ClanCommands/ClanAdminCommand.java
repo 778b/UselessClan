@@ -16,6 +16,7 @@ import static org.bukkit.Bukkit.getServer;
 
 public final class ClanAdminCommand extends Command {
 
+    private final AdminClanCommands AdminCommands;
 
     public static ClanAdminCommand CreateDefaultInts() {
         return new ClanAdminCommand("ClanAdmin", "Default command for access to the clan system",
@@ -25,6 +26,8 @@ public final class ClanAdminCommand extends Command {
 
     private ClanAdminCommand(@NotNull String name, @NotNull String description, @NotNull String usageMessage, @NotNull List<String> aliases) {
         super(name,description,usageMessage,aliases);
+
+        AdminCommands = new AdminClanCommands();
     }
 
     @Override
@@ -38,7 +41,7 @@ public final class ClanAdminCommand extends Command {
             return false;
         }
 
-        CommandBase tempCommand = AdminClanCommands.getCommand(args[0]);
+        CommandBase tempCommand = AdminCommands.getCommand(args[0]);
         if (tempCommand == null) {
             ChatSender.MessageTo(tempPlayer, "&4UselessClan", "Main.InvalidClanAdminCommand");
             return false;

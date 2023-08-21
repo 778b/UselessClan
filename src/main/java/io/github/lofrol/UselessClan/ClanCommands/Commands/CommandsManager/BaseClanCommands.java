@@ -6,48 +6,56 @@ import io.github.lofrol.UselessClan.ClanCommands.Commands.DefaultCommands.*;
 import io.github.lofrol.UselessClan.ClanCommands.Commands.PlayerCommandBase;
 import io.github.lofrol.UselessClan.ClanObjects.Clan;
 import io.github.lofrol.UselessClan.ClanObjects.EClanRole;
+import io.github.lofrol.UselessClan.UselessClan;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
 
 import static java.util.Map.entry;
 
 public class BaseClanCommands {
-    private static final Map<String, CommandBase> ClanCommands = Map.ofEntries(
-            entry("help",       new helpUserCommand()),
-            entry("requests",   new requestsUserCommand()),
-            entry("top",        new topUserCommand()),
-            entry("claim",      new claimUserCommand()),
-            entry("calclvl",    new calclvlUserCommand()),
-            entry("create",     new createUserCommand()),
-            entry("delete",     new deleteUserCommand()),
-            entry("leave",      new leaveUserCommand()),
-            entry("deposit",    new depositUserCommand()),
-            entry("withdraw",   new withdrawUserCommand()),
-            entry("home",       new homeUserCommand()),
-            entry("sethome",    new sethomeUserCommand()),
-            entry("rename",     new renameUserCommand()),
-            entry("redesc",     new redescUserCommand()),
-            entry("settreasure",new settreasureUserCommand()),
-            entry("info",       new infoUserCommand()),
-            entry("mates",      new matesUserCommand()),
-            entry("accept",     new acceptUserCommand()),
-            entry("decline",    new declineUserCommand()),
-            entry("join",       new joinUserCommand()),
-            entry("kick",       new kickUserCommand()),
-            entry("promote",    new promoteUserCommand()),
-            entry("demote",     new demoteUserCommand()),
-            entry("setting",    new settingsUserCommand())
-    );
+    private final Map<String, CommandBase> ClanCommands;
 
-    public static CommandBase getCommand(String key) {
+    public BaseClanCommands() {
+        ClanCommands = new HashMap<>();
+        ClanCommands.put("help", new helpUserCommand());
+        ClanCommands.put("requests", new requestsUserCommand());
+        ClanCommands.put("top", new topUserCommand());
+        ClanCommands.put("claim", new claimUserCommand());
+        ClanCommands.put("calclvl", new calclvlUserCommand());
+        ClanCommands.put("create", new createUserCommand());
+        ClanCommands.put("delete", new deleteUserCommand());
+        ClanCommands.put("leave", new leaveUserCommand());
+        ClanCommands.put("home", new homeUserCommand());
+        ClanCommands.put("sethome", new sethomeUserCommand());
+        ClanCommands.put("rename", new renameUserCommand());
+        ClanCommands.put("redesc", new redescUserCommand());
+        ClanCommands.put("settreasure", new settreasureUserCommand());
+        ClanCommands.put("info", new infoUserCommand());
+        ClanCommands.put("mates", new matesUserCommand());
+        ClanCommands.put("accept", new acceptUserCommand());
+        ClanCommands.put("decline", new declineUserCommand());
+        ClanCommands.put("join", new joinUserCommand());
+        ClanCommands.put("kick", new kickUserCommand());
+        ClanCommands.put("promote", new promoteUserCommand());
+        ClanCommands.put("demote", new demoteUserCommand());
+        ClanCommands.put("setting", new settingsUserCommand());
+        if (UselessClan.EconomyPtr != null) {
+            ClanCommands.put("deposit", new depositUserCommand());
+            ClanCommands.put("withdraw", new withdrawUserCommand());
+        }
+
+    }
+
+    public CommandBase getCommand(String key) {
         return ClanCommands.get(key);
     }
 
-    public static @NotNull Collection<PlayerCommandBase> getExecutableCommands(Player tempPlayer, Clan senderClan, EClanRole senderRole) {
+    public @NotNull Collection<PlayerCommandBase> getExecutableCommands(Player tempPlayer, Clan senderClan, EClanRole senderRole) {
         Collection<PlayerCommandBase> tempCommandArray = new ArrayList<>();
         for (CommandBase tempBase : ClanCommands.values()) {
             if (tempBase instanceof PlayerCommandBase tempPlayerCommand) {

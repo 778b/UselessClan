@@ -18,7 +18,10 @@ import static org.bukkit.Bukkit.*;
 
 public final class ClanCommand extends Command {
 
-    @NotNull
+    private final BaseClanCommands ClanCommands;
+
+
+        @NotNull
     public static ClanCommand CreateDefaultInst() {
         return new ClanCommand("Clan", "Default command for access to the clan system",
                 "Use &5/Clan help&r for learning more", Stream.of("clan", "Clan").collect(Collectors.toList()));
@@ -28,6 +31,8 @@ public final class ClanCommand extends Command {
                           @NotNull String usageMessage,
                           @NotNull List<String> aliases) {
         super(name, description, usageMessage, aliases);
+
+        ClanCommands = new BaseClanCommands();
     }
 
     @Override
@@ -39,7 +44,7 @@ public final class ClanCommand extends Command {
             return false;
         }
 
-        CommandBase tempCommand = BaseClanCommands.getCommand(args[0]);
+        CommandBase tempCommand = ClanCommands.getCommand(args[0]);
 
         if (tempCommand == null) {
             ChatSender.MessageTo(tempPlayer, "UselessClan", "Main.InvalidClanCommand");

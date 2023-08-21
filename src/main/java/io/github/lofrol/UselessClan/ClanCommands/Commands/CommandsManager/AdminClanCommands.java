@@ -10,27 +10,32 @@ import io.github.lofrol.UselessClan.Utils.ChatSender;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import static java.util.Map.entry;
 
 public class AdminClanCommands {
-    private static final Map<String, CommandBase> ClanCommands = Map.ofEntries(
-            entry("help",       new helpAdminCommand()),
-            entry("list",       new listAdminCommand()),
-            entry("info",       new infoAdminCommand()),
-            entry("mates",      new matesAdminCommand()),
-            entry("requests",   new requestsAdminCommand()),
-            entry("delete",     new deleteAdminCommand()),
-            entry("home",       new homeAdminCommand()),
-            entry("treasure",   new treasureAdminCommand()),
-            entry("calclvl",    new calclvlAdminCommand()),
-            entry("level",      new levelAdminCommand()),
-            entry("debuginfo",  new debugInfoAdminCommand()),
-            entry("forcejoin",  new forceJoinAdminCommand())
-    );
+    private final Map<String, CommandBase> ClanCommands;
 
-    public static CommandBase getCommand(String key) {
+    public AdminClanCommands() {
+        ClanCommands = new HashMap<>();
+        ClanCommands.put("help", new helpAdminCommand());
+        ClanCommands.put("list", new listAdminCommand());
+        ClanCommands.put("info", new infoAdminCommand());
+        ClanCommands.put("mates", new matesAdminCommand());
+        ClanCommands.put("requests", new requestsAdminCommand());
+        ClanCommands.put("delete", new deleteAdminCommand());
+        ClanCommands.put("home", new homeAdminCommand());
+        ClanCommands.put("treasure", new treasureAdminCommand());
+        ClanCommands.put("calclvl", new calclvlAdminCommand());
+        ClanCommands.put("level", new levelAdminCommand());
+        ClanCommands.put("debuginfo", new debugInfoAdminCommand());
+        ClanCommands.put("forcejoin", new forceJoinAdminCommand());
+
+    }
+
+    public CommandBase getCommand(String key) {
         return ClanCommands.get(key);
     }
 
