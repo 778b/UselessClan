@@ -116,12 +116,14 @@ public class DefaultLocalizationConfiguration extends YamlConfiguration {
         set("Home.HomeSuccessSet",                  "&aClan home set successfully!");
         set("Home.HomeTeleportation",               "&aYou teleported to clan home!");
         set("Home.WrongRegionToSet",                "&cYou cant set clan home out of clan region!");
+        set("Home.ClanHomeDelete",                  "&cYour clan home removed, because it is not in region!");
         setComments("Home", List.of(" ", " "));
 
         set("Treasure.TreasureSuccessSet",          "&aClan treasure set successfully!");
         set("Treasure.WrongWorldToSet",             "&cYou cant set clan treasure in this world!");
         set("Treasure.SuccessfullyCalculation",     "&aClan level successfully calculated!");
         set("Treasure.WrongRegionToSet",            "&cYou cant set clan treasure out of clan region!");
+        set("Treasure.ClanTreasureDelete",          "&cYour clan home removed, because it is not in region!");
         setComments("Treasure", List.of(" ", " "));
 
         set("Info.Label",                           "--------- CLAN INFO ---------");

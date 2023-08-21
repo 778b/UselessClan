@@ -22,6 +22,7 @@ import io.github.lofrol.UselessClan.ClanObjects.ClanMember;
 import io.github.lofrol.UselessClan.ClanObjects.EClanRole;
 import io.github.lofrol.UselessClan.UselessClan;
 import io.github.lofrol.UselessClan.Utils.ChatSender;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -133,6 +134,7 @@ public class claimUserCommand extends PlayerCommandBase {
                 ChatSender.MessageTo(tempPlayer, "UselessClan", "WG.ClaimDeletionNotify");
             }
         }
+
         DefaultDomain tempDomain = new DefaultDomain();
 
         for (ClanMember tempMember : senderClan.getMembers()) {
@@ -142,6 +144,38 @@ public class claimUserCommand extends PlayerCommandBase {
         tempProtectedRegion.setMembers(tempDomain);
 
         tempRegionManager.addRegion(tempProtectedRegion);
+
+        {
+            Location tempTreasure = senderClan.getTreasureClan();
+            Location tempHome = senderClan.getHomeClan();
+
+            ApplicableRegionSet tempHomeRegion = tempRegionManager.getApplicableRegions(
+                    BlockVector3.at(tempHome.getX(), tempHome.getY(), tempHome.getZ()));
+            ApplicableRegionSet tempTreasureRegion = tempRegionManager.getApplicableRegions(
+                    BlockVector3.at(tempTreasure.getX(), tempTreasure.getY(), tempTreasure.getZ()));
+
+
+            boolean isHomeClanTerritory = false;
+            boolean isTreasureClanTerritory = false;
+            for (var tempReg : tempHomeRegion.getRegions()) {
+                if (tempReg.getId().equals(senderClan.getClanRegionId())) {
+                    isHomeClanTerritory = true;
+                }
+            }
+            for (var tempReg : tempTreasureRegion.getRegions()) {
+                if (tempReg.getId().equals(senderClan.getClanRegionId())) {
+                    isTreasureClanTerritory = true;
+                }
+            }
+
+            if (!isHomeClanTerritory) {
+                ChatSender.MessageTo(tempPlayer, "UselessClan", "Home.ClanHomeDelete");
+            }
+            if (!isTreasureClanTerritory) {
+                ChatSender.MessageTo(tempPlayer, "UselessClan", "Treasure.ClanTreasureDelete");
+            }
+        }
+
         senderClan.setClanRegionId(tempProtectedRegion.getId());
         ChatSender.MessageTo(tempPlayer, "UselessClan", "WG.ClaimSuccessfully");
         return true;
