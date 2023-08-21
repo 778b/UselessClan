@@ -123,7 +123,7 @@ public class DefaultLocalizationConfiguration extends YamlConfiguration {
         set("Treasure.WrongWorldToSet",             "&cYou cant set clan treasure in this world!");
         set("Treasure.SuccessfullyCalculation",     "&aClan level successfully calculated!");
         set("Treasure.WrongRegionToSet",            "&cYou cant set clan treasure out of clan region!");
-        set("Treasure.ClanTreasureDelete",          "&cYour clan home removed, because it is not in region!");
+        set("Treasure.ClanTreasureDelete",          "&cYour clan treasure removed, because it is not in region!");
         setComments("Treasure", List.of(" ", " "));
 
         set("Info.Label",                           "--------- CLAN INFO ---------");
