@@ -41,8 +41,10 @@ public class infoUserCommand extends PlayerCommandBase {
                 UselessClan.getLocalManager().getLocalizationMessage("Info.LeaderName"), senderClan.getLeaderName()));
         ChatSender.NonTranslateMessageTo(tempPlayer, "UselessClan", String.format(
                 UselessClan.getLocalManager().getLocalizationMessage("Info.MemberCount"), senderClan.getMembers().size()));
-        ChatSender.NonTranslateMessageTo(tempPlayer, "UselessClan", String.format(
-                UselessClan.getLocalManager().getLocalizationMessage("Info.Money"), (int) senderClan.getMoneyClan()));
+        if (UselessClan.EconomyPtr != null) {
+            ChatSender.NonTranslateMessageTo(tempPlayer, "UselessClan", String.format(
+                    UselessClan.getLocalManager().getLocalizationMessage("Info.Money"), (int) senderClan.getMoneyClan()));
+        }
         ChatSender.NonTranslateMessageTo(tempPlayer, "UselessClan", String.format(
                 UselessClan.getLocalManager().getLocalizationMessage("Info.Rank"), SenderRole.toString()));
         return true;

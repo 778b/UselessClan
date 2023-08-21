@@ -97,14 +97,12 @@ public final class UselessClan extends JavaPlugin {
      */
     private boolean checkHardDepends() {
         if (getServer().getPluginManager().getPlugin("Vault") == null) {
-            getLogger().log(Level.SEVERE, "Cant find Vault, Vault is required!");
-            return false;
+            getLogger().log(Level.INFO, "Cant find Vault, Vault is required!");
         }
         else {
             RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
             if (rsp == null) {
-                getLogger().log(Level.SEVERE, "Vault not initialized!");
-                return false;
+                getLogger().log(Level.INFO, "Vault not initialized!");
             }
             else {
                 getLogger().log(Level.INFO, "Loaded Vault depends!");
