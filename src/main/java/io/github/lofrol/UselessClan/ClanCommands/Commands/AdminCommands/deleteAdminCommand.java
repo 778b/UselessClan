@@ -15,23 +15,25 @@ public class deleteAdminCommand extends CommandBase {
 
     @Override
     public @NotNull String commandDescription() {
-        return "Description.Admin.delete";
+        return "Description.Admin.Delete";
     }
 
     @Override
     public boolean executeCommand(CommandSender sender, String[] args) {
         if (args.length == 1) {
-            ChatSender.MessageTo(sender, "&4UselessClan","You forgot about clan %name, use /ClAd delete %name, %name = name of clan");
+            ChatSender.MessageTo(sender, "&4UselessClan", "Create.Admin.MissingArgToDelete");
+            return false;
         }
-        else {
-            Clan findedClan = UselessClan.getMainManager().getServerClans().get(args[1]);
-            if (findedClan == null) {
-                ChatSender.MessageTo(sender, "&4UselessClan","&cThis clan didnt exist!");
-                return false;
-            }
-            UselessClan.getMainManager().DeleteClan(findedClan);
-            ChatSender.MessageTo(sender, "&4UselessClan",String.format("You deleted a clan %s", findedClan.getPrefixClan()));
+
+        Clan foundClan = UselessClan.getMainManager().getServerClans().get(args[1]);
+        if (foundClan == null) {
+            ChatSender.MessageTo(sender, "&4UselessClan", "Base.HavntClan");
+            return false;
         }
+        UselessClan.getMainManager().DeleteClan(foundClan);
+        ChatSender.NonTranslateMessageTo(sender, "&4UselessClan", String.format(
+                UselessClan.getLocalManager().getLocalizationMessage("Info.Admin.ClanDelete"), foundClan.getPrefixClan()));
+
         return true;
     }
 }

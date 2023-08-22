@@ -27,20 +27,20 @@ public class depositAdminCommand extends CommandBase {
             return false;
         }
 
-        Clan findedClan = UselessClan.getMainManager().getServerClans().get(args[1]);
-        if (findedClan == null) {
+        Clan foundClan = UselessClan.getMainManager().getServerClans().get(args[1]);
+        if (foundClan == null) {
             ChatSender.MessageTo(sender, "&4UselessClan", "Base.HavntClan");
             return false;
         }
 
         double moneyToDeposit = Double.parseDouble(args[1]);
         if (moneyToDeposit <= 0) {
-            ChatSender.MessageTo(sender, "UselessClan", "Economy.WrongDepositMoney");
+            ChatSender.MessageTo(sender, "&4UselessClan", "Economy.WrongDepositMoney");
             return false;
         }
 
-        findedClan.DepositMoneyToClan(moneyToDeposit);
-        findedClan.SendMessageForOnlinePlayers(String.format(
+        foundClan.DepositMoneyToClan(moneyToDeposit);
+        foundClan.SendMessageForOnlinePlayers(String.format(
                 UselessClan.getLocalManager().getLocalizationMessage(
                         "Economy.DepositPlayer"), sender.getName(), moneyToDeposit));
         return true;

@@ -15,23 +15,26 @@ public class calclvlAdminCommand extends CommandBase {
 
     @Override
     public @NotNull String commandDescription() {
-        return "Description.Admin.calclvl";
+        return "Description.Admin.Calclvl";
     }
 
     @Override
     public boolean executeCommand(CommandSender sender, String[] args) {
         if (args.length == 1) {
-            ChatSender.MessageTo(sender, "&4UselessClan","You forgot about clan %name, use /ClAd calclvl %name, %name = name of clan");
+            ChatSender.MessageTo(sender, "&4UselessClan", "Treasure.Admin.MissedArgToCalculate");
+            return false;
         }
-        else {
-            Clan findedClan = UselessClan.getMainManager().getServerClans().get(args[1]);
-            if (findedClan == null) {
-                ChatSender.MessageTo(sender, "&4UselessClan","&cThis clan didnt exist!");
-                return false;
-            }
-            UselessClan.getMainManager().CalculateClanLevel(findedClan);
-            ChatSender.MessageTo(sender, "&4UselessClan",String.format("Calculated level of clan %s", findedClan.getPrefixClan()));
+
+        Clan foundClan = UselessClan.getMainManager().getServerClans().get(args[1]);
+        if (foundClan == null) {
+            ChatSender.MessageTo(sender, "&4UselessClan", "Base.HavntClan");
+            return false;
         }
+        UselessClan.getMainManager().CalculateClanLevel(foundClan);
+
+        ChatSender.NonTranslateMessageTo(sender, "&4UselessClan",
+                String.format(UselessClan.getLocalManager().getLocalizationMessage(
+                        "Treasure.Admin.LevelCalculation"), foundClan.getPrefixClan()));
         return true;
     }
 }

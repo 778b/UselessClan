@@ -64,11 +64,13 @@ public class DefaultLocalizationConfiguration extends YamlConfiguration {
         set("Enter.LeaderCantLeave",                "&cYou cant leave from clan, because you are Leader of this clan");
         set("Enter.SuccessLeave",                   "You successfully leaved from &6%s");
         set("Enter.ClanRequestsLabel",              "-------- CLAN REQUESTS --------");
-        set("Enter.ZeroRequests",                   "0 requests for join to your clan");
+        set("Enter.ZeroRequests",                   "No requests for join to your clan");
+        set("Enter.Admin.SuccessJoin",              "&aYou successfully join to clan %s!");
+        set("Enter.Admin.MissedArgToForceJoin",     "&cYou forgot about clan %name, use /ClAd forcejoin %name, %name = name of clan");
         setComments("Enter", List.of(" ", " "));
 
         set("WG.ZeroLvlClanClaim",                  "&c0 level clan cant claim a territory!");
-        set("WG.NoSelectedAreaToClaim",             "&cPlease select an area first.");
+        set("WG.NoSelectedAreaToClaim",             "&cPlease select an area first");
         set("WG.SelectedAreaIsTooBig",              "&cYour clan cant have more than &a%d&a distance between points, but you selected &a%s&a");
         set("WG.ClaimZoneOverlap",                  "&cSelected territory overlap another region!");
         set("WG.ClaimDeletionNotify",               "&aYour previous region was deleted ...");
@@ -82,8 +84,10 @@ public class DefaultLocalizationConfiguration extends YamlConfiguration {
         set("Create.InvalidPrefixSymbols",          "&cInvalid clan name, use [A-Z; a-z; _; 0-9]");
         set("Create.PrefixAlreadyExist",            "&cClan with this name already exist!");
         set("Create.NotEnoughMoneyToCreate",        "&cFor create your own clan you must have more than %s$");
-        set("Create.SuccessCreateClan",             "Clan %s was created successfully!");
+        set("Create.SuccessCreateClan",             "&aClan %s was created successfully!");
         set("Create.ClanDeleted",                   "&aYou successfully delete your clan!");
+        set("Create.Admin.MissingArgToDelete",      "&cYou forgot about clan %name, use /ClAd delete %name, %name = name of clan");
+        set("Info.Admin.ClanDelete",                "&aClan %s was delete");
         setComments("Create", List.of(" ", " "));
 
         set("Rank.ClanDemoteWithoutArgs",           "&cYou forgot about player %name, use &a/Clan demote %name");
@@ -99,15 +103,15 @@ public class DefaultLocalizationConfiguration extends YamlConfiguration {
         set("Economy.WrongDepositMoney",            "&cWrong money count!");
         set("Economy.WrongWithdrawMoney",           "&cWrong money count! Use [0;+inf)");
         set("Economy.NotEnoughMoney",               "&cYou cant withdraw &a%s&c from you clan");
-        set("Economy.DepositPlayer",                "Player &a%s&b deposit &a%s&b to your clan!");
-        set("Economy.WithdrawPlayer",               "Player &a%s&b withdraw &a%s&b from clan balance");
+        set("Economy.DepositPlayer",                "&aPlayer &a%s&b deposit &a%s&b to your clan!");
+        set("Economy.WithdrawPlayer",               "&aPlayer &a%s&b withdraw &a%s&b from clan balance");
         // @todo 1000$ must be in plugin config
         set("Economy.NotEnoughMoneyForCalculate",   "&cYou need 1000$ for force calculate clan level!");
         set("Economy.Admin.DepositWithoutArgs",     "&cNot enough args, use /ClAd deposit %name %money!");
         setComments("Economy", List.of(" ", " "));
 
         set("Help.Label",                           "--------- CLAN HELP %d ---------");
-        set("Help.ClanPageCommand",                 "Type &a/Clan help %d&b - to show commands in page %d");
+        set("Help.ClanPageCommand",                 "&bType &a/Clan help %d&b - to show commands in page %d");
         set("Help.WrongPage",                       "&cThis page of help isnt found");
         setComments("Help", List.of(" ", " "));
 
@@ -125,6 +129,8 @@ public class DefaultLocalizationConfiguration extends YamlConfiguration {
         set("Treasure.SuccessfullyCalculation",     "&aClan level successfully calculated!");
         set("Treasure.WrongRegionToSet",            "&cYou cant set clan treasure out of clan region!");
         set("Treasure.ClanTreasureDelete",          "&cYour clan treasure removed, because it is not in region!");
+        set("Treasure.Admin.LevelCalculation",      "&aCalculated level of clan %s");
+        set("Treasure.Admin.MissedArgToCalculate",  "&cYou forgot about clan %name, use /ClAd calclvl %name, %name = name of clan");
         setComments("Treasure", List.of(" ", " "));
 
         set("Info.Label",                           "--------- CLAN INFO ---------");
@@ -136,6 +142,11 @@ public class DefaultLocalizationConfiguration extends YamlConfiguration {
         set("Info.MemberCount",                     "- Count of Members: %s");
         set("Info.Money",                           "- Money: %d");
         set("Info.Rank",                            "- Your rank: %s");
+        set("Info.Home",                            "- Home: %s");
+        set("Info.Treasure",                        "- Treasure: %s");
+        set("Info.RequestCount",                    "- Count of Requests: %s");
+        set("Info.Admin.Label",                     "--------- CLAN %s INFO ---------");
+        set("Info.Admin.MissedArg",                 "You forgot about clan %name, use /ClAd info %name, %name = name of clan");
         setComments("Info", List.of(" ", " "));
 
         set("Rename.ClanRenameWithoutArgs",             "&cYou forgot about new clan %name, use &a/Clan rename %name&b, %name = new clan name");
@@ -199,22 +210,23 @@ public class DefaultLocalizationConfiguration extends YamlConfiguration {
         set("Description.Top",                      "&a/Clan top&b - top of all clans");
         set("Description.Withdraw",                 "&a/Clan withdraw %value&b - to withdraw money from your clan");
 
-        set("Description.Admin.calclvl",            "&a/ClAd calclvl %clan&b - force recalculate %name clan level");
-        set("Description.Admin.debugInfo",          "&a/ClAd debuginfo %clan&b - show debug info about clan %name");
-        set("Description.Admin.delete",             "&a/ClAd calclvl %clan&b - force delete clan %name");
-        set("Description.Admin.forceJoin",          "&a/ClAd forcejoin %clan&b - force join to clan %name");
-        set("Description.Admin.help",               "&a/ClAd help - to show this menu");
-        set("Description.Admin.treasure",           "&a/ClAd treasure %clan&b - teleport to treasure of clan %name");
-        set("Description.Admin.home",               "&a/ClAd home %clan&b - teleport to home of clan %name");
-        set("Description.Admin.info",               "&a/ClAd info %clan&b - show info about clan %name");
-        set("Description.Admin.level",              "&a/ClAd level %clan&b %level - to set %level for clan %name");
-        set("Description.Admin.list",               "&a/ClAd list - to show all server clans");
-        set("Description.Admin.mates",              "&a/ClAd mates %clan&b - to show all mates in clan %name");
-        set("Description.Admin.requests",           "&a/ClAd requests %clan&b - to show all requests in clan %name");
+        set("Description.Admin.Calclvl",            "&a/ClAd calclvl %clan&b - force recalculate %name clan level");
+        set("Description.Admin.DebugInfo",          "&a/ClAd debuginfo %clan&b - show debug info about clan %name");
+        set("Description.Admin.Delete",             "&a/ClAd calclvl %clan&b - force delete clan %name");
+        set("Description.Admin.ForceJoin",          "&a/ClAd forcejoin %clan&b - force join to clan %name");
+        set("Description.Admin.Help",               "&a/ClAd help - to show this menu");
+        set("Description.Admin.Treasure",           "&a/ClAd treasure %clan&b - teleport to treasure of clan %name");
+        set("Description.Admin.Home",               "&a/ClAd home %clan&b - teleport to home of clan %name");
+        set("Description.Admin.Info",               "&a/ClAd info %clan&b - show info about clan %name");
+        set("Description.Admin.Level",              "&a/ClAd level %clan&b %level - to set %level for clan %name");
+        set("Description.Admin.List",               "&a/ClAd list - to show all server clans");
+        set("Description.Admin.Mates",              "&a/ClAd mates %clan&b - to show all mates in clan %name");
+        set("Description.Admin.Requests",           "&a/ClAd requests %clan&b - to show all requests in clan %name");
         set("Description.Admin.Withdraw",           "&a/ClAd withdraw %clan %value&b - to withdraw money from your clan");
         set("Description.Admin.Deposit",            "&a/ClAd deposit %clan %value&b - to deposit money to your clan");
 
-        set("Description.General.version",          "&a/UselessClan version - to show plugin version");
+        set("Description.General.Version",          "&a/UselessClan version - to show plugin version");
+        set("Description.General.Reload",           "&a/UselessClan reload - to reload plugin config");
         setComments("Description", List.of(" ", " "));
     }
 }

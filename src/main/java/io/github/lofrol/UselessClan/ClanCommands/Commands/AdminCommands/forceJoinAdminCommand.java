@@ -17,26 +17,27 @@ public class forceJoinAdminCommand extends CommandBase {
 
     @Override
     public @NotNull String commandDescription() {
-        return "Description.Admin.forceJoin";
+        return "Description.Admin.ForceJoin";
     }
 
 
     @Override
     public boolean executeCommand(CommandSender sender, String[] args) {
         if (args.length == 1) {
-            ChatSender.MessageTo(sender, "&4UselessClan","You forgot about clan %name, use /ClAd info %name, %name = name of clan");
+            ChatSender.MessageTo(sender, "&4UselessClan", "Enter.Admin.MissedArgToForceJoin");
+            return false;
         }
-        else {
-            Clan foundClan = UselessClan.getMainManager().getServerClans().get(args[1]);
-            if (foundClan == null) {
-                ChatSender.MessageTo(sender, "&4UselessClan","&cThis clan didnt exist!");
-                return false;
-            }
 
-            foundClan.PlayerJoinToClan(EClanRole.OFFICER, sender.getName());
-
-            ChatSender.MessageTo(sender,"&4UselessClan", String.format("&a You successfully join to clan %s!", foundClan.getPrefixClan()));
+        Clan foundClan = UselessClan.getMainManager().getServerClans().get(args[1]);
+        if (foundClan == null) {
+            ChatSender.MessageTo(sender, "&4UselessClan", "Base.HavntClan");
+            return false;
         }
+
+        foundClan.PlayerJoinToClan(EClanRole.OFFICER, sender.getName());
+
+        ChatSender.NonTranslateMessageTo(sender, "&4UselessClan", String.format(
+                UselessClan.getLocalManager().getLocalizationMessage("Enter.Admin.SuccessJoin"), foundClan.getPrefixClan()));
         return true;
     }
 }
