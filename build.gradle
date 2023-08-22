@@ -3,7 +3,7 @@ plugins {
 }
 
 group = 'io.github.lofrol'
-version = '1.1'
+version = '1.1.1'
 
 repositories {
     mavenCentral()
@@ -17,7 +17,7 @@ repositories {
         url = 'https://oss.sonatype.org/content/groups/public/'
     }
     maven {
-        name = 'valut-repo'
+        name = 'vault-repo'
         url 'https://jitpack.io'
     }
     maven {
@@ -35,7 +35,6 @@ dependencies {
     compileOnly "com.github.MilkBowl:VaultAPI:1.7"
     compileOnly "me.clip:placeholderapi:2.11.2"
     compileOnly 'com.sk89q.worldguard:worldguard-bukkit:7.0.7'
-    compileOnly 'com.sk89q.worldedit:worldedit-bukkit:7.2.12'
 }
 
 def targetJavaVersion = 17

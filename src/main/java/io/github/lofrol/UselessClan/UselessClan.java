@@ -96,13 +96,15 @@ public final class UselessClan extends JavaPlugin {
      *   Tasks section
      */
     private boolean checkHardDepends() {
-        if (getServer().getPluginManager().getPlugin("Vault") == null) {
-            getLogger().log(Level.INFO, "Cant find Vault, Vault is required!");
+        if(getServer().getPluginManager().getPlugin("WorldGuard") == null) {
+            getLogger().log(Level.SEVERE, "Cant find WorldGuard, WorldGuard is required!");
+            return false;
         }
-        else {
+
+        if (getServer().getPluginManager().getPlugin("Vault") != null) {
             RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
             if (rsp == null) {
-                getLogger().log(Level.INFO, "Vault not initialized!");
+                getLogger().log(Level.SEVERE, "Cant initialize vault depend!");
             }
             else {
                 getLogger().log(Level.INFO, "Loaded Vault depends!");
@@ -110,23 +112,15 @@ public final class UselessClan extends JavaPlugin {
             }
         }
 
-        if(getServer().getPluginManager().getPlugin("PlaceholderAPI") == null) {
-            getLogger().log(Level.SEVERE, "Cant find PlaceholderAPI, PlaceholderAPI is required!");
-            return false;
-        }
-        else {
+        if(getServer().getPluginManager().getPlugin("PlaceholderAPI") != null) {
             PlaceholderExpansion tempPlaceholderClan = new UselessClanPlaceholder();
             tempPlaceholderClan.register();
             StringBuilder MultiString = new StringBuilder();
             for (String placeholder : tempPlaceholderClan.getPlaceholders()) {
                 MultiString.append(" ").append(placeholder);
             }
+            getLogger().log(Level.INFO, "Loaded PlaceholderAPI depends!");
             getLogger().log(Level.INFO, "Placeholders:"+ MultiString );
-        }
-
-        if(getServer().getPluginManager().getPlugin("WorldGuard") == null) {
-            getLogger().log(Level.SEVERE, "Cant find WorldGuard, WorldGuard is required!");
-            return false;
         }
 
         return true;
