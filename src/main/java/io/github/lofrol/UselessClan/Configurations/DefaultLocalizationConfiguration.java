@@ -111,6 +111,7 @@ public class DefaultLocalizationConfiguration extends YamlConfiguration {
         setComments("Economy", List.of(" ", " "));
 
         set("Help.Label",                           "--------- CLAN HELP %d ---------");
+        set("Help.NoCommands",                      "&cNo commands found");
         set("Help.ClanPageCommand",                 "&bType &a/Clan help %d&b - to show commands in page %d");
         set("Help.WrongPage",                       "&cThis page of help isnt found");
         setComments("Help", List.of(" ", " "));

@@ -10,8 +10,10 @@ import io.github.lofrol.UselessClan.Utils.ChatSender;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import static java.util.Map.entry;
 
@@ -42,4 +44,7 @@ public class AdminClanCommands {
         return ClanCommands.get(key);
     }
 
+    public Collection<CommandBase> getCommands() {
+        return ClanCommands.values();
+    }
 }

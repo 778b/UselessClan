@@ -163,6 +163,15 @@ public final class UselessClan extends JavaPlugin {
         else getLogger().log(Level.SEVERE, "Clan Plugin Command cant be loaded!");
     }
 
+    public static Command GetCommandByClass(Class<? extends Command> toFind) {
+        for (var temp : RegisteredCommands) {
+            if (temp.getClass().equals(toFind)) {
+                return temp;
+            }
+        }
+        return null;
+    }
+
     private void runServerTasks() {
         ActiveTasks = new HashSet<>();
         ActiveTasks.add(getServer().getScheduler().runTaskTimer(this, () -> {

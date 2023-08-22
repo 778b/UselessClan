@@ -1,11 +1,12 @@
 package io.github.lofrol.UselessClan.ClanCommands.Commands.DefaultCommands;
 
-import io.github.lofrol.UselessClan.ClanCommands.Commands.CommandsManager.BaseClanCommands;
+import io.github.lofrol.UselessClan.ClanCommands.ClanCommand;
 import io.github.lofrol.UselessClan.ClanCommands.Commands.PlayerCommandBase;
 import io.github.lofrol.UselessClan.ClanObjects.Clan;
 import io.github.lofrol.UselessClan.ClanObjects.EClanRole;
 import io.github.lofrol.UselessClan.UselessClan;
 import io.github.lofrol.UselessClan.Utils.ChatSender;
+import org.bukkit.command.Command;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -30,7 +31,17 @@ public class helpUserCommand extends PlayerCommandBase {
         }
 
         final int numCommandsInOnePage = 8;
-        List<PlayerCommandBase> tempCommandArray = BaseClanCommands.getExecutableCommands(tempPlayer, senderClan, senderRole).stream().toList();
+        Command tempCommand = UselessClan.GetCommandByClass(ClanCommand.class);
+        List<PlayerCommandBase> tempCommandArray = null;
+
+        if (tempCommand instanceof ClanCommand tempClanCommand) {
+            tempCommandArray = tempClanCommand.getExecutableCommands(tempPlayer, senderClan, senderRole).stream().toList();
+        }
+
+        if (tempCommandArray == null) {
+            ChatSender.MessageTo(tempPlayer, "&4UselessClan", "Help.NoCommands");
+            return false;
+        }
 
         if (args.length == 1) {
             int tempRow = 0;
