@@ -16,23 +16,29 @@ public class homeAdminCommand extends CommandBase {
 
     @Override
     public @NotNull String commandDescription() {
-        return "Description.Admin.home";
+        return "Description.Admin.Home";
     }
 
 
     @Override
     public boolean executeCommand(CommandSender sender, String[] args) {
         if (args.length == 1) {
-            ChatSender.MessageTo(sender, "&4UselessClan","You forgot about clan %name, use /ClAd home %name, %name = name of clan");
+            ChatSender.MessageTo(sender, "&4UselessClan", "Home.Admin.MissedArgsToHome");
+            return false;
         }
-        else {
-            Clan findedClan = UselessClan.getMainManager().getServerClans().get(args[1]);
-            if (findedClan == null) {
-                ChatSender.MessageTo(sender, "&4UselessClan","&cThis clan didnt exist!");
-                return false;
-            }
-            if (sender instanceof Player tempPlayer) tempPlayer.teleport(findedClan.getHomeClan());
+
+        Clan foundClan = UselessClan.getMainManager().getServerClans().get(args[1]);
+        if (foundClan == null) {
+            ChatSender.MessageTo(sender, "&4UselessClan", "Base.HavntClan");
+            return false;
         }
+
+        if (foundClan.getHomeClan() == null) {
+            ChatSender.MessageTo(sender, "&4UselessClan", "Home.NoClanHome");
+            return false;
+        }
+
+        if (sender instanceof Player tempPlayer) tempPlayer.teleport(foundClan.getHomeClan());
         return true;
     }
 }

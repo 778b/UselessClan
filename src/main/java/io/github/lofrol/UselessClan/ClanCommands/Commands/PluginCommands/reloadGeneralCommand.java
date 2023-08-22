@@ -9,12 +9,12 @@ import org.jetbrains.annotations.NotNull;
 public class reloadGeneralCommand extends CommandBase {
     @Override
     public @NotNull String commandDescription() {
-        return "Description.General.reload";
+        return "Description.General.Reload";
     }
 
     @Override
     public boolean havePermission(CommandSender sender) {
-        return sender.hasPermission("UselessClan.Admin");
+        return sender.hasPermission("UselessClan.Admin.Reload");
     }
 
     @Override

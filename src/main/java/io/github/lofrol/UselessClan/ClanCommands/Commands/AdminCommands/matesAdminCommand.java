@@ -16,27 +16,29 @@ public class matesAdminCommand extends CommandBase {
 
     @Override
     public @NotNull String commandDescription() {
-        return "Description.Admin.mates";
+        return "Description.Admin.Mates";
     }
 
 
     @Override
     public boolean executeCommand(CommandSender sender, String[] args) {
         if (args.length == 1) {
-            ChatSender.MessageTo(sender, "&4UselessClan","You forgot about clan %name, use /ClAd mates %name, %name = name of clan");
+            ChatSender.MessageTo(sender, "&4UselessClan", "Mates.Admin.MissingArgToMates");
+            return false;
         }
-        else {
-            Clan findedClan = UselessClan.getMainManager().getServerClans().get(args[1]);
-            if (findedClan == null) {
-                ChatSender.MessageTo(sender, "&4UselessClan","&cThis clan didnt exist!");
-                return false;
-            }
-            ChatSender.MessageTo(sender,"UselessClan", "########## CLANMATES ##########");
-            for (ClanMember tempMember : findedClan.getMembers()) {
-                ChatSender.MessageTo(sender,"UselessClan", String.format(
-                        "# %s &a%s", tempMember.getMemberRole().toString(), tempMember.getPlayerName()));
-            }
+
+        Clan findedClan = UselessClan.getMainManager().getServerClans().get(args[1]);
+        if (findedClan == null) {
+            ChatSender.MessageTo(sender, "&4UselessClan", "Base.HavntClan");
+            return false;
         }
+        ChatSender.MessageTo(sender, "&4UselessClan", "Mates.Label");
+        for (ClanMember tempMember : findedClan.getMembers()) {
+            ChatSender.NonTranslateMessageTo(sender, "&4UselessClan", String.format(
+                    UselessClan.getLocalManager().getLocalizationMessage(
+                            "Mates.Unit"), tempMember.getMemberRole().toString(), tempMember.getPlayerName()));
+        }
+
         return true;
     }
 }

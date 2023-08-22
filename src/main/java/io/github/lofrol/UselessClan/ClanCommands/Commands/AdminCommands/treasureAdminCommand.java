@@ -16,23 +16,29 @@ public class treasureAdminCommand extends CommandBase {
 
     @Override
     public @NotNull String commandDescription() {
-        return "Description.Admin.treasure";
+        return "Description.Admin.Treasure";
     }
 
 
     @Override
     public boolean executeCommand(CommandSender sender, String[] args) {
         if (args.length == 1) {
-            ChatSender.MessageTo(sender, "&4UselessClan","You forgot about clan %name, use /ClAd home %name, %name = name of clan");
+            ChatSender.MessageTo(sender, "&4UselessClan","Treasure.Admin.MissedArgsToHome");
+            return false;
         }
-        else {
-            Clan findedClan = UselessClan.getMainManager().getServerClans().get(args[1]);
-            if (findedClan == null) {
-                ChatSender.MessageTo(sender, "&4UselessClan","&cThis clan didnt exist!");
-                return false;
-            }
-            if (sender instanceof Player tempPlayer) tempPlayer.teleport(findedClan.getTreasureClan());
+
+        Clan foundClan = UselessClan.getMainManager().getServerClans().get(args[1]);
+        if (foundClan == null) {
+            ChatSender.MessageTo(sender, "&4UselessClan", "Base.HavntClan");
+            return false;
         }
+
+        if (foundClan.getTreasureClan() == null) {
+            ChatSender.MessageTo(sender, "&4UselessClan", "Treasure.Admin.NoClanTreasure");
+            return false;
+        }
+
+        if (sender instanceof Player tempPlayer) tempPlayer.teleport(foundClan.getTreasureClan());
         return true;
     }
 }

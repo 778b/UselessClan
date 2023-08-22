@@ -3,6 +3,7 @@ package io.github.lofrol.UselessClan.ClanCommands.Commands.DefaultCommands;
 import io.github.lofrol.UselessClan.ClanCommands.Commands.PlayerCommandBase;
 import io.github.lofrol.UselessClan.ClanObjects.Clan;
 import io.github.lofrol.UselessClan.ClanObjects.EClanRole;
+import io.github.lofrol.UselessClan.UselessClan;
 import io.github.lofrol.UselessClan.Utils.ChatSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -28,13 +29,15 @@ public class requestsUserCommand extends PlayerCommandBase {
         }
 
         if (senderClan.getRequests().size() > 0) {
-            ChatSender.MessageTo(tempPlayer, "UselessClan", "Enter.ClanRequestsLabel");
+            ChatSender.MessageTo(tempPlayer, "UselessClan", "Requests.Label");
             for (String tempMemberName : senderClan.getRequests()) {
-                ChatSender.NonTranslateMessageTo(tempPlayer, "UselessClan", String.format("- %s", tempMemberName));
+                ChatSender.NonTranslateMessageTo(tempPlayer, "UselessClan", String.format(
+                        UselessClan.getLocalManager().getLocalizationMessage(
+                                "Requests.Unit"), tempMemberName));
             }
         }
         else {
-            ChatSender.MessageTo(tempPlayer, "UselessClan", "Enter.ZeroRequests");
+            ChatSender.MessageTo(tempPlayer, "UselessClan", "Requests.ZeroRequests");
         }
 
         return true;

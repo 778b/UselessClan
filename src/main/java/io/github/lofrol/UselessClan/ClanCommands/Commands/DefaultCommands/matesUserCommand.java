@@ -4,6 +4,7 @@ import io.github.lofrol.UselessClan.ClanCommands.Commands.PlayerCommandBase;
 import io.github.lofrol.UselessClan.ClanObjects.Clan;
 import io.github.lofrol.UselessClan.ClanObjects.ClanMember;
 import io.github.lofrol.UselessClan.ClanObjects.EClanRole;
+import io.github.lofrol.UselessClan.UselessClan;
 import io.github.lofrol.UselessClan.Utils.ChatSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -30,8 +31,8 @@ public class matesUserCommand extends PlayerCommandBase {
         ChatSender.MessageTo(tempPlayer, "UselessClan", "Mates.Label");
         for (ClanMember tempMember : senderClan.getMembers()) {
             ChatSender.NonTranslateMessageTo(tempPlayer, "UselessClan", String.format(
-                    "# %s &a%s %d", tempMember.getMemberRole().toString(),
-                    tempMember.getPlayerName(), (int) tempMember.getGeneralPlayerDeposit()));
+                    UselessClan.getLocalManager().getLocalizationMessage(
+                            "Mates.Unit"), tempMember.getMemberRole().toString(), tempMember.getPlayerName()));
         }
         return true;
     }

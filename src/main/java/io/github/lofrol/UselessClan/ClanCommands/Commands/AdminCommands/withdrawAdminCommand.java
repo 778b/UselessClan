@@ -25,20 +25,20 @@ public class withdrawAdminCommand extends CommandBase {
             return false;
         }
 
-        Clan findedClan = UselessClan.getMainManager().getServerClans().get(args[1]);
-        if (findedClan == null) {
+        Clan foundClan = UselessClan.getMainManager().getServerClans().get(args[1]);
+        if (foundClan == null) {
             ChatSender.MessageTo(sender, "&4UselessClan", "Base.HavntClan");
             return false;
         }
 
         double moneyToWithdraw = Double.parseDouble(args[1]);
         if (moneyToWithdraw <= 0) {
-            ChatSender.MessageTo(sender, "UselessClan", "Economy.WrongWithdrawMoney");
+            ChatSender.MessageTo(sender, "&4UselessClan", "Economy.WrongWithdrawMoney");
             return false;
         }
 
-        findedClan.WithdrawMoneyFromClan(moneyToWithdraw);
-        findedClan.SendMessageForOnlinePlayers(String.format(
+        foundClan.WithdrawMoneyFromClan(moneyToWithdraw);
+        foundClan.SendMessageForOnlinePlayers(String.format(
                 UselessClan.getLocalManager().getLocalizationMessage(
                         "Economy.WithdrawPlayer"), sender.getName(), moneyToWithdraw));
         return true;

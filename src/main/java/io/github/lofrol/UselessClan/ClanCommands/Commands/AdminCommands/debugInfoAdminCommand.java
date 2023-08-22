@@ -21,7 +21,7 @@ public class debugInfoAdminCommand extends CommandBase {
     @Override
     public boolean executeCommand(CommandSender sender, String[] args) {
         if (args.length == 1) {
-            ChatSender.MessageTo(sender, "&4UselessClan", "Info.Admin.MissedArg");
+            ChatSender.MessageTo(sender, "&4UselessClan", "Info.Admin.MissedArgDebug");
             return false;
         }
 
@@ -32,7 +32,7 @@ public class debugInfoAdminCommand extends CommandBase {
         }
 
         ChatSender.NonTranslateMessageTo(sender, "&4UselessClan", String.format(
-                UselessClan.getLocalManager().getLocalizationMessage("Info.Admin.Label"), foundClan.getPrefixClan()));
+                UselessClan.getLocalManager().getLocalizationMessage("Info.Admin.LabelDebug"), foundClan.getPrefixClan()));
 
         ChatSender.NonTranslateMessageTo(sender, "&4UselessClan", String.format(
                 UselessClan.getLocalManager().getLocalizationMessage("Info.ClanName"), foundClan.getNameClan()));

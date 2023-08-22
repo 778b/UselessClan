@@ -14,7 +14,7 @@ import java.util.List;
 public class versionUserCommand extends CommandBase {
     @Override
     public @NotNull String commandDescription() {
-        return "Description.General.version";
+        return "Description.General.Version";
     }
 
     @Override

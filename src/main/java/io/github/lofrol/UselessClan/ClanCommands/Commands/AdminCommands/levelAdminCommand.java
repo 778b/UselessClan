@@ -16,37 +16,33 @@ public class levelAdminCommand extends CommandBase {
 
     @Override
     public @NotNull String commandDescription() {
-        return "Description.Admin.level";
+        return "Description.Admin.Level";
     }
 
 
     @Override
     public boolean executeCommand(CommandSender sender, String[] args) {
-        if (args.length == 1) {
-            ChatSender.MessageTo(sender, "&4UselessClan","You forgot about clan %name, use /ClAd level %name, %name = name of clan");
+        if (args.length < 2) {
+            ChatSender.MessageTo(sender, "&4UselessClan", "Economy.Admin.MissingArgToLevel");
+            return false;
         }
-        else if (args.length == 2) {
-            ChatSender.MessageTo(sender, "&4UselessClan","You forgot about clan %level, use /ClAd level %name %level, %level = level to give");
-        }
-        else {
-            if (args[0].equalsIgnoreCase("level")) {
-                Clan findedClan = UselessClan.getMainManager().getServerClans().get(args[1]);
-                if (findedClan == null) {
-                    ChatSender.MessageTo(sender, "&4UselessClan","&cThis clan didnt exist!");
-                    return false;
-                }
-                int tempLevel = Integer.parseInt(args[2]);
 
-                if (tempLevel < 0 || tempLevel > ClanManager.ClanLevelColors.size()) {
-                    ChatSender.MessageTo(sender, "&4UselessClan","&cWrong level number!");
-                    return false;
-                }
-
-                findedClan.setClanLevel(tempLevel);
-                ChatSender.MessageTo(sender, "&4UselessClan",
-                        String.format("&aLevel of clan %s was changed to %d", findedClan.getPrefixClan(), findedClan.getClanLevel()));
-            }
+        Clan foundClan = UselessClan.getMainManager().getServerClans().get(args[1]);
+        if (foundClan == null) {
+            ChatSender.MessageTo(sender, "&4UselessClan", "Base.HavntClan");
+            return false;
         }
+        int tempLevel = Integer.parseInt(args[2]);
+
+        if (tempLevel < 0 || tempLevel > ClanManager.ClanLevelColors.size()) {
+            ChatSender.MessageTo(sender, "&4UselessClan", "Economy.Admin.WrongLvl");
+            return false;
+        }
+
+        foundClan.setClanLevel(tempLevel);
+        foundClan.SendMessageForOnlinePlayers(String.format(
+                UselessClan.getLocalManager().getLocalizationMessage(
+                        "Economy.Admin.SuccessLvlChange"), foundClan.getPrefixClan(), foundClan.getClanLevel()));
         return true;
     }
 }

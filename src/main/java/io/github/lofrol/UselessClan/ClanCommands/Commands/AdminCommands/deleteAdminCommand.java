@@ -32,7 +32,7 @@ public class deleteAdminCommand extends CommandBase {
         }
         UselessClan.getMainManager().DeleteClan(foundClan);
         ChatSender.NonTranslateMessageTo(sender, "&4UselessClan", String.format(
-                UselessClan.getLocalManager().getLocalizationMessage("Info.Admin.ClanDelete"), foundClan.getPrefixClan()));
+                UselessClan.getLocalManager().getLocalizationMessage("Create.Admin.ClanDelete"), foundClan.getPrefixClan()));
 
         return true;
     }

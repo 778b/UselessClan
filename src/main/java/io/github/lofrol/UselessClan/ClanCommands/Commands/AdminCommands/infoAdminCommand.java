@@ -2,6 +2,7 @@ package io.github.lofrol.UselessClan.ClanCommands.Commands.AdminCommands;
 
 import io.github.lofrol.UselessClan.ClanCommands.Commands.CommandBase;
 import io.github.lofrol.UselessClan.ClanObjects.Clan;
+import io.github.lofrol.UselessClan.ClanObjects.EClanRole;
 import io.github.lofrol.UselessClan.UselessClan;
 import io.github.lofrol.UselessClan.Utils.ChatSender;
 import org.bukkit.command.CommandSender;
@@ -15,28 +16,39 @@ public class infoAdminCommand extends CommandBase {
 
     @Override
     public @NotNull String commandDescription() {
-        return "Description.Admin.info";
+        return "Description.Admin.Info";
     }
 
 
     @Override
     public boolean executeCommand(CommandSender sender, String[] args) {
-        if (args.length == 1) {
-            ChatSender.MessageTo(sender, "&4UselessClan","You forgot about clan %name, use /ClAd info %name, %name = name of clan");
+        if (args.length < 2) {
+            ChatSender.MessageTo(sender, "&4UselessClan", "Info.Admin.MissedArg");
+            return false;
         }
-        else {
-            Clan foundClan = UselessClan.getMainManager().getServerClans().get(args[1]);
-            if (foundClan == null) {
-                ChatSender.MessageTo(sender, "&4UselessClan","&cThis clan didnt exist!");
-                return false;
-            }
-            ChatSender.MessageTo(sender,"UselessClan", String.format("### CLAN %s INFO ###", foundClan.getPrefixClan()));
-            ChatSender.MessageTo(sender,"UselessClan", String.format("# Name: %s", foundClan.getNameClan()));
-            ChatSender.MessageTo(sender,"UselessClan", String.format("# Prefix: %s", foundClan.getPrefixClan()));
-            ChatSender.MessageTo(sender,"UselessClan", String.format("# Level: %s", foundClan.getClanLevel()));
-            ChatSender.MessageTo(sender,"UselessClan", String.format("# LeaderName: %s", foundClan.getLeaderName()));
-            ChatSender.MessageTo(sender,"UselessClan", String.format("# Count of Members: %s", foundClan.getMembers().size()));
-            ChatSender.MessageTo(sender,"UselessClan", String.format("# Money: %s", foundClan.getMoneyClan()));
+
+        Clan foundClan = UselessClan.getMainManager().getServerClans().get(args[1]);
+        if (foundClan == null) {
+            ChatSender.MessageTo(sender, "&4UselessClan", "Base.HavntClan");
+            return false;
+        }
+
+        ChatSender.MessageTo(sender, "&4UselessClan", "Info.Label");
+        ChatSender.NonTranslateMessageTo(sender, "&4UselessClan", String.format(
+                UselessClan.getLocalManager().getLocalizationMessage("Info.ClanName"), foundClan.getNameClan()));
+        ChatSender.NonTranslateMessageTo(sender, "&4UselessClan", String.format(
+                UselessClan.getLocalManager().getLocalizationMessage("Info.ClanDescription"), foundClan.getDescriptionClan()));
+        ChatSender.NonTranslateMessageTo(sender, "&4UselessClan", String.format(
+                UselessClan.getLocalManager().getLocalizationMessage("Info.ClanPrefix"), foundClan.getPrefixClan()));
+        ChatSender.NonTranslateMessageTo(sender, "&4UselessClan", String.format(
+                UselessClan.getLocalManager().getLocalizationMessage("Info.ClanLevel"), foundClan.getClanLevel()));
+        ChatSender.NonTranslateMessageTo(sender, "&4UselessClan", String.format(
+                UselessClan.getLocalManager().getLocalizationMessage("Info.LeaderName"), foundClan.getLeaderName()));
+        ChatSender.NonTranslateMessageTo(sender, "&4UselessClan", String.format(
+                UselessClan.getLocalManager().getLocalizationMessage("Info.MemberCount"), foundClan.getMembers().size()));
+        if (UselessClan.EconomyPtr != null) {
+            ChatSender.NonTranslateMessageTo(sender, "&4UselessClan", String.format(
+                    UselessClan.getLocalManager().getLocalizationMessage("Info.Money"), (int) foundClan.getMoneyClan()));
         }
         return true;
     }

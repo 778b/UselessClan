@@ -16,26 +16,34 @@ public class requestsAdminCommand extends CommandBase {
 
     @Override
     public @NotNull String commandDescription() {
-        return "Description.Admin.requests";
+        return "Description.Admin.Requests";
     }
 
 
     @Override
     public boolean executeCommand(CommandSender sender, String[] args) {
         if (args.length == 1) {
-            ChatSender.MessageTo(sender, "&4UselessClan","You forgot about clan %name, use /ClAd mates %name, %name = name of clan");
+            ChatSender.MessageTo(sender, "&4UselessClan", "Requests.Admin.MissingArgToMates");
+            return false;
         }
-        else {
-            Clan findedClan = UselessClan.getMainManager().getServerClans().get(args[1]);
-            if (findedClan == null) {
-                ChatSender.MessageTo(sender, "&4UselessClan","&cThis clan didnt exist!");
-                return false;
+
+        Clan foundClan = UselessClan.getMainManager().getServerClans().get(args[1]);
+        if (foundClan == null) {
+            ChatSender.MessageTo(sender, "&4UselessClan", "Base.HavntClan");
+            return false;
+        }
+
+        if (foundClan.getRequests().size() > 0) {
+            ChatSender.NonTranslateMessageTo(sender, "&4UselessClan", String.format(
+                    UselessClan.getLocalManager().getLocalizationMessage(
+                            "Requests.Admin.Label"), foundClan.getPrefixClan()));
+            for (String tempMemberName : foundClan.getRequests()) {
+                ChatSender.NonTranslateMessageTo(sender, "&4UselessClan", String.format(
+                        UselessClan.getLocalManager().getLocalizationMessage(
+                                "Requests.Unit"), tempMemberName));
             }
-            ChatSender.MessageTo(sender,"UselessClan", "########## CLANREQUESTS ##########");
-            for (var tempMember : findedClan.getRequests()) {
-                ChatSender.MessageTo(sender,"UselessClan", String.format(
-                        "# &a%s", tempMember));
-            }
+        } else {
+            ChatSender.MessageTo(sender, "&4UselessClan", "Requests.ZeroRequests");
         }
         return true;
     }

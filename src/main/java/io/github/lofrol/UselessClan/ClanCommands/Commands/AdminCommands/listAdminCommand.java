@@ -15,16 +15,16 @@ public class listAdminCommand extends CommandBase {
 
     @Override
     public @NotNull String commandDescription() {
-        return "Description.Admin.list";
+        return "Description.Admin.List";
     }
 
 
     @Override
     public boolean executeCommand(CommandSender sender, String[] args) {
-        ChatSender.MessageTo(sender, "&4UselessClan","########## CLAN LIST ##########");
+        ChatSender.MessageTo(sender, "&4UselessClan","Info.Admin.ListLabel");
         for (Clan tempClan : UselessClan.getMainManager().getServerClans().values()) {
-            ChatSender.MessageTo(sender, "&4UselessClan",
-                    String.format("# Name: &a%s&b, level: &a%d&b", tempClan.getNameClan(), tempClan.getClanLevel()));
+            ChatSender.NonTranslateMessageTo(sender, "&4UselessClan", String.format(
+                    UselessClan.getLocalManager().getLocalizationMessage("Info.Admin.ListUnit"), tempClan.getNameClan(), tempClan.getClanLevel()));
         }
         return true;
     }

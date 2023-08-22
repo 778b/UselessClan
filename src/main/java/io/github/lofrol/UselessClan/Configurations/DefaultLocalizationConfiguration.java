@@ -63,8 +63,6 @@ public class DefaultLocalizationConfiguration extends YamlConfiguration {
         set("Enter.PlayerKicked",                   "&cPlayer %s was kicked from your clan!");
         set("Enter.LeaderCantLeave",                "&cYou cant leave from clan, because you are Leader of this clan");
         set("Enter.SuccessLeave",                   "You successfully leaved from &6%s");
-        set("Enter.ClanRequestsLabel",              "-------- CLAN REQUESTS --------");
-        set("Enter.ZeroRequests",                   "No requests for join to your clan");
         set("Enter.Admin.SuccessJoin",              "&aYou successfully join to clan %s!");
         set("Enter.Admin.MissedArgToForceJoin",     "&cYou forgot about clan %name, use /ClAd forcejoin %name, %name = name of clan");
         setComments("Enter", List.of(" ", " "));
@@ -87,7 +85,7 @@ public class DefaultLocalizationConfiguration extends YamlConfiguration {
         set("Create.SuccessCreateClan",             "&aClan %s was created successfully!");
         set("Create.ClanDeleted",                   "&aYou successfully delete your clan!");
         set("Create.Admin.MissingArgToDelete",      "&cYou forgot about clan %name, use /ClAd delete %name, %name = name of clan");
-        set("Info.Admin.ClanDelete",                "&aClan %s was delete");
+        set("Create.Admin.ClanDelete",              "&aClan %s was delete");
         setComments("Create", List.of(" ", " "));
 
         set("Rank.ClanDemoteWithoutArgs",           "&cYou forgot about player %name, use &a/Clan demote %name");
@@ -108,6 +106,9 @@ public class DefaultLocalizationConfiguration extends YamlConfiguration {
         // @todo 1000$ must be in plugin config
         set("Economy.NotEnoughMoneyForCalculate",   "&cYou need 1000$ for force calculate clan level!");
         set("Economy.Admin.DepositWithoutArgs",     "&cNot enough args, use /ClAd deposit %name %money!");
+        set("Economy.Admin.MissingArgToLevel",      "&cYou forgot about clan %level, use /ClAd level %name %level, %level = level to give");
+        set("Economy.Admin.WrongLvl",               "&cWrong level number!");
+        set("Economy.Admin.SuccessLvlChange",       "&aLevel of clan %s was changed to %d");
         setComments("Economy", List.of(" ", " "));
 
         set("Help.Label",                           "--------- CLAN HELP %d ---------");
@@ -123,6 +124,7 @@ public class DefaultLocalizationConfiguration extends YamlConfiguration {
         set("Home.HomeTeleportation",               "&aYou teleported to clan home!");
         set("Home.WrongRegionToSet",                "&cYou cant set clan home out of clan region!");
         set("Home.ClanHomeDelete",                  "&cYour clan home removed, because it is not in region!");
+        set("Home.Admin.MissedArgsToHome",          "&cYou forgot about clan %name, use /ClAd home %name, %name = name of clan");
         setComments("Home", List.of(" ", " "));
 
         set("Treasure.TreasureSuccessSet",          "&aClan treasure set successfully!");
@@ -130,6 +132,8 @@ public class DefaultLocalizationConfiguration extends YamlConfiguration {
         set("Treasure.SuccessfullyCalculation",     "&aClan level successfully calculated!");
         set("Treasure.WrongRegionToSet",            "&cYou cant set clan treasure out of clan region!");
         set("Treasure.ClanTreasureDelete",          "&cYour clan treasure removed, because it is not in region!");
+        set("Treasure.Admin.NoClanTreasure",        "&cThis clan doesnt have treasure!");
+        set("Treasure.Admin.MissedArgsToHome",      "&cYou forgot about clan %name, use /ClAd treasure %name, %name = name of clan");
         set("Treasure.Admin.LevelCalculation",      "&aCalculated level of clan %s");
         set("Treasure.Admin.MissedArgToCalculate",  "&cYou forgot about clan %name, use /ClAd calclvl %name, %name = name of clan");
         setComments("Treasure", List.of(" ", " "));
@@ -146,8 +150,12 @@ public class DefaultLocalizationConfiguration extends YamlConfiguration {
         set("Info.Home",                            "- Home: %s");
         set("Info.Treasure",                        "- Treasure: %s");
         set("Info.RequestCount",                    "- Count of Requests: %s");
+        set("Info.Admin.ListLabel",                 "--------- CLAN LIST ---------");
+        set("Info.Admin.ListUnit",                  "- Name: &a%s&b, level: &a%d&b");
         set("Info.Admin.Label",                     "--------- CLAN %s INFO ---------");
-        set("Info.Admin.MissedArg",                 "You forgot about clan %name, use /ClAd info %name, %name = name of clan");
+        set("Info.Admin.LabelDebug",                "------ DEBUG CLAN %s INFO ------");
+        set("Info.Admin.MissedArg",                 "&cYou forgot about clan %name, use /ClAd info %name, %name = name of clan");
+        set("Info.Admin.MissedArgDebug",            "&cYou forgot about clan %name, use /ClAd debuginfo %name, %name = name of clan");
         setComments("Info", List.of(" ", " "));
 
         set("Rename.ClanRenameWithoutArgs",             "&cYou forgot about new clan %name, use &a/Clan rename %name&b, %name = new clan name");
@@ -161,7 +169,16 @@ public class DefaultLocalizationConfiguration extends YamlConfiguration {
         setComments("Rename", List.of(" ", " "));
 
         set("Mates.Label",                          "------- CLANMATES -------");
+        set("Mates.Unit",                           "- %s &a%s");
+        set("Mates.Admin.MissingArgToMates",        "&cYou forgot about clan %name, use /ClAd mates %name, %name = name of clan");
         setComments("Mates", List.of(" ", " "));
+
+        set("Requests.Label",                          "-------- CLAN REQUESTS -------");
+        set("Requests.Unit",                           "- %s &a%s");
+        set("Requests.ZeroRequests",                   "No requests for join to your clan");
+        set("Requests.Admin.Label",                    "----- CLAN %s REQUESTS ----");
+        set("Requests.Admin.MissingArgToMates",        "&cYou forgot about clan %name, use /ClAd requests %name, %name = name of clan");
+        setComments("Requests", List.of(" ", " "));
 
         set("Setting.WithoutArgs",                  "&cYou forgot about args, use &a/Clan setting help");
         set("Setting.WrongArgs",                    "&cYou have wrong args! Use &a/Clan setting help");
