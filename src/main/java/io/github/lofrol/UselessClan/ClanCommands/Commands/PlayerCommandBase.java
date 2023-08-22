@@ -5,7 +5,6 @@ import io.github.lofrol.UselessClan.ClanObjects.EClanRole;
 import io.github.lofrol.UselessClan.UselessClan;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public abstract class PlayerCommandBase extends CommandBase {

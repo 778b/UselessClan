@@ -9,7 +9,6 @@ import com.sk89q.worldguard.protection.regions.RegionContainer;
 import io.github.lofrol.UselessClan.ClanCommands.Commands.PlayerCommandBase;
 import io.github.lofrol.UselessClan.ClanObjects.Clan;
 import io.github.lofrol.UselessClan.ClanObjects.EClanRole;
-import io.github.lofrol.UselessClan.UselessClan;
 import io.github.lofrol.UselessClan.Utils.ChatSender;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;

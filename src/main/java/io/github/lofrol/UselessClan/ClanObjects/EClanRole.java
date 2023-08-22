@@ -12,7 +12,7 @@ public enum EClanRole {
     }
 
     public static EClanRole fromInt(int param) {
-        EClanRole TempRole = null;
+        EClanRole TempRole;
         switch (param) {
             case 1 -> TempRole = EClanRole.ROOKIE;
             case 2 -> TempRole = EClanRole.MEMBER;

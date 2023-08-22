@@ -7,7 +7,6 @@ import io.github.lofrol.UselessClan.Utils.ChatSender;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 
-import static org.bukkit.Bukkit.getOfflinePlayer;
 
 public class depositAdminCommand extends CommandBase {
     @Override

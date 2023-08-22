@@ -2,7 +2,6 @@ package io.github.lofrol.UselessClan.ClanCommands.Commands.PluginCommands;
 
 import io.github.lofrol.UselessClan.ClanCommands.Commands.CommandBase;
 import io.github.lofrol.UselessClan.UselessClan;
-import io.github.lofrol.UselessClan.Utils.ChatSender;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 

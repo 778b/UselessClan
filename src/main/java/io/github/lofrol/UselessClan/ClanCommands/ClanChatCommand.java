@@ -12,8 +12,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static org.bukkit.Bukkit.getServer;
-
 public final class ClanChatCommand extends Command {
     public static ClanChatCommand CreateDefaultInst() {
         return new ClanChatCommand("ClanChat", "Default command for clan chat",

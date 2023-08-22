@@ -15,7 +15,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import static java.util.Map.entry;
 
 public class BaseClanCommands {
     private final Map<String, CommandBase> ClanCommands;

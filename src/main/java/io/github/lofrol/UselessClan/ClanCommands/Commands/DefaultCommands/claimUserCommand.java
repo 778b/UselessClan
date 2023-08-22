@@ -26,8 +26,6 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-import static com.sk89q.worldguard.protection.flags.Flags.GREET_MESSAGE;
-import static com.sk89q.worldguard.protection.flags.Flags.NOTIFY_ENTER;
 
 public class claimUserCommand extends PlayerCommandBase {
 
@@ -61,11 +59,6 @@ public class claimUserCommand extends PlayerCommandBase {
             ChatSender.MessageTo(tempPlayer, "UselessClan", "Base.WrongRank");
             return false;
         }
-
-        //if (senderClan.getClanLevel() < 1) {
-        //    ChatSender.MessageTo(tempPlayer, "UselessClan", "WG.ZeroLvlClanClaim");
-        //    return false;
-        //}
 
         RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
         RegionManager tempRegionManager = container.get(BukkitAdapter.adapt(tempPlayer.getWorld()));

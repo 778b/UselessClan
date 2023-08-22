@@ -2,9 +2,6 @@ package io.github.lofrol.UselessClan.ClanCommands;
 
 import io.github.lofrol.UselessClan.ClanCommands.Commands.CommandsManager.AdminClanCommands;
 import io.github.lofrol.UselessClan.ClanCommands.Commands.CommandBase;
-import io.github.lofrol.UselessClan.ClanCommands.Commands.PlayerCommandBase;
-import io.github.lofrol.UselessClan.ClanObjects.Clan;
-import io.github.lofrol.UselessClan.ClanObjects.EClanRole;
 import io.github.lofrol.UselessClan.Utils.ChatSender;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -16,7 +13,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static org.bukkit.Bukkit.getServer;
 
 public final class ClanAdminCommand extends Command {
 

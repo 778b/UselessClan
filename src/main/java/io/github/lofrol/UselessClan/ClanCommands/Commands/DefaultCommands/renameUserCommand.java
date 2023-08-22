@@ -3,7 +3,6 @@ package io.github.lofrol.UselessClan.ClanCommands.Commands.DefaultCommands;
 import io.github.lofrol.UselessClan.ClanCommands.Commands.PlayerCommandBase;
 import io.github.lofrol.UselessClan.ClanObjects.Clan;
 import io.github.lofrol.UselessClan.ClanObjects.EClanRole;
-import io.github.lofrol.UselessClan.UselessClan;
 import io.github.lofrol.UselessClan.Utils.ChatSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;

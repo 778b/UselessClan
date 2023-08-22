@@ -5,20 +5,15 @@ import io.github.lofrol.UselessClan.ClanCommands.Commands.CommandsManager.BaseCl
 import io.github.lofrol.UselessClan.ClanCommands.Commands.PlayerCommandBase;
 import io.github.lofrol.UselessClan.ClanObjects.Clan;
 import io.github.lofrol.UselessClan.ClanObjects.EClanRole;
-import io.github.lofrol.UselessClan.UselessClan;
 import io.github.lofrol.UselessClan.Utils.ChatSender;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import static org.bukkit.Bukkit.*;
 
 public final class ClanCommand extends Command {
 
