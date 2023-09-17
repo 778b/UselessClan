@@ -37,18 +37,18 @@ public final class ClanAdminCommand extends Command {
         if (!tempPlayer.hasPermission("UselessClan.Admin")) return false;
 
         if (args.length == 0) {
-            ChatSender.MessageTo(tempPlayer, "<red>UselessClan</Red>", "Main.ClanAdminCommandWithoutArgs");
+            ChatSender.MessageTo(tempPlayer, "<red>UselessClan</red>", "Main.ClanAdminCommandWithoutArgs");
             return false;
         }
 
         CommandBase tempCommand = AdminCommands.getCommand(args[0]);
         if (tempCommand == null) {
-            ChatSender.MessageTo(tempPlayer, "<red>UselessClan</Red>", "Main.InvalidClanAdminCommand");
+            ChatSender.MessageTo(tempPlayer, "<red>UselessClan</red>", "Main.InvalidClanAdminCommand");
             return false;
         }
 
         if (!tempCommand.havePermission(sender)) {
-            ChatSender.MessageTo(tempPlayer, "<red>UselessClan</Red>", "Main.InvalidPermissionToAdminCommand");
+            ChatSender.MessageTo(tempPlayer, "<red>UselessClan</red>", "Main.InvalidPermissionToAdminCommand");
             return false;
         }
 

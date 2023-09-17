@@ -22,31 +22,31 @@ public class infoAdminCommand extends CommandBase {
     @Override
     public boolean executeCommand(CommandSender sender, String[] args) {
         if (args.length < 2) {
-            ChatSender.MessageTo(sender, "<red>UselessClan</Red>", "Info.Admin.MissedArg");
+            ChatSender.MessageTo(sender, "<red>UselessClan</red>", "Info.Admin.MissedArg");
             return false;
         }
 
         Clan foundClan = UselessClan.getMainManager().getServerClans().get(args[1]);
         if (foundClan == null) {
-            ChatSender.MessageTo(sender, "<red>UselessClan</Red>", "Base.HavntClan");
+            ChatSender.MessageTo(sender, "<red>UselessClan</red>", "Base.HavntClan");
             return false;
         }
 
-        ChatSender.MessageTo(sender, "<red>UselessClan</Red>", "Info.Label");
-        ChatSender.NonTranslateMessageTo(sender, "<red>UselessClan</Red>", String.format(
+        ChatSender.MessageTo(sender, "<red>UselessClan</red>", "Info.Label");
+        ChatSender.NonTranslateMessageTo(sender, "<red>UselessClan</red>", String.format(
                 UselessClan.getLocalManager().getLocalizationMessage("Info.ClanName"), foundClan.getNameClan()));
-        ChatSender.NonTranslateMessageTo(sender, "<red>UselessClan</Red>", String.format(
+        ChatSender.NonTranslateMessageTo(sender, "<red>UselessClan</red>", String.format(
                 UselessClan.getLocalManager().getLocalizationMessage("Info.ClanDescription"), foundClan.getDescriptionClan()));
-        ChatSender.NonTranslateMessageTo(sender, "<red>UselessClan</Red>", String.format(
+        ChatSender.NonTranslateMessageTo(sender, "<red>UselessClan</red>", String.format(
                 UselessClan.getLocalManager().getLocalizationMessage("Info.ClanPrefix"), foundClan.getPrefixClan()));
-        ChatSender.NonTranslateMessageTo(sender, "<red>UselessClan</Red>", String.format(
+        ChatSender.NonTranslateMessageTo(sender, "<red>UselessClan</red>", String.format(
                 UselessClan.getLocalManager().getLocalizationMessage("Info.ClanLevel"), foundClan.getClanLevel()));
-        ChatSender.NonTranslateMessageTo(sender, "<red>UselessClan</Red>", String.format(
+        ChatSender.NonTranslateMessageTo(sender, "<red>UselessClan</red>", String.format(
                 UselessClan.getLocalManager().getLocalizationMessage("Info.LeaderName"), foundClan.getLeaderName()));
-        ChatSender.NonTranslateMessageTo(sender, "<red>UselessClan</Red>", String.format(
+        ChatSender.NonTranslateMessageTo(sender, "<red>UselessClan</red>", String.format(
                 UselessClan.getLocalManager().getLocalizationMessage("Info.MemberCount"), foundClan.getMembers().size()));
         if (UselessClan.EconomyPtr != null) {
-            ChatSender.NonTranslateMessageTo(sender, "<red>UselessClan</Red>", String.format(
+            ChatSender.NonTranslateMessageTo(sender, "<red>UselessClan</red>", String.format(
                     UselessClan.getLocalManager().getLocalizationMessage("Info.Money"), (int) foundClan.getMoneyClan()));
         }
         return true;

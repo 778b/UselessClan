@@ -23,18 +23,18 @@ public class homeAdminCommand extends CommandBase {
     @Override
     public boolean executeCommand(CommandSender sender, String[] args) {
         if (args.length == 1) {
-            ChatSender.MessageTo(sender, "<red>UselessClan</Red>", "Home.Admin.MissedArgsToHome");
+            ChatSender.MessageTo(sender, "<red>UselessClan</red>", "Home.Admin.MissedArgsToHome");
             return false;
         }
 
         Clan foundClan = UselessClan.getMainManager().getServerClans().get(args[1]);
         if (foundClan == null) {
-            ChatSender.MessageTo(sender, "<red>UselessClan</Red>", "Base.HavntClan");
+            ChatSender.MessageTo(sender, "<red>UselessClan</red>", "Base.HavntClan");
             return false;
         }
 
         if (foundClan.getHomeClan() == null) {
-            ChatSender.MessageTo(sender, "<red>UselessClan</Red>", "Home.NoClanHome");
+            ChatSender.MessageTo(sender, "<red>UselessClan</red>", "Home.NoClanHome");
             return false;
         }
 
