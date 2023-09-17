@@ -139,33 +139,34 @@ public class claimUserCommand extends PlayerCommandBase {
         tempRegionManager.addRegion(tempProtectedRegion);
 
         {
-            Location tempTreasure = senderClan.getTreasureClan();
             Location tempHome = senderClan.getHomeClan();
-
-            ApplicableRegionSet tempHomeRegion = tempRegionManager.getApplicableRegions(
-                    BlockVector3.at(tempHome.getX(), tempHome.getY(), tempHome.getZ()));
-            ApplicableRegionSet tempTreasureRegion = tempRegionManager.getApplicableRegions(
-                    BlockVector3.at(tempTreasure.getX(), tempTreasure.getY(), tempTreasure.getZ()));
-
-
-            boolean isHomeClanTerritory = false;
-            boolean isTreasureClanTerritory = false;
-            for (var tempReg : tempHomeRegion.getRegions()) {
-                if (tempReg.getId().equals(senderClan.getClanRegionId())) {
-                    isHomeClanTerritory = true;
+            if (tempHome != null) {
+                ApplicableRegionSet tempHomeRegion = tempRegionManager.getApplicableRegions(
+                        BlockVector3.at(tempHome.getX(), tempHome.getY(), tempHome.getZ()));
+                boolean isHomeClanTerritory = false;
+                for (var tempReg : tempHomeRegion.getRegions()) {
+                    if (tempReg.getId().equals(senderClan.getClanRegionId())) {
+                        isHomeClanTerritory = true;
+                    }
                 }
-            }
-            for (var tempReg : tempTreasureRegion.getRegions()) {
-                if (tempReg.getId().equals(senderClan.getClanRegionId())) {
-                    isTreasureClanTerritory = true;
+                if (!isHomeClanTerritory) {
+                    ChatSender.MessageTo(tempPlayer, "UselessClan", "Home.ClanHomeDelete");
                 }
             }
 
-            if (!isHomeClanTerritory) {
-                ChatSender.MessageTo(tempPlayer, "UselessClan", "Home.ClanHomeDelete");
-            }
-            if (!isTreasureClanTerritory) {
-                ChatSender.MessageTo(tempPlayer, "UselessClan", "Treasure.ClanTreasureDelete");
+            Location tempTreasure = senderClan.getTreasureClan();
+            if (tempTreasure != null) {
+                ApplicableRegionSet tempTreasureRegion = tempRegionManager.getApplicableRegions(
+                        BlockVector3.at(tempTreasure.getX(), tempTreasure.getY(), tempTreasure.getZ()));
+                boolean isTreasureClanTerritory = false;
+                for (var tempReg : tempTreasureRegion.getRegions()) {
+                    if (tempReg.getId().equals(senderClan.getClanRegionId())) {
+                        isTreasureClanTerritory = true;
+                    }
+                }
+                if (!isTreasureClanTerritory) {
+                    ChatSender.MessageTo(tempPlayer, "UselessClan", "Treasure.ClanTreasureDelete");
+                }
             }
         }
 

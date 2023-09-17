@@ -73,9 +73,9 @@ public class settingsUserCommand extends PlayerCommandBase {
                 ChatSender.MessageTo(tempPlayer, "UselessClan", "Setting.Description.Info");
                 ChatSender.MessageTo(tempPlayer, "UselessClan", "Setting.Description.RoleCanSetHome");
                 ChatSender.MessageTo(tempPlayer, "UselessClan", "Setting.Description.RoleCanKick");
-                ChatSender.MessageTo(tempPlayer, "UselessClan", "Settings.Description.DefaultJoinRole");
-                ChatSender.MessageTo(tempPlayer, "UselessClan", "Settings.Description.RoleCanWithdraw");
-                ChatSender.MessageTo(tempPlayer, "UselessClan", "Settings.Description.RoleCanAccept");
+                ChatSender.MessageTo(tempPlayer, "UselessClan", "Setting.Description.DefaultJoinRole");
+                ChatSender.MessageTo(tempPlayer, "UselessClan", "Setting.Description.RoleCanWithdraw");
+                ChatSender.MessageTo(tempPlayer, "UselessClan", "Setting.Description.RoleCanAccept");
             }
             else {
                 ChatSender.MessageTo(tempPlayer, "UselessClan", "Setting.WithoutArgs");
@@ -105,11 +105,11 @@ public class settingsUserCommand extends PlayerCommandBase {
                 if (tempRole == EClanRole.NONE) {
                     ChatSender.NonTranslateMessageTo(tempPlayer, "UselessClan", String.format(
                             UselessClan.getLocalManager().getLocalizationMessage(
-                                    "Setting.UseExample"), "RoleCanSetHome 2"));
+                                    "Setting.UseExample"), "RoleCanSetHome 1"));
                     return false;
                 }
 
-                senderClan.getSettingsClan().DefaultJoinRole = tempRole;
+                senderClan.getSettingsClan().RoleCanSethome = tempRole;
                 ChatSender.NonTranslateMessageTo(tempPlayer, "UselessClan",
                         String.format(UselessClan.getLocalManager().getLocalizationMessage(
                                 "Setting.Changed"), "RoleCanSetHome", tempRole.toString()));
@@ -123,7 +123,7 @@ public class settingsUserCommand extends PlayerCommandBase {
                     return false;
                 }
 
-                senderClan.getSettingsClan().DefaultJoinRole = tempRole;
+                senderClan.getSettingsClan().RoleCanKick = tempRole;
                 ChatSender.NonTranslateMessageTo(tempPlayer, "UselessClan",
                         String.format(UselessClan.getLocalManager().getLocalizationMessage(
                                 "Setting.Changed"), "RoleCanKick", tempRole.toString()));
@@ -137,7 +137,7 @@ public class settingsUserCommand extends PlayerCommandBase {
                     return false;
                 }
 
-                senderClan.getSettingsClan().DefaultJoinRole = tempRole;
+                senderClan.getSettingsClan().RoleCanWithdraw = tempRole;
                 ChatSender.NonTranslateMessageTo(tempPlayer, "UselessClan",
                         String.format(UselessClan.getLocalManager().getLocalizationMessage(
                                 "Setting.Changed"), "RoleCanWithdraw", tempRole.toString()));
@@ -151,7 +151,7 @@ public class settingsUserCommand extends PlayerCommandBase {
                     return false;
                 }
 
-                senderClan.getSettingsClan().DefaultJoinRole = tempRole;
+                senderClan.getSettingsClan().RoleCanAccept = tempRole;
                 ChatSender.NonTranslateMessageTo(tempPlayer, "UselessClan",
                         String.format(UselessClan.getLocalManager().getLocalizationMessage(
                                 "Setting.Changed"), "RoleCanAccept", tempRole.toString()));

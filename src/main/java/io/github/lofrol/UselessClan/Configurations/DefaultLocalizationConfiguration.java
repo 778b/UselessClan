@@ -174,7 +174,7 @@ public class DefaultLocalizationConfiguration extends YamlConfiguration {
         setComments("Mates", List.of(" ", " "));
 
         set("Requests.Label",                          "-------- CLAN REQUESTS -------");
-        set("Requests.Unit",                           "- %s <green>%s");
+        set("Requests.Unit",                           "- %s");
         set("Requests.ZeroRequests",                   "No requests for join to your clan");
         set("Requests.Admin.Label",                    "----- CLAN %s REQUESTS ----");
         set("Requests.Admin.MissingArgToMates",        "<red>You forgot about clan %name, use /ClAd requests %name, %name = name of clan");
