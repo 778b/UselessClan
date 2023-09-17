@@ -62,17 +62,17 @@ public class acceptUserCommand extends PlayerCommandBase {
                 RegionContainer tempRegionContainer = WorldGuard.getInstance().getPlatform().getRegionContainer();
                 World tempWorld = getServer().getWorld("world");
                 if (tempWorld == null) {
-                    ChatSender.NonTranslateMessageTo(tempPlayer, "UselessClan", "<Red>Error cant add new player to region! #1");
+                    ChatSender.NonTranslateMessageTo(tempPlayer, "UselessClan", "<red>Error cant add new player to region! #1");
                     return false;
                 }
                 RegionManager tempRegionManager = tempRegionContainer.get(BukkitAdapter.adapt(tempWorld));
                 if (tempRegionManager == null) {
-                    ChatSender.NonTranslateMessageTo(tempPlayer, "UselessClan", "<Red>Error cant add new player to region! #2");
+                    ChatSender.NonTranslateMessageTo(tempPlayer, "UselessClan", "<red>Error cant add new player to region! #2");
                     return false;
                 }
                 ProtectedRegion tempRegion = tempRegionManager.getRegion(senderClan.getClanRegionId());
                 if (tempRegion == null) {
-                    ChatSender.NonTranslateMessageTo(tempPlayer, "UselessClan", "<Red>Error cant add new player to region! #3");
+                    ChatSender.NonTranslateMessageTo(tempPlayer, "UselessClan", "<red>Error cant add new player to region! #3");
                     return false;
                 }
                 var tempMembers = tempRegion.getMembers();

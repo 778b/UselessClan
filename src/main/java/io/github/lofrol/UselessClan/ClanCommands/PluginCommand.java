@@ -14,7 +14,7 @@ import java.util.stream.Stream;
 public class PluginCommand extends Command {
     public static PluginCommand CreateDefaultInst() {
         return new PluginCommand("UselessClan", "Default command for access to the clan system",
-                "Use <DarkPurple>/UselessClan help<reset> for learning more", Stream.of("UselessClan", "uselessclan", "UsCl", "UC").collect(Collectors.toList()));
+                "<aqua>Use <dark_purple>/UselessClan help<aqua> for learning more", Stream.of("UselessClan", "uselessclan", "UsCl", "UC").collect(Collectors.toList()));
     }
 
     private PluginCommand(@NotNull String name, @NotNull String description,

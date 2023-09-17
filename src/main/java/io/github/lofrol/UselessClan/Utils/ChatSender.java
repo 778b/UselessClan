@@ -15,7 +15,7 @@ public class ChatSender {
 
         var coloredText = MiniMessage.miniMessage();
         Component parsedText = coloredText.deserialize( String.format(
-                "<White>[</White><DarkGray>%s</DarkGray><White>]</White> <Aqua>%s</Aqua>",
+                "<white>[</White><DarkGray>%s</DarkGray><white>]</White> <Aqua>%s</Aqua>",
                 prefix, tempLocalizationMessage));
 
         recipient.sendMessage(parsedText);
@@ -26,7 +26,7 @@ public class ChatSender {
 
         var coloredText = MiniMessage.miniMessage();
         Component parsedText = coloredText.deserialize( String.format(
-                "<White>[</White><DarkGray>%s</DarkGray><White>]</White> <Aqua>%s</Aqua>",
+                "<white>[</White><DarkGray>%s</DarkGray><white>]</White> <Aqua>%s</Aqua>",
                 prefix, tempLocalizationMessage));
 
         recipient.sendMessage(parsedText);
@@ -35,7 +35,7 @@ public class ChatSender {
     public static void NonTranslateMessageTo(CommandSender recipient, String prefix, String message) {
         var coloredText = MiniMessage.miniMessage();
         Component parsedText = coloredText.deserialize(String.format(
-                "<White>[</White><DarkGray>%s</DarkGray><White>]</White> <Aqua>%s</Aqua>",
+                "<white>[</White><DarkGray>%s</DarkGray><white>]</White> <Aqua>%s</Aqua>",
                 prefix, message));
 
         recipient.sendMessage(parsedText);

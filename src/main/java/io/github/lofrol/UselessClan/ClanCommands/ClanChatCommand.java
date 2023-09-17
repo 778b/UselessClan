@@ -15,7 +15,7 @@ import java.util.stream.Stream;
 public final class ClanChatCommand extends Command {
     public static ClanChatCommand CreateDefaultInst() {
         return new ClanChatCommand("ClanChat", "Default command for clan chat",
-                "Use <DarkPurple>/Clan help<reset> for learning more", Stream.of("ucc").collect(Collectors.toList()));
+                "<aqua>Use <dark_purple>/Clan help<aqua> for learning more", Stream.of("ucc").collect(Collectors.toList()));
     }
 
     private ClanChatCommand(@NotNull String name, @NotNull String description, @NotNull String usageMessage, @NotNull List<String> aliases) {
@@ -49,7 +49,7 @@ public final class ClanChatCommand extends Command {
         }
 
         SenderClan.getPlayerClan().SendMessageForOnlinePlayers(
-                String.format("<Gold>%s <DarkGreen>-><Aqua>%s",tempPlayer.getName(), MegaString));
+                String.format("<gold>%s <dark_green>-><Aqua>%s",tempPlayer.getName(), MegaString));
         return true;
     }
 }

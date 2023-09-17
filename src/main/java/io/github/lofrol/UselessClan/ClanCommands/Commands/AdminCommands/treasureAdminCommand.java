@@ -23,18 +23,18 @@ public class treasureAdminCommand extends CommandBase {
     @Override
     public boolean executeCommand(CommandSender sender, String[] args) {
         if (args.length == 1) {
-            ChatSender.MessageTo(sender, "<Red>UselessClan</Red>","Treasure.Admin.MissedArgsToHome");
+            ChatSender.MessageTo(sender, "<red>UselessClan</Red>","Treasure.Admin.MissedArgsToHome");
             return false;
         }
 
         Clan foundClan = UselessClan.getMainManager().getServerClans().get(args[1]);
         if (foundClan == null) {
-            ChatSender.MessageTo(sender, "<Red>UselessClan</Red>", "Base.HavntClan");
+            ChatSender.MessageTo(sender, "<red>UselessClan</Red>", "Base.HavntClan");
             return false;
         }
 
         if (foundClan.getTreasureClan() == null) {
-            ChatSender.MessageTo(sender, "<Red>UselessClan</Red>", "Treasure.Admin.NoClanTreasure");
+            ChatSender.MessageTo(sender, "<red>UselessClan</Red>", "Treasure.Admin.NoClanTreasure");
             return false;
         }
 

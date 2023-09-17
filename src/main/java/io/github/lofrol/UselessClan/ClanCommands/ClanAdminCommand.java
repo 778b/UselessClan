@@ -20,7 +20,7 @@ public final class ClanAdminCommand extends Command {
 
     public static ClanAdminCommand CreateDefaultInts() {
         return new ClanAdminCommand("ClanAdmin", "Default command for access to the clan system",
-                "Use <DarkPurple>/Clan help<reset> for learning more", Stream.of("clanadmin", "ClanAdmin", "clad", "ClAd").collect(Collectors.toList()));
+                "<aqua>Use <dark_purple>/Clan help<aqua> for learning more", Stream.of("clanadmin", "ClanAdmin", "clad", "ClAd").collect(Collectors.toList()));
     }
 
 
@@ -37,18 +37,18 @@ public final class ClanAdminCommand extends Command {
         if (!tempPlayer.hasPermission("UselessClan.Admin")) return false;
 
         if (args.length == 0) {
-            ChatSender.MessageTo(tempPlayer, "<Red>UselessClan</Red>", "Main.ClanAdminCommandWithoutArgs");
+            ChatSender.MessageTo(tempPlayer, "<red>UselessClan</Red>", "Main.ClanAdminCommandWithoutArgs");
             return false;
         }
 
         CommandBase tempCommand = AdminCommands.getCommand(args[0]);
         if (tempCommand == null) {
-            ChatSender.MessageTo(tempPlayer, "<Red>UselessClan</Red>", "Main.InvalidClanAdminCommand");
+            ChatSender.MessageTo(tempPlayer, "<red>UselessClan</Red>", "Main.InvalidClanAdminCommand");
             return false;
         }
 
         if (!tempCommand.havePermission(sender)) {
-            ChatSender.MessageTo(tempPlayer, "<Red>UselessClan</Red>", "Main.InvalidPermissionToAdminCommand");
+            ChatSender.MessageTo(tempPlayer, "<red>UselessClan</Red>", "Main.InvalidPermissionToAdminCommand");
             return false;
         }
 

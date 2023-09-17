@@ -21,18 +21,18 @@ public class calclvlAdminCommand extends CommandBase {
     @Override
     public boolean executeCommand(CommandSender sender, String[] args) {
         if (args.length == 1) {
-            ChatSender.MessageTo(sender, "<Red>UselessClan</Red>", "Treasure.Admin.MissedArgToCalculate");
+            ChatSender.MessageTo(sender, "<red>UselessClan</Red>", "Treasure.Admin.MissedArgToCalculate");
             return false;
         }
 
         Clan foundClan = UselessClan.getMainManager().getServerClans().get(args[1]);
         if (foundClan == null) {
-            ChatSender.MessageTo(sender, "<Red>UselessClan</Red>", "Base.HavntClan");
+            ChatSender.MessageTo(sender, "<red>UselessClan</Red>", "Base.HavntClan");
             return false;
         }
         UselessClan.getMainManager().CalculateClanLevel(foundClan);
 
-        ChatSender.NonTranslateMessageTo(sender, "<Red>UselessClan</Red>",
+        ChatSender.NonTranslateMessageTo(sender, "<red>UselessClan</Red>",
                 String.format(UselessClan.getLocalManager().getLocalizationMessage(
                         "Treasure.Admin.LevelCalculation"), foundClan.getPrefixClan()));
         return true;

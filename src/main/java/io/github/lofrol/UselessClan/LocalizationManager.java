@@ -91,7 +91,7 @@ public class LocalizationManager {
         }
         if (tempLocalizationText == null) {
             tempLocalizationText = DefaultLocalizationTable.getString(messageKey);
-            return tempLocalizationText != null ? tempLocalizationText : String.format("<Red>Localization error, key = %s", messageKey);
+            return tempLocalizationText != null ? tempLocalizationText : String.format("<red>Localization error, key = %s", messageKey);
         }
         return tempLocalizationText;
     }

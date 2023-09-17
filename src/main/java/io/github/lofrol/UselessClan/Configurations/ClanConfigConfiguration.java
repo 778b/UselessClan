@@ -274,7 +274,7 @@ public class ClanConfigConfiguration extends YamlConfiguration {
         StartClanLevel = tempDefault;
     }
     private void initClanLevelsColorsDefault() {
-        var tempList = List.of("<White>", "<Green>", "<DarkGreen>", "<DarkAqua>", "<Blue>", "<DarkBlue>", "<Yelow>", "<Gold>", "<LightPurple>", "<DarkPurple>", "<Black>");
+        var tempList = List.of("<white>", "<green>", "<dark_green>", "<dark_aqua>", "<blue>", "<dark_blue>", "<yellow>", "<gold>", "<light_purple>", "<dark_purple>", "<black>");
         set("DefaultClanSettings.ClanLevelsColors", tempList);
         ClanLevelsColors = tempList;
     }
