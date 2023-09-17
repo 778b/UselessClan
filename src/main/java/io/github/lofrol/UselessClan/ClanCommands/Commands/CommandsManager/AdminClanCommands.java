@@ -2,20 +2,12 @@ package io.github.lofrol.UselessClan.ClanCommands.Commands.CommandsManager;
 
 import io.github.lofrol.UselessClan.ClanCommands.Commands.AdminCommands.*;
 import io.github.lofrol.UselessClan.ClanCommands.Commands.CommandBase;
-import io.github.lofrol.UselessClan.ClanManager;
-import io.github.lofrol.UselessClan.ClanObjects.Clan;
-import io.github.lofrol.UselessClan.ClanObjects.ClanMember;
 import io.github.lofrol.UselessClan.UselessClan;
-import io.github.lofrol.UselessClan.Utils.ChatSender;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
-import static java.util.Map.entry;
 
 public class AdminClanCommands {
     private final Map<String, CommandBase> ClanCommands;

@@ -51,6 +51,6 @@ public class ClanConfigManager {
     }
 
     public String getServerVersion() {
-        return OwnerPlugin.getDescription().getVersion();
+        return OwnerPlugin.getPluginMeta().getVersion();
     }
 }

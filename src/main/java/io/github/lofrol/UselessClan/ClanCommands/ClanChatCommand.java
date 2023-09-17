@@ -12,12 +12,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static org.bukkit.Bukkit.getServer;
-
 public final class ClanChatCommand extends Command {
     public static ClanChatCommand CreateDefaultInst() {
         return new ClanChatCommand("ClanChat", "Default command for clan chat",
-                "Use &5/Clan help&r for learning more", Stream.of("ucc").collect(Collectors.toList()));
+                "<aqua>Use <dark_purple>/Clan help<aqua> for learning more", Stream.of("ucc").collect(Collectors.toList()));
     }
 
     private ClanChatCommand(@NotNull String name, @NotNull String description, @NotNull String usageMessage, @NotNull List<String> aliases) {
@@ -51,7 +49,7 @@ public final class ClanChatCommand extends Command {
         }
 
         SenderClan.getPlayerClan().SendMessageForOnlinePlayers(
-                String.format("&6%s &2->&b%s",tempPlayer.getName(), MegaString));
+                String.format("<gold>%s <dark_green>-><Aqua>%s",tempPlayer.getName(), MegaString));
         return true;
     }
 }

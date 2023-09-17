@@ -64,17 +64,17 @@ public class kickUserCommand extends PlayerCommandBase {
                 RegionContainer tempRegionContainer = WorldGuard.getInstance().getPlatform().getRegionContainer();
                 World tempWorld = getServer().getWorld("world");
                 if (tempWorld == null) {
-                    ChatSender.NonTranslateMessageTo(tempPlayer, "UselessClan", "&cError cant remove player from region! #1");
+                    ChatSender.NonTranslateMessageTo(tempPlayer, "UselessClan", "<red>Error cant remove player from region! #1");
                     return false;
                 }
                 RegionManager tempRegionManager = tempRegionContainer.get(BukkitAdapter.adapt(tempWorld));
                 if (tempRegionManager == null) {
-                    ChatSender.NonTranslateMessageTo(tempPlayer, "UselessClan", "&cError cant remove player from region! #2");
+                    ChatSender.NonTranslateMessageTo(tempPlayer, "UselessClan", "<red>Error cant remove player from region! #2");
                     return false;
                 }
                 ProtectedRegion tempRegion = tempRegionManager.getRegion(senderClan.getClanRegionId());
                 if (tempRegion == null) {
-                    ChatSender.NonTranslateMessageTo(tempPlayer, "UselessClan", "&cError cant remove player from region! #3");
+                    ChatSender.NonTranslateMessageTo(tempPlayer, "UselessClan", "<red>Error cant remove player from region! #3");
                     return false;
                 }
                 tempRegion.getMembers().removePlayer(tempMember.getPlayerName());

@@ -13,7 +13,6 @@ import java.util.*;
 import java.util.logging.Level;
 
 import static org.bukkit.Bukkit.getServer;
-import static org.bukkit.Bukkit.getWorld;
 
 public class Clan {
 
@@ -231,7 +230,7 @@ public class Clan {
     }
 
     public void SendMessageForOnlineOfficers(String Message) {
-        String FormattedPrefix = "&9" + PrefixClan;
+        String FormattedPrefix = "<blue>" + PrefixClan;
         for (Player tempPlayer : OnlineMembers.keySet()) {
             EClanRole tempRole = OnlineMembers.get(tempPlayer).getMemberRole();
             if (tempRole == EClanRole.OFFICER || tempRole == EClanRole.LEADER) {
@@ -357,7 +356,7 @@ public class Clan {
     }
 
     private void sortMembers() {
-        Members.sort(new Comparator<ClanMember>() {
+        Members.sort(new Comparator<>() {
             @Override
             public int compare(ClanMember o1, ClanMember o2) {
                 if (o1.getMemberRole().ordinal() > o2.getMemberRole().ordinal()) {

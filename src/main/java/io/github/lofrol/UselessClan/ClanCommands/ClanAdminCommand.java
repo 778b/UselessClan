@@ -2,9 +2,6 @@ package io.github.lofrol.UselessClan.ClanCommands;
 
 import io.github.lofrol.UselessClan.ClanCommands.Commands.CommandsManager.AdminClanCommands;
 import io.github.lofrol.UselessClan.ClanCommands.Commands.CommandBase;
-import io.github.lofrol.UselessClan.ClanCommands.Commands.PlayerCommandBase;
-import io.github.lofrol.UselessClan.ClanObjects.Clan;
-import io.github.lofrol.UselessClan.ClanObjects.EClanRole;
 import io.github.lofrol.UselessClan.Utils.ChatSender;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -16,7 +13,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static org.bukkit.Bukkit.getServer;
 
 public final class ClanAdminCommand extends Command {
 
@@ -24,7 +20,7 @@ public final class ClanAdminCommand extends Command {
 
     public static ClanAdminCommand CreateDefaultInts() {
         return new ClanAdminCommand("ClanAdmin", "Default command for access to the clan system",
-                "Use &5/Clan help&r for learning more", Stream.of("clanadmin", "ClanAdmin", "clad", "ClAd").collect(Collectors.toList()));
+                "<aqua>Use <dark_purple>/Clan help<aqua> for learning more", Stream.of("clanadmin", "ClanAdmin", "clad", "ClAd").collect(Collectors.toList()));
     }
 
 
@@ -41,18 +37,18 @@ public final class ClanAdminCommand extends Command {
         if (!tempPlayer.hasPermission("UselessClan.Admin")) return false;
 
         if (args.length == 0) {
-            ChatSender.MessageTo(tempPlayer, "&4UselessClan", "Main.ClanAdminCommandWithoutArgs");
+            ChatSender.MessageTo(tempPlayer, "<red>UselessClan</red>", "Main.ClanAdminCommandWithoutArgs");
             return false;
         }
 
         CommandBase tempCommand = AdminCommands.getCommand(args[0]);
         if (tempCommand == null) {
-            ChatSender.MessageTo(tempPlayer, "&4UselessClan", "Main.InvalidClanAdminCommand");
+            ChatSender.MessageTo(tempPlayer, "<red>UselessClan</red>", "Main.InvalidClanAdminCommand");
             return false;
         }
 
         if (!tempCommand.havePermission(sender)) {
-            ChatSender.MessageTo(tempPlayer, "&4UselessClan", "Main.InvalidPermissionToAdminCommand");
+            ChatSender.MessageTo(tempPlayer, "<red>UselessClan</red>", "Main.InvalidPermissionToAdminCommand");
             return false;
         }
 

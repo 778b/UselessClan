@@ -8,7 +8,7 @@ import java.util.Comparator;
 import java.util.List;
 
 public class TopClanCounter {
-    private List<TopListClan> TopClans = new ArrayList<>();
+    private final List<TopListClan> TopClans = new ArrayList<>();
     public void CalculateTop() {
         TopClans.clear();
 
@@ -16,7 +16,7 @@ public class TopClanCounter {
             TopClans.add(new TopListClan(tempClan.getNameClan(), (int)tempClan.getMoneyClan(), tempClan.getClanLevel()));
         }
 
-        TopClans.sort(new Comparator<TopListClan>() {
+        TopClans.sort(new Comparator<>() {
             @Override
             public int compare(TopListClan o1, TopListClan o2) {
                 if (o1.ClanLevel > o2.ClanLevel) {

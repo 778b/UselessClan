@@ -8,8 +8,6 @@ import io.github.lofrol.UselessClan.Utils.ChatSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-import static org.bukkit.Bukkit.getPlayer;
-
 public class declineUserCommand extends PlayerCommandBase {
 
     @Override

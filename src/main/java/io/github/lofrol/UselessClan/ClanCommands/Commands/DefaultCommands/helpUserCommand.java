@@ -39,7 +39,7 @@ public class helpUserCommand extends PlayerCommandBase {
         }
 
         if (tempCommandArray == null) {
-            ChatSender.MessageTo(tempPlayer, "&4UselessClan", "Help.NoCommands");
+            ChatSender.MessageTo(tempPlayer, "<red>UselessClan</red>", "Help.NoCommands");
             return false;
         }
 

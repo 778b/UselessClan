@@ -3,7 +3,7 @@ plugins {
 }
 
 group = 'io.github.lofrol'
-version = '1.1.1'
+version = '1.1.2'
 
 repositories {
     mavenCentral()
@@ -31,10 +31,10 @@ repositories {
 }
 
 dependencies {
-    compileOnly "io.papermc.paper:paper-api:1.19.2-R0.1-SNAPSHOT"
+    compileOnly "io.papermc.paper:paper-api:1.20.1-R0.1-SNAPSHOT"
     compileOnly "com.github.MilkBowl:VaultAPI:1.7"
-    compileOnly "me.clip:placeholderapi:2.11.2"
-    compileOnly 'com.sk89q.worldguard:worldguard-bukkit:7.0.7'
+    compileOnly "me.clip:placeholderapi:2.11.3"
+    compileOnly 'com.sk89q.worldguard:worldguard-bukkit:7.0.9'
 }
 
 def targetJavaVersion = 17

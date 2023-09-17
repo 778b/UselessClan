@@ -23,19 +23,19 @@ public class levelAdminCommand extends CommandBase {
     @Override
     public boolean executeCommand(CommandSender sender, String[] args) {
         if (args.length < 2) {
-            ChatSender.MessageTo(sender, "&4UselessClan", "Economy.Admin.MissingArgToLevel");
+            ChatSender.MessageTo(sender, "<red>UselessClan</red>", "Economy.Admin.MissingArgToLevel");
             return false;
         }
 
         Clan foundClan = UselessClan.getMainManager().getServerClans().get(args[1]);
         if (foundClan == null) {
-            ChatSender.MessageTo(sender, "&4UselessClan", "Base.HavntClan");
+            ChatSender.MessageTo(sender, "<red>UselessClan</red>", "Base.HavntClan");
             return false;
         }
         int tempLevel = Integer.parseInt(args[2]);
 
         if (tempLevel < 0 || tempLevel > ClanManager.ClanLevelColors.size()) {
-            ChatSender.MessageTo(sender, "&4UselessClan", "Economy.Admin.WrongLvl");
+            ChatSender.MessageTo(sender, "<red>UselessClan</red>", "Economy.Admin.WrongLvl");
             return false;
         }
 
