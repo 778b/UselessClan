@@ -37,7 +37,7 @@ public class ChatSender {
         Component parsedText = coloredText.deserialize(String.format(
                 "<White>[</White><DarkGray>%s</DarkGray><White>]</White> <Aqua>%s</Aqua>",
                 prefix, message));
-        
+
         recipient.sendMessage(parsedText);
     }
 }

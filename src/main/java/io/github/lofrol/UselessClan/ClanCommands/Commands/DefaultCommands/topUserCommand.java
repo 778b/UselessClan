@@ -34,7 +34,7 @@ public class topUserCommand extends PlayerCommandBase {
             ChatSender.NonTranslateMessageTo(tempPlayer, "UselessClan",  String.format(
                     UselessClan.getLocalManager().getLocalizationMessage("Top.Label"), 1));
             for (int i = tempRow; i < tempTopListClans.size(); ++i) {
-                ChatSender.NonTranslateMessageTo(tempPlayer, "UselessClan", String.format("&b#%d) %s : &e%d : &a%d", tempRow + 1,
+                ChatSender.NonTranslateMessageTo(tempPlayer, "UselessClan", String.format("<Aqua>#%d) %s : <Yelow>%d : <Green>%d", tempRow + 1,
                         tempTopListClans.get(i).ClanName, tempTopListClans.get(i).ClanLevel, tempTopListClans.get(i).ClanMoney));
                 ++tempRow;
                 if (tempRow == numClansInOnePage) break;
@@ -53,7 +53,7 @@ public class topUserCommand extends PlayerCommandBase {
                 ChatSender.NonTranslateMessageTo(tempPlayer, "UselessClan", String.format(
                         UselessClan.getLocalManager().getLocalizationMessage("Top.Label"), pageNum));
                 for (int i = (pageNum - 1) * numClansInOnePage; i < tempTopListClans.size(); ++i) {
-                    ChatSender.NonTranslateMessageTo(tempPlayer, "UselessClan", String.format("&b#%d) %s : &e%d : &a%d",(tempRow + 1) * pageNum,
+                    ChatSender.NonTranslateMessageTo(tempPlayer, "UselessClan", String.format("<Aqua>#%d) %s : <Yelow>%d : <Green>%d",(tempRow + 1) * pageNum,
                             tempTopListClans.get(i).ClanName, tempTopListClans.get(i).ClanLevel, tempTopListClans.get(i).ClanMoney));
                     ++tempRow;
                     if (tempRow == numClansInOnePage) break;

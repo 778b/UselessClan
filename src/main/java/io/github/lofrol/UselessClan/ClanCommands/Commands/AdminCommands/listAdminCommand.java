@@ -21,9 +21,9 @@ public class listAdminCommand extends CommandBase {
 
     @Override
     public boolean executeCommand(CommandSender sender, String[] args) {
-        ChatSender.MessageTo(sender, "&4UselessClan","Info.Admin.ListLabel");
+        ChatSender.MessageTo(sender, "<Red>UselessClan</Red>","Info.Admin.ListLabel");
         for (Clan tempClan : UselessClan.getMainManager().getServerClans().values()) {
-            ChatSender.NonTranslateMessageTo(sender, "&4UselessClan", String.format(
+            ChatSender.NonTranslateMessageTo(sender, "<Red>UselessClan</Red>", String.format(
                     UselessClan.getLocalManager().getLocalizationMessage("Info.Admin.ListUnit"), tempClan.getNameClan(), tempClan.getClanLevel()));
         }
         return true;

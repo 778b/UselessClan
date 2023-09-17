@@ -49,19 +49,19 @@ public final class UselessClanPlaceholder extends PlaceholderExpansion {
         if(params.equalsIgnoreCase("prefix")) {
             Clan tempClan = UselessClan.getMainManager().FindClanToPlayer(player.getName());
             if (tempClan == null) return "";
-            return String.format("&r[%s%s&r]", ClanManager.ClanLevelColors.get(tempClan.getClanLevel()), tempClan.getPrefixClan());
+            return String.format("<reset>[%s%s<reset>]", ClanManager.ClanLevelColors.get(tempClan.getClanLevel()), tempClan.getPrefixClan());
         }
         else if (params.equalsIgnoreCase("role")) {
             Clan tempClan = UselessClan.getMainManager().FindClanToPlayer(player.getName());
             if (tempClan == null) return "";
             ClanMember tempMember = tempClan.getClanMember(player.getName());
-            return String.format("&r[&6%s&r]", ClanManager.ClanRoleSolver(tempMember.getMemberRole()));
+            return String.format("<reset>[<Gold>%s<reset>]", ClanManager.ClanRoleSolver(tempMember.getMemberRole()));
         }
         else if (params.equalsIgnoreCase("clanlevel")) {
             Clan tempClan = UselessClan.getMainManager().FindClanToPlayer(player.getName());
             if (tempClan == null) return "";
 
-            return String.format("&r[&6%d&r]", tempClan.getClanLevel());
+            return String.format("<reset>[<Gold>%d<reset>]", tempClan.getClanLevel());
         }
         return "";
     }

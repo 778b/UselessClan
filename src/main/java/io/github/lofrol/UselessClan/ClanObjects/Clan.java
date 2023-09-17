@@ -230,7 +230,7 @@ public class Clan {
     }
 
     public void SendMessageForOnlineOfficers(String Message) {
-        String FormattedPrefix = "&9" + PrefixClan;
+        String FormattedPrefix = "<Blue>" + PrefixClan;
         for (Player tempPlayer : OnlineMembers.keySet()) {
             EClanRole tempRole = OnlineMembers.get(tempPlayer).getMemberRole();
             if (tempRole == EClanRole.OFFICER || tempRole == EClanRole.LEADER) {

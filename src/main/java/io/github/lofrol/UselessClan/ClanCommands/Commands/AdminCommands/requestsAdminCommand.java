@@ -22,27 +22,27 @@ public class requestsAdminCommand extends CommandBase {
     @Override
     public boolean executeCommand(CommandSender sender, String[] args) {
         if (args.length == 1) {
-            ChatSender.MessageTo(sender, "&4UselessClan", "Requests.Admin.MissingArgToMates");
+            ChatSender.MessageTo(sender, "<Red>UselessClan</Red>", "Requests.Admin.MissingArgToMates");
             return false;
         }
 
         Clan foundClan = UselessClan.getMainManager().getServerClans().get(args[1]);
         if (foundClan == null) {
-            ChatSender.MessageTo(sender, "&4UselessClan", "Base.HavntClan");
+            ChatSender.MessageTo(sender, "<Red>UselessClan</Red>", "Base.HavntClan");
             return false;
         }
 
         if (foundClan.getRequests().size() > 0) {
-            ChatSender.NonTranslateMessageTo(sender, "&4UselessClan", String.format(
+            ChatSender.NonTranslateMessageTo(sender, "<Red>UselessClan</Red>", String.format(
                     UselessClan.getLocalManager().getLocalizationMessage(
                             "Requests.Admin.Label"), foundClan.getPrefixClan()));
             for (String tempMemberName : foundClan.getRequests()) {
-                ChatSender.NonTranslateMessageTo(sender, "&4UselessClan", String.format(
+                ChatSender.NonTranslateMessageTo(sender, "<Red>UselessClan</Red>", String.format(
                         UselessClan.getLocalManager().getLocalizationMessage(
                                 "Requests.Unit"), tempMemberName));
             }
         } else {
-            ChatSender.MessageTo(sender, "&4UselessClan", "Requests.ZeroRequests");
+            ChatSender.MessageTo(sender, "<Red>UselessClan</Red>", "Requests.ZeroRequests");
         }
         return true;
     }

@@ -23,7 +23,7 @@ public final class ClanCommand extends Command {
     @NotNull
     public static ClanCommand CreateDefaultInst() {
         return new ClanCommand("Clan", "Default command for access to the clan system",
-                "Use &5/Clan help&r for learning more", Stream.of("clan", "Clan").collect(Collectors.toList()));
+                "Use <DarkPurple>/Clan help<reset> for learning more", Stream.of("clan", "Clan").collect(Collectors.toList()));
     }
 
     private ClanCommand(@NotNull String name, @NotNull String description,

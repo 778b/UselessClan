@@ -76,16 +76,16 @@ public class claimUserCommand extends PlayerCommandBase {
         try {
             tempRegion = tempLocalSession.getRegionSelector(tempLocalSession.getSelectionWorld()).getRegion();
         } catch (IncompleteRegionException e) {
-            ChatSender.NonTranslateMessageTo(tempPlayer, "UselessClan", "&cInternal error, RIP #1");
+            ChatSender.NonTranslateMessageTo(tempPlayer, "UselessClan", "<Red>Internal error, RIP #1");
             throw new RuntimeException(e);
         }
 
         if (tempRegionManager == null) {
-            ChatSender.NonTranslateMessageTo(tempPlayer, "UselessClan", "&cInternal error, RIP #2");
+            ChatSender.NonTranslateMessageTo(tempPlayer, "UselessClan", "<Red>Internal error, RIP #2");
             return false;
         }
         if (tempRegion == null) {
-            ChatSender.NonTranslateMessageTo(tempPlayer, "UselessClan", "&cInternal error, RIP #3");
+            ChatSender.NonTranslateMessageTo(tempPlayer, "UselessClan", "<Red>Internal error, RIP #3");
             return false;
         }
 

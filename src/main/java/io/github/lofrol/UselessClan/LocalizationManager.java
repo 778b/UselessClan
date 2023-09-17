@@ -1,6 +1,8 @@
 package io.github.lofrol.UselessClan;
 
 import io.github.lofrol.UselessClan.Configurations.DefaultLocalizationConfiguration;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.jetbrains.annotations.NotNull;
@@ -89,7 +91,7 @@ public class LocalizationManager {
         }
         if (tempLocalizationText == null) {
             tempLocalizationText = DefaultLocalizationTable.getString(messageKey);
-            return tempLocalizationText != null ? tempLocalizationText : String.format("&cLocalization error, key = %s", messageKey);
+            return tempLocalizationText != null ? tempLocalizationText : String.format("<Red>Localization error, key = %s", messageKey);
         }
         return tempLocalizationText;
     }

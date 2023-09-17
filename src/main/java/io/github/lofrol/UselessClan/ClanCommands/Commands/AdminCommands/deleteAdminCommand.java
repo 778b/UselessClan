@@ -21,17 +21,17 @@ public class deleteAdminCommand extends CommandBase {
     @Override
     public boolean executeCommand(CommandSender sender, String[] args) {
         if (args.length == 1) {
-            ChatSender.MessageTo(sender, "&4UselessClan", "Create.Admin.MissingArgToDelete");
+            ChatSender.MessageTo(sender, "<Red>UselessClan</Red>", "Create.Admin.MissingArgToDelete");
             return false;
         }
 
         Clan foundClan = UselessClan.getMainManager().getServerClans().get(args[1]);
         if (foundClan == null) {
-            ChatSender.MessageTo(sender, "&4UselessClan", "Base.HavntClan");
+            ChatSender.MessageTo(sender, "<Red>UselessClan</Red>", "Base.HavntClan");
             return false;
         }
         UselessClan.getMainManager().DeleteClan(foundClan);
-        ChatSender.NonTranslateMessageTo(sender, "&4UselessClan", String.format(
+        ChatSender.NonTranslateMessageTo(sender, "<Red>UselessClan</Red>", String.format(
                 UselessClan.getLocalManager().getLocalizationMessage("Create.Admin.ClanDelete"), foundClan.getPrefixClan()));
 
         return true;

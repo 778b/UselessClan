@@ -24,19 +24,19 @@ public class forceJoinAdminCommand extends CommandBase {
     @Override
     public boolean executeCommand(CommandSender sender, String[] args) {
         if (args.length == 1) {
-            ChatSender.MessageTo(sender, "&4UselessClan", "Enter.Admin.MissedArgToForceJoin");
+            ChatSender.MessageTo(sender, "<Red>UselessClan</Red>", "Enter.Admin.MissedArgToForceJoin");
             return false;
         }
 
         Clan foundClan = UselessClan.getMainManager().getServerClans().get(args[1]);
         if (foundClan == null) {
-            ChatSender.MessageTo(sender, "&4UselessClan", "Base.HavntClan");
+            ChatSender.MessageTo(sender, "<Red>UselessClan</Red>", "Base.HavntClan");
             return false;
         }
 
         foundClan.PlayerJoinToClan(EClanRole.OFFICER, sender.getName());
 
-        ChatSender.NonTranslateMessageTo(sender, "&4UselessClan", String.format(
+        ChatSender.NonTranslateMessageTo(sender, "<Red>UselessClan</Red>", String.format(
                 UselessClan.getLocalManager().getLocalizationMessage("Enter.Admin.SuccessJoin"), foundClan.getPrefixClan()));
         return true;
     }

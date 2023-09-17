@@ -23,18 +23,18 @@ public class matesAdminCommand extends CommandBase {
     @Override
     public boolean executeCommand(CommandSender sender, String[] args) {
         if (args.length == 1) {
-            ChatSender.MessageTo(sender, "&4UselessClan", "Mates.Admin.MissingArgToMates");
+            ChatSender.MessageTo(sender, "<Red>UselessClan</Red>", "Mates.Admin.MissingArgToMates");
             return false;
         }
 
         Clan findedClan = UselessClan.getMainManager().getServerClans().get(args[1]);
         if (findedClan == null) {
-            ChatSender.MessageTo(sender, "&4UselessClan", "Base.HavntClan");
+            ChatSender.MessageTo(sender, "<Red>UselessClan</Red>", "Base.HavntClan");
             return false;
         }
-        ChatSender.MessageTo(sender, "&4UselessClan", "Mates.Label");
+        ChatSender.MessageTo(sender, "<Red>UselessClan</Red>", "Mates.Label");
         for (ClanMember tempMember : findedClan.getMembers()) {
-            ChatSender.NonTranslateMessageTo(sender, "&4UselessClan", String.format(
+            ChatSender.NonTranslateMessageTo(sender, "<Red>UselessClan</Red>", String.format(
                     UselessClan.getLocalManager().getLocalizationMessage(
                             "Mates.Unit"), tempMember.getMemberRole().toString(), tempMember.getPlayerName()));
         }
